@@ -1,0 +1,108 @@
+<%
+ /* Heliactyl Server Model */
+%>
+
+<%
+let HeliactylServer = {
+  getServers() {
+    return pterodactyl.relationships.servers.data;
+  },
+
+  getServerById(id) {
+    return this.getServers().find(server => server.attributes.id === id);
+  },
+
+  ServersTable() {
+    const servers = this.getServers();
+    %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white rounded-lg overflow-hidden">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Node</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Memory</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Disk</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <% for (let i = 0, len = servers.length; i < len; i++) { 
+            const server = servers[i].attributes;
+          %>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap"><%= server.name %></td>
+              <td class="px-6 py-4 whitespace-nowrap"><%= server.identifier %></td>
+              <td class="px-6 py-4 whitespace-nowrap">Node <%= server.node %></td>
+              <td class="px-6 py-4 whitespace-nowrap"><%= server.limits.memory %> MB</td>
+              <td class="px-6 py-4 whitespace-nowrap"><%= server.limits.disk %> MB</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <button onclick="HeliactylServer.EditServer('<%= server.id %>')" class="text-blue-600 hover:text-blue-900 mr-2">Edit</button>
+                <button onclick="HeliactylServer.DeleteServer('<%= server.id %>')" class="text-red-600 hover:text-red-900">Delete</button>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <%
+  },
+
+  ServersList() {
+    const servers = this.getServers();
+    %>
+    <ul class="divide-y divide-gray-200">
+      <% for (let i = 0, len = servers.length; i < len; i++) { 
+        const server = servers[i].attributes;
+      %>
+        <li class="py-4">
+          <div class="flex items-center space-x-4">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-900 truncate"><%= server.name %></p>
+              <p class="text-sm text-gray-500 truncate">ID: <%= server.identifier %></p>
+            </div>
+            <div class="inline-flex items-center space-x-2">
+              <button onclick="HeliactylServer.EditServer('<%= server.id %>')" class="text-blue-600 hover:text-blue-900">Edit</button>
+              <button onclick="HeliactylServer.DeleteServer('<%= server.id %>')" class="text-red-600 hover:text-red-900">Delete</button>
+            </div>
+          </div>
+        </li>
+      <% } %>
+    </ul>
+    <%
+  }
+}
+%>
+
+<!-- Set cookie with HeliactylServer -->
+<script>
+  document.cookie = `HeliactylServer=${JSON.stringify('<%- HeliactylServer %>')}; path=/`;
+
+  class HeliactylServer {
+    constructor(server) {
+      this.server = server;
+    }
+
+    static EditServer(serverId) {
+      window.location.href = `/edit?id=${serverId}`;
+    }
+
+    static DeleteServer(serverId) {
+      if (confirm('Are you sure you want to delete this server?')) {
+        window.location.href = `/delete?id=${serverId}`;
+      }
+    }
+
+    static GetServerInfo(serverId) {
+      const servers = JSON.parse(this.server).getServers();
+      return servers.find(s => s.attributes.id === serverId);
+    }
+
+    static GetAllServers() {
+      return JSON.parse(this.server).getServers();
+    }
+  }
+
+  const heliactylServer = new HeliactylServer('<%- HeliactylServer %>');
+</script>

@@ -1,0 +1,11 @@
+datasource db {
+  provider = "sqlite" // or your preferred database provider
+  url      = "file:./dev.db"
+}
+generator client {
+  provider = "prisma-client-js"
+}
+model heliactyl {
+  key   String @id
+  value String
+}

@@ -1,0 +1,71 @@
+{
+  "name": "heliactyl",
+  "version": "3.0.0-canary",
+  "description": "The official Heliactyl client area for the Pterodactyl Panel.",
+  "main": "app.js",
+  "author": "Matt James",
+  "dependencies": {
+    "@iarna/toml": "^2.2.5",
+    "@keyv/sqlite": "^3.6.7",
+    "@prisma/client": "^5.21.1",
+    "@tailwindcss/forms": "^0.5.7",
+    "axios": "^1.7.7",
+    "bcrypt": "^5.1.1",
+    "chalk": "^4.1.0",
+    "chokidar": "^3.6.0",
+    "compression": "^1.7.4",
+    "connect-redis": "^7.1.1",
+    "connect-sqlite3": "^0.9.15",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "csurf": "^1.11.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.7",
+    "express": "^4.21.1",
+    "express-openid-connect": "^2.17.1",
+    "express-rate-limit": "^7.4.1",
+    "express-session": "^1.18.1",
+    "express-validator": "^7.2.0",
+    "express-ws": "^4.0.0",
+    "form-data": "^4.0.1",
+    "googleapis": "^144.0.0",
+    "helmet": "^8.0.0",
+    "javascript-obfuscator": "^4.0.2",
+    "js-yaml": "^4.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "keyv": "^4.5.4",
+    "moment": "^2.30.1",
+    "morgan": "^1.10.0",
+    "nocache": "^4.0.0",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^2.6.6",
+    "node-schedule": "^2.1.1",
+    "passport": "^0.7.0",
+    "passport-auth0": "^1.4.4",
+    "preline": "^2.3.0",
+    "readdirp": "^4.0.2",
+    "redis": "^4.7.0",
+    "sqlite3": "^5.1.7",
+    "uuid": "^10.0.0",
+    "winston": "^3.15.0",
+    "ws": "^8.18.0",
+    "xml2js": "^0.6.2"
+  },
+  "scripts": {
+    "start": "bun run app.js",
+    "build": "bunx tailwindcss -i ./assets/tw.conf -o ./assets/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.23.9",
+    "@babel/core": "^7.24.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.23.3",
+    "@babel/preset-env": "^7.24.0",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
+  }
+}

@@ -1,0 +1,68 @@
+<!-- src/views/Layout/Sidebar.ejs -->
+
+<nav class="flex h-[calc(100vh-theme(space.24))]">
+    <ul class="flex w-full flex-col pb-2">
+        <li class="flex flex-1 flex-col justify-between gap-3 overflow-y-auto">
+            <ul class="space-y-1 py-1 ">
+                <!-- Load Sidebar Items -->
+                <%- include('./SidebarItems') %>
+            </ul>
+            <ul class="space-y-1 py-1 mb-3 mt-auto">
+                <li class="mx-4 block 2xl:mx-5">
+                    <a href="/support" class="unstyled-link group relative flex w-full items-center rounded-md px-3 py-1.5 text-sm font-normal leading-6 transition-colors duration-150 hover:bg-sky-600/20 hover:text-white focus:bg-sky-600/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-8 active:bg-sky-600/40 text-white/70 active:text-white focus-visible:bg-transparent 
+                   " role="link" disabled="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 15.011719 14.16406"
+                            class="mr-3 h-4 w-4 flex-none">
+                            <path
+                                d="M2.171875 0C1.5958421 0 1.0438059.2292.6367188.63672.228544 1.04379 0 1.59615 0 2.17187v11.99219l4.5136719-2.70703h8.3261721c.576033 0 1.128036-.22914 1.535156-.63672.406342-.4068.636719-.96096.636719-1.53711V2.17187c0-.57567-.22855-1.12805-.636719-1.53515C13.96788.22914 13.415877 0 12.839844 0Zm0 1.5h10.667969c.178366 0 .348329.0708.474609.19726v.002c.125231.1249.197266.29433.197266.47265v7.11133c0 .17985-.07021.34936-.197266.47656-.12628.12643-.296243.19727-.474609.19727H4.0976562L1.5 11.51566V2.17191c0-.17827.072001-.34773.1972656-.47265v-.002C1.823618 1.57078 1.9935087 1.5 2.171875 1.5Z">
+                            </path>
+                            <path
+                                d="M3.5566406 6.40039v1.5h4.34375v-1.5h-3.59375zm0-2.84375v1.5h7.8984374v-1.5H4.3066406Z">
+                            </path>
+                        </svg>
+                        Support center
+                    </a>
+                </li>
+                <li class="mx-4 block 2xl:mx-5">
+                    <a href="/docs" class="unstyled-link group relative flex w-full items-center rounded-md px-3 py-1.5 text-sm font-normal leading-6 transition-colors duration-150 hover:bg-sky-600/20 hover:text-white focus:bg-sky-600/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-8 active:bg-sky-600/40 text-white/70 active:text-white focus-visible:bg-transparent 
+                   " role="link" disabled="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 24 24" fill="currentColor" class="mr-3 h-4 w-4 flex-none">
+                            <path
+                                d="M6,17.414l-4.707-4.707c-0.391-0.391-0.391-1.023,0-1.414L6,6.586L7.414,8l-4,4l4,4L6,17.414z">
+                            </path>
+                            <path
+                                d="M18,17.414L16.586,16l4-4l-4-4L18,6.586l4.707,4.707c0.391,0.391,0.391,1.023,0,1.414L18,17.414z">
+                            </path>
+                            <rect width="18.493" height="2" x="2.754" y="11"
+                                transform="matrix(0.2427 -0.9701 0.9701 0.2427 -2.5532 20.7296)"></rect>
+                        </svg>
+                        Docs
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" aria-hidden="true" data-slot="icon"
+                            class="ml-auto h-4 w-4 text-white/60 opacity-0 transition-opacity group-hover:opacity-100">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25">
+                            </path>
+                        </svg>
+                    </a>
+                </li>
+                <form slot="after" method="post" class="contents" action="/logout">
+                    <li class="mx-4 block 2xl:mx-5">
+                        <a href="/" class="unstyled-link group relative flex w-full items-center rounded-md px-3 py-1.5 text-sm font-normal leading-6 transition-colors duration-150 hover:bg-sky-600/20 hover:text-white focus:bg-sky-600/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-8 active:bg-sky-600/40 text-white/70 active:text-white focus-visible:bg-transparent 
+                      mt-1" role="button">
+                            <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                class="mr-3 h-4 w-4 flex-none">
+                                <path
+                                    d="M7.01471 12.15V13.725C7.01471 14.1427 7.18204 14.5433 7.47989 14.8387C7.77774 15.1341 8.18172 15.3 8.60294 15.3L14.1618 15.3C14.583 15.3 14.987 15.1341 15.2848 14.8387C15.5827 14.5433 15.75 14.1427 15.75 13.725L15.75 4.27501C15.75 3.8573 15.5827 3.45669 15.2848 3.16132C14.987 2.86595 14.583 2.70001 14.1618 2.70001L8.60294 2.70001C8.18172 2.70001 7.77774 2.86595 7.47989 3.16132C7.18204 3.45669 7.01471 3.8573 7.01471 4.27501V5.85001M11.7794 9.00001L2.25 9.00001M2.25 9.00001L4.63235 11.3625M2.25 9.00001L4.63235 6.63751"
+                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round"></path>
+                            </svg>
+                            Log out
+                        </a>
+                    </li>
+                </form>
+            </ul>
+        </li>
+    </ul>
+</nav>

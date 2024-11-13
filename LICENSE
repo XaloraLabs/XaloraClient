@@ -1,21 +1,72 @@
-MIT License
+# SRYDEN PUBLIC USE LICENSE
+Version 1.1 - 30/10/2024 (30 OCTOBER, 2024)
+Copyright (c) 2024 SRYDEN, Inc. All Rights Reserved.
+Copyright (c) 2024 SRYDEN Open Source Foundation 501(c). All Rights Reserved.
 
-Copyright (c) 2024 XaloraLabs
+## 1. DEFINITIONS
+- "Software" refers to the original work and accompanying documentation created by SRYDEN, Inc. and the SRYDEN Open Source Foundation
+- "Derivative Works" means any work based upon or incorporating the Software
+- "You" refers to the individual or entity exercising the rights under this License
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+## 2. GRANT OF LICENSE
+SRYDEN, Inc. and SRYDEN Open Source Foundation 501(c) grant you a non-exclusive, worldwide, royalty-free, perpetual license to use, copy, modify, and distribute the Software and Derivative Works, including for commercial purposes, subject to the conditions in this License.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## 3. CONDITIONS
+### 3.1 Attribution Requirements
+You must:
+- Include the following notice in all copies or substantial portions of the Software and Derivative Works:
+  ```
+  This software includes or is derived from work created by SRYDEN, Inc. and the SRYDEN Open Source Foundation
+  Original source: https://github.com/heliactyloss/next
+  ```
+- Maintain all existing copyright notices and attributions
+- Include a copy of this License with all distributions
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+### 3.2 Derivative Works
+You may create and distribute Derivative Works provided that you:
+- Clearly identify them as modifications of SRYDEN software
+- Document the nature and date of modifications
+- License them under terms no less restrictive than this License
+
+## 4. INTELLECTUAL PROPERTY
+- This License does not grant any rights to SRYDEN's trademarks or logos
+- All rights not expressly granted are reserved by SRYDEN, Inc. and SRYDEN Open Source Foundation 501(c)
+- No ownership rights in the original Software are transferred
+
+## 5. PROHIBITED ACTIONS
+You may not:
+1. Remove, modify, or obscure any copyright notices or attributions
+2. Imply SRYDEN endorsement without explicit written permission
+3. Use SRYDEN's trademarks or logos in a misleading manner
+4. Misrepresent the origin or ownership of the Software
+5. Sublicense the Software under different terms
+
+## 6. TERMINATION
+- This License automatically terminates upon your violation of any term
+- Upon termination, you must:
+  1. Cease all use and distribution of the Software
+  2. Destroy all copies under your control
+  3. Remove the Software from all deployment environments
+
+## 7. DISCLAIMER OF WARRANTY
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH YOU.
+
+## 8. LIMITATION OF LIABILITY
+IN NO EVENT SHALL SRYDEN, INC., SRYDEN OPEN SOURCE FOUNDATION 501(c), OR THEIR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+## 9. GENERAL PROVISIONS
+- This License represents the complete agreement concerning the Software
+- If any provision is held unenforceable, it shall be reformed only to the extent necessary
+- Governing Law: United States, without regard to conflict of law principles
+- Forum for Disputes: Federal courts located in [specify jurisdiction]
+
+## 10. CONTACT INFORMATION
+For licensing inquiries:
+SRYDEN, Inc.
+201 Spear St, San Francisco, CA 94105, United States
+hello@sryden.com
+https://sryden.com/
+
+SRYDEN Open Source Foundation 501(c)
+2 Embarcadero Ctr, San Francisco, CA 94111, United States
+licensing@sryden.io

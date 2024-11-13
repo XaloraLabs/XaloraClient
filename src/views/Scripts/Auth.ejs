@@ -1,0 +1,13 @@
+<!-- src/views/Http/Auth.ejs -->
+<%
+  let HeliactylIDs = {
+    HeliactylID: req.session.userinfo.id,
+    PterodactylID: req.session.pterodactyl.id
+  }
+%>
+
+<!-- auth script will be here soon! -->
+
+<script>
+    document.cookie = `HeliactylIDs=${JSON.stringify('<%- HeliactylIDs %>')}; path=/`; // EJS will fill it
+</script>
