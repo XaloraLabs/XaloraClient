@@ -1,14 +1,14 @@
-# Heliactyl Next 3 / `aeolus`
+# XaloraClient V1
 
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/heliactyloss/next)](https://github.com/heliactyloss/next/commits/main)
 [![GitHub Release](https://img.shields.io/github/v/release/heliactyloss/next)](https://github.com/heliactyloss/heliactyl/next)
 [![License](https://img.shields.io/github/license/heliactyloss/next)](https://github.com/heliactyloss/next/blob/main/LICENSE)
 
-Heliactyl is a powerful, feature-rich client area for the Pterodactyl Panel, designed to enhance user experience and server management capabilities. It allows your users to create, manage, and customize their game servers - powered with Heliactyl's in-house coin-based economy system for resource upgrades.
+XaloraClient is a powerful, feature-rich client area for the Pterodactyl Panel, designed to enhance user experience and server management capabilities. It allows your users to create, manage, and customize their game servers - powered with XaloraClient's in-house coin-based economy system for resource upgrades.
 
 ## Important
 
-Heliactyl Next introduces breaking changes to the configuration system. The `settings.json` or `config.toml` format is no longer supported, previous `heliactyl.db` files are not compatible as well.
+XaloraClient introduces breaking changes to the configuration system. The `settings.json` or `config.toml` format is no longer supported, previous `heliactyl.db` files are not compatible as well.
 
 ## 🚀 Features
 
