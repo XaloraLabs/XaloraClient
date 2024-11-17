@@ -1,8 +1,8 @@
 # XaloraClient V1
 
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/heliactyloss/next)](https://github.com/heliactyloss/next/commits/main)
-[![GitHub Release](https://img.shields.io/github/v/release/heliactyloss/next)](https://github.com/heliactyloss/heliactyl/next)
-[![License](https://img.shields.io/github/license/heliactyloss/next)](https://github.com/heliactyloss/next/blob/main/LICENSE)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/XaloraLabs/XaloraClient)](https://github.com/XaloraLabs/XaloraClient/commits/main)
+[![GitHub Release](https://img.shields.io/github/v/release/XaloraLabs/XaloraClient)](https://github.com/XaloraLabs/XaloraClient/main)
+[![License](https://img.shields.io/github/license/XaloraLabs/XaloraClient)](https://github.com/XaloraLabs/XaloraClient/blob/main/LICENSE)
 
 XaloraClient is a powerful, feature-rich client area for the Pterodactyl Panel, designed to enhance user experience and server management capabilities. It allows your users to create, manage, and customize their game servers - powered with XaloraClient's in-house coin-based economy system for resource upgrades.
 
