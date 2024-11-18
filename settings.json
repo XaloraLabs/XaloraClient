@@ -1,7 +1,7 @@
 {
-  "version": "12.7.1",
-  "name": "Heliactyl",
-  "letter": "H",
+  "version": "1.0",
+  "name": "Xalora",
+  "letter": "X",
   "defaulttheme": "default",
   "timezone": "Europe/London",
   "resources": {
@@ -13,8 +13,9 @@
     "secret": "Default Secret (Change this to any string you want)"
   },
   "pterodactyl": {
-    "domain": "https://panel.example.com",
-    "key": "ptla_0000000000000000000000000000000000000000000"
+    "domain": "https://manage.skullnodes.xyz",
+    "key": "ptla_SikYYQnj4V0pu215PRxAXX5tGKHHCtJX6EbPg2RhNLg
+"
   },
   "linkvertise": {
     "userid": "50000",
