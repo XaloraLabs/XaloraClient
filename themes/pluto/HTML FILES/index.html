@@ -1,0 +1,316 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlutoNodes - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/api.js" async="" defer=""></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Cabin:wght@400;700&amp;display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cabin', sans-serif;
+        }
+        .bg-image {
+            background-image: url('images/BgGq5vS.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid white;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin-left: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error-shake {
+            animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+            transform: translate3d(0, 0, 0);
+        }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            0% { transform: translateY(-20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            transition: all 0.3s ease;
+            transform: scale(0.7);
+            opacity: 0;
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+    </style>
+</head>
+<body class="bg-[#0b0d10] min-h-screen flex flex-col">
+    <!-- Logo in top left -->
+    <header class="absolute top-4 left-4 z-10" onclick="window.location.href='https://plutonodes.net/'">
+        <img src="images/VuZOMXi.png" alt="PlutoNodes Logo" class="h-12 hover:scale-90 transition cursor-pointer">
+    </header>
+
+    <main class="flex-grow flex flex-col md:flex-row">
+        <!-- Left side with image, text, and review -->
+        <div class="w-full md:w-1/2 relative min-h-[300px] md:min-h-screen">
+            <video src="images/minecraft-aquarium.1920x1080.mp4" muted autoplay loop class="absolute inset-0 w-full h-full object-cover"></video>
+            <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-white p-8 md:p-12">
+                <h1 class="text-3xl md:text-4xl font-semibold text-white/30 tracking-widest mb-4 text-center">WELCOME TO QUAKZ LMAO!</h1>
+            </div>
+        </div>
+        
+        
+
+        <!-- Right side with login form -->
+        <div class="w-full md:w-1/2 flex items-center justify-center p-8">
+            <div class="border border-white/5 rounded-lg backdrop-blur shadow-sm py-8 px-6 md:py-12 md:px-8 max-w-md w-full relative z-10">
+                <h2 class="text-center text-2xl mt-4 font-semibold text-white" style="font-family: 'Cabin', sans-serif;">Login to Continue</h2>
+                <p class="text-zinc-400 text-center mt-1 font-normal text-sm">Sign in to your account.</p>
+                
+                <!-- User/Password Login Form -->
+                <form id="loginForm" class="mt-8 space-y-4">
+                    <div>
+                        <input type="email" id="email" name="email" class="w-full py-2.5 px-4 rounded-lg bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Email" required="">
+                    </div>
+                    <div>
+                        <input type="password" id="password" name="password" class="w-full py-2.5 px-4 rounded-lg bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Password" required="">
+                    </div>
+                    <button type="submit" class="w-full py-2.5 px-4 bg-orange-600 text-white rounded-lg transition font-medium hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-800 flex items-center justify-center">
+                        Login
+                        <span class="spinner" id="loginSpinner"></span>
+                    </button>
+                    <button id="magicLinkBtn" type="button" class="w-full py-2.5 px-4 text-sm bg-white/5 text-white hover:bg-white/10 text-center font-medium rounded-lg flex items-center justify-center transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"></path>
+                        </svg>
+                        Send a Magic Link
+                        <span class="spinner" id="magicLinkSpinner"></span>
+                    </button>
+                </form>
+                
+                <div class="mt-6 flex items-center justify-center">
+                    <span class="border-b border-white/10 flex-grow"></span>
+                    <span class="px-4 text-gray-400">or continue with</span>
+                    <span class="border-b border-white/10 flex-grow"></span>
+                </div>
+                
+                <div class="mt-6 space-y-4">
+                    <a href="dashboard.html" class="w-full py-2.5 px-4 text-sm bg-[#5865F2] text-white hover:bg-[#4752C4] text-center font-medium rounded-lg flex items-center justify-center transition">
+                        <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.182 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path>
+                        </svg>
+                        Login with Discord
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed z-50 bottom-5 right-5 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg transition-opacity duration-300 opacity-0 pointer-events-none">
+        Error message goes here
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="modal-content bg-[#0b0d10] p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-white text-lg font-semibold">Please complete the reCAPTCHA</h2>
+                <button id="closeModal" class="text-gray-400 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="recaptcha-container" class="mb-4"></div>
+            <button id="submitRecaptcha" class="w-full py-2 px-4 bg-orange-600 text-white rounded-lg transition font-medium hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-800">
+                Submit
+            </button>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const loginForm = document.getElementById('loginForm');
+        const loginSpinner = document.getElementById('loginSpinner');
+        const magicLinkBtn = document.getElementById('magicLinkBtn');
+        const magicLinkSpinner = document.getElementById('magicLinkSpinner');
+        const toast = document.getElementById('toast');
+        const forgotPasswordLink = document.getElementById('forgotPassword');
+        const registerLink = document.getElementById('registerLink');
+        const modal = document.getElementById('modal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const submitRecaptchaBtn = document.getElementById('submitRecaptcha');
+
+        let currentAction = '';
+
+        function showToast(message, type = 'error') {
+            toast.textContent = message;
+            toast.classList.remove('bg-red-500', 'bg-green-500');
+            toast.classList.add(type === 'error' ? 'bg-red-500' : 'bg-green-500');
+            toast.classList.remove('opacity-0');
+            toast.classList.add('opacity-100', 'slide-in');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'slide-in');
+                toast.classList.add('opacity-0');
+            }, 3000);
+        }
+
+        function showModal() {
+            modal.classList.add('show');
+            grecaptcha.render('recaptcha-container', {
+                'sitekey': '6Lf7KFYqAAAAALi4moSy7NvIDfstcHHN347Gr8UC'
+            });
+        }
+
+        function hideModal() {
+            modal.classList.remove('show');
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            loginSpinner.style.display = 'inline-block';
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showToast('Login successful!', 'success');
+                    window.location.href = '/dashboard';
+                } else {
+                    showToast(data.error || 'Login failed. Please try again.');
+                    loginForm.classList.add('error-shake');
+                    setTimeout(() => loginForm.classList.remove('error-shake'), 1000);
+                }
+            } catch (error) {
+                showToast('An error occurred. Please try again later.');
+            } finally {
+                loginSpinner.style.display = 'none';
+            }
+        });
+
+        magicLinkBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentAction = 'magicLink';
+            showModal();
+        });
+
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentAction = 'resetPassword';
+            showModal();
+        });
+
+        closeModalBtn.addEventListener('click', hideModal);
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                hideModal();
+            }
+        });
+
+        submitRecaptchaBtn.addEventListener('click', async () => {
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (!recaptchaResponse) {
+                showToast('Please complete the reCAPTCHA');
+                return;
+            }
+
+            const email = document.getElementById('email').value;
+            if (!email) {
+                showToast('Please enter your email address.');
+                return;
+            }
+
+            hideModal();
+
+            try {
+                let response;
+                if (currentAction === 'magicLink') {
+                    response = await fetch('/auth/magic-link', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, recaptchaResponse }),
+                    });
+                } else if (currentAction === 'resetPassword') {
+                    response = await fetch('/auth/reset-password-request', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, recaptchaResponse }),
+                    });
+                }
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showToast(currentAction === 'magicLink' ? 'Magic link sent! Check your email.' : 'Password reset link sent! Check your email.', 'success');
+                } else {
+                    showToast(data.error || 'Failed to process request. Please try again.');
+                }
+            } catch (error) {
+                showToast('An error occurred. Please try again later.');
+            }
+        });
+
+        registerLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = '/register';
+        });
+    });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'8d17f7e249a99713',t:'MTcyODc0NTMxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
+</body></html>
