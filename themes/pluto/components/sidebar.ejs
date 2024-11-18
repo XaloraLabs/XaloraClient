@@ -1,94 +1,262 @@
-<nav class="sidebar sidebar-offcanvas" id="sidebar">
-    <div style="background-color: #212530" class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-     <a style="color: white" class="sidebar-brand brand-logo" href="/dashboard"><%= settings.name %></a>
-    </div>
-    <ul class="nav">
-          <li class="nav-item nav-category">
-            <span class="nav-link text-white"><h4>Management</h4></span>
-          </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../dashboard">
-          <span class="menu-title">Dashboard</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../servers">
-          <span class="menu-title">Your Servers</span>
-        </a>
-      </li>
-        <li class="nav-item menu-items">
-        <a class="nav-link" href="../settings">
-          <span class="menu-title">Account Settings</span>
-        </a>
-      </li>
-          <li class="nav-item nav-category">
-            <span class="nav-link text-white"><h4>Coins & Resources</h4></span>
-          </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../store">
-          <span class="menu-title">Resources Store</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../afk">
-          <span class="menu-title">AFK Page</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../lv">
-          <span class="menu-title">Linkvertise</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../j4r">
-          <span class="menu-title">Join for Rewards</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../gift-coins">
-          <span class="menu-title">Gift Coins</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../gift-resources">
-          <span class="menu-title">Gift Resources</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../redeem">
-          <span class="menu-title">Redeem Coupon</span>
-        </a>
-      </li>
-                  <% if (settings.stripe.enabled == true) { %>
-          <li class="nav-item nav-category">
-            <span class="nav-link text-white"><h4>Billing</h4></span>
-          </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../buy">
-          <span class="menu-title">Buy Coins</span>
-        </a>
-      </li>
-                    <% } %>
-          <li class="nav-item nav-category">
-            <span class="nav-link text-white"><h4>Miscellaneous</h4></span>
-          </li>
-        <% if (pterodactyl.root_admin == true) { %>
-          <li class="nav-item menu-items">
-          <a class="nav-link" href="../admin">
-            <span class="menu-title">Admin</span>
-            </a>
-          </li>
-        <% } %>
-        <li class="nav-item menu-items">
-          <a class="nav-link" href="../panel">
-            <span class="menu-title">Panel</span>
+<script src="https://cdn.tailwindcss.com"></script> 
+<div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gradient-to-b from-[#101319] to-[#0b0d10]">
+  <!-- Sidebar -->
+<div :class="{'translate-x-0 ease-out': sidebarOpen, '-translate-x-full ease-in': !sidebarOpen}" class="fixed z-30 inset-y-0 left-0 w-64 transition duration-300 transform bg-[#1c1e23] border-r border-white/5 overflow-y-auto lg:translate-x-0 lg:static lg:inset-0 flex flex-col">
+<div class="flex items-center justify-center mt-8">
+  <div class="flex items-center">
+      <img src="https://i.ibb.co/bNH0ZwC/Xalorawhite.png" alt="Xalora" class="w-auto h-10">
+  </div>
+</div>
+
+<!-- New search and buttons section -->
+<div class="mt-7 px-2">
+  <div class="flex items-center space-x-1">
+      <div class="relative flex-grow">
+          <input type="text" id="sidebar-search" placeholder="Search..." class="w-full bg-[#0f1116]/50 outline-none transition border border-white/5 text-white placeholder-zinc-500 rounded-r-2xl rounded-l-md py-1.5 pl-3 pr-10 focus:outline-none focus:ring-2 focus:border-white/5 focus:ring-orange-600">
+          <svg class="absolute right-3 top-2.5 h-5 w-5 text-zinc-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+          </svg>
+      </div>
+      <button style="height: 37.5px; width: 37.5px;" class="bg-[#0f1116]/50 border border-white/5 text-white p-2 rounded-xl flex items-center justify-center transition-colors duration-200">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-zinc-400">
+<path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+</svg>
+      </button>
+      <button style="height: 37.5px; width: 37.5px;" class="bg-[#0f1116]/50 border border-white/5 text-white p-2 rounded-xl flex items-center justify-center transition-colors duration-200">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-zinc-400">
+<path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+</svg>
+      </button>
+  </div>
+</div>
+
+<nav class="mt-4 pl-2 pr-2 font-medium flex-grow" x-data="{ 
+currentPath: window.location.pathname,
+isActive(path) { return this.currentPath === path },
+isInCategory(category) { 
+  return category.some(item => this.currentPath === item.path)
+}
+}">
+<!-- Home link (unchanged) -->
+<a class="flex items-center py-1.5 text-gray-300 hover:bg-white/5 rounded-lg hover:text-white transition-colors duration-200"
+ :class="{ 'bg-orange-600/10 text-orange-600 border-2 border-dashed border-orange-600/20 shadow-sm': isActive('/dashboard') }"
+ href="/dashboard">
+  <span class="mx-3">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 mr-1.5 mb-1 inline-flex" :class="{ 'text-zinc-500': !isActive('/dashboard'), 'text-orange-600/50': isActive('/dashboard') }">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+      </svg>
+      Home
+  </span>
+</a>
+
+<!-- Compute section -->
+<div x-data="{ 
+  open: false,
+  items: [
+      { name: 'My Servers', path: '/servers' },
+      { name: 'SFTP Access', path: '/account' },
+      { name: 'Login to Panel', path: '/panel/doAutologin' }
+  ],
+  init() {
+      this.open = this.isInCategory(this.items)
+  }
+}" 
+class="mt-1">
+  <button @click="open = !open" 
+          class="flex items-center justify-between w-full py-1.5 text-gray-300 hover:bg-white/5 rounded-lg hover:text-white focus:outline-none transition-colors duration-200"
+          :class="{ 'bg-orange-600/10 text-orange-600 border-2 border-dashed border-orange-600/20 shadow-sm': isInCategory(items) }">
+      <div class="flex items-center">
+          <span class="mx-3">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 mb-0.5 mr-1.5 inline-flex" :class="{ 'text-zinc-500': !isInCategory(items), 'text-orange-600/50': isInCategory(items) }">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z" />
+              </svg>
+              Compute
+          </span>
+      </div>
+      <svg :class="{'rotate-180': open}" class="w-4 h-4 mr-2 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+      </svg>
+  </button>
+  <div x-show="open" 
+       x-transition:enter="transition ease-out duration-100"
+       x-transition:enter-start="opacity-0 transform scale-95"
+       x-transition:enter-end="opacity-100 transform scale-100"
+       x-transition:leave="transition ease-in duration-75"
+       x-transition:leave-start="opacity-100 transform scale-100"
+       x-transition:leave-end="opacity-0 transform scale-95"
+       class="space-y-1">
+      <template x-for="item in items" :key="item.path">
+          <a :href="item.path"
+             class="flex items-center py-1.5 px-10 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-lg mr-2 transition-colors duration-200"
+             :class="{ 'bg-white/5 text-white shadow': isActive(item.path) }">
+              <span class="mx-3" x-text="item.name"></span>
           </a>
-        </li>
-        <li class="nav-item menu-items">
-          <a class="nav-link" href="../logout">
-            <span class="menu-title">Logout</span>
+      </template>
+  </div>
+</div>
+
+<!-- Networking section -->
+<div x-data="{ 
+  open: false,
+  items22: [
+      { name: 'Shield', path: '/shield' }
+  ],
+  init() {
+      this.open = this.isInCategory(this.items22)
+  }
+}" 
+class="mt-1">
+  <button @click="open = !open" 
+          class="flex items-center justify-between w-full py-1.5 text-gray-300 hover:bg-white/5 rounded-lg hover:text-white focus:outline-none transition-colors duration-200"
+          :class="{ 'bg-orange-600/10 text-orange-600 border-2 border-dashed border-orange-600/20 shadow-sm': isInCategory(items22) }">
+      <div class="flex items-center">
+          <span class="mx-3">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 mb-1 mr-1.5 inline-flex" :class="{ 'text-zinc-500': !isInCategory(items22), 'text-orange-600/50': isInCategory(items22) }">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+              </svg>
+              Networking
+          </span>
+      </div>
+      <svg :class="{'rotate-180': open}" class="w-4 h-4 mr-2 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+      </svg>
+  </button>
+  <div x-show="open" 
+       x-transition:enter="transition ease-out duration-100"
+       x-transition:enter-start="opacity-0 transform scale-95"
+       x-transition:enter-end="opacity-100 transform scale-100"
+       x-transition:leave="transition ease-in duration-75"
+       x-transition:leave-start="opacity-100 transform scale-100"
+       x-transition:leave-end="opacity-0 transform scale-95"
+       class="space-y-1">
+      <template x-for="item in items22" :key="item.path">
+          <a :href="item.path"
+             class="flex items-center py-1.5 px-10 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-lg mr-2 transition-colors duration-200"
+             :class="{ 'bg-white/5 text-white shadow': isActive(item.path) }">
+              <span class="mx-3" x-text="item.name"></span>
           </a>
-        </li>
-      </ul>
-    </nav>
-    
+      </template>
+  </div>
+</div>
+
+<!-- Economy section -->
+<div x-data="{ 
+  open: false,
+  economyItems: [
+      { name: 'Wallet', path: '/wallet' },
+      { name: 'AFK Page', path: '/afk' },
+      { name: 'Store', path: '/store' },
+      { name: 'Staking', path: '/staking' },
+      { name: 'Referrals', path: '/referrals' },
+      { name: 'J4R Rewards', path: '/j4r' }
+  ],
+  init() {
+      this.open = this.isInCategory(this.economyItems)
+  }
+}" 
+class="mt-1">
+  <button @click="open = !open" 
+          class="flex items-center justify-between w-full py-1.5 text-gray-300 hover:bg-white/5 rounded-lg hover:text-white focus:outline-none transition-colors duration-200"
+          :class="{ 'bg-orange-600/10 text-orange-600 border-2 border-dashed border-orange-600/20 shadow-sm': isInCategory(economyItems) }">
+      <div class="flex items-center">
+          <span class="mx-3">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 mr-1.5 mb-1 inline-flex" :class="{ 'text-zinc-500': !isInCategory(economyItems), 'text-orange-600/50': isInCategory(economyItems) }">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+              </svg>
+              Economy
+          </span>
+      </div>
+      <svg :class="{'rotate-180': open}" class="w-4 h-4 mr-2 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+      </svg>
+  </button>
+  <div x-show="open" 
+       x-transition:enter="transition ease-out duration-100"
+       x-transition:enter-start="opacity-0 transform scale-95"
+       x-transition:enter-end="opacity-100 transform scale-100"
+       x-transition:leave="transition ease-in duration-75"
+       x-transition:leave-start="opacity-100 transform scale-100"
+       x-transition:leave-end="opacity-0 transform scale-95"
+       class="space-y-1">
+      <template x-for="item in economyItems" :key="item.path">
+          <a :href="item.path"
+             class="flex items-center py-1.5 px-10 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-lg mr-2 transition-colors duration-200"
+             :class="{ 'bg-white/5 text-white shadow': isActive(item.path) }">
+              <span class="mx-3" x-text="item.name"></span>
+          </a>
+      </template>
+  </div>
+</div>
+
+<!-- Admin section (if present) -->
+
+</nav>
+
+<div class="mt-auto p-5">
+  <div class="relative text-sm mb-1.5">
+     <a href="https://discord.gg/freemchost" class="text-gray-300 hover:text-gray-200">Join our Discord server 
+     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 inline-flex ml-1">
+<path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+</svg>
+     </a>
+  </div>
+             <a href="../panel" class="mt-3 text-sm text-gray-300 hover:text-gray-200">Visit the Game Panel 
+     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 inline-flex ml-1">
+<path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+</svg>
+     </a> 
+</div>
+  </div>
+
+  <!-- Content area -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+      <header class="flex justify-between border-b border-dashed border-white/5 items-center p-4">
+          <div class="flex items-center space-x-4">
+              <button @click="sidebarOpen = !sidebarOpen" class="text-gray-500 focus:outline-none lg:hidden">
+                  <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 6H20M4 12H20M4 18H11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+              </button>
+          </div>
+          <div class="flex items-center space-x-4">
+              <span class="text-white py-2 px-4 hover:scale-95 rounded-xl transition hover:bg-white/5 cursor-pointer" onclick="window.location.href='/wallet'"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-gray-400 mb-0.5 mr-1.5 inline-flex">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
+              </svg>
+              <span id="balance"><%= Math.floor(coins * 100) / 100 %></span> XPL</span>
+              <div x-data="{ open: false }" class="relative">
+                  <button @click="open = !open" class="flex items-center hover:scale-95 space-x-2 hover:bg-white/5 relative focus:outline-none py-2 px-4 rounded-xl transition">
+                      <img src="https://cdn.discordapp.com/avatars/786622617871450122/ed83a03cd5bc59905a6ac5c7598ae5db.jpg?size=1024" class="h-8 w-8 rounded-full" alt="User Avatar">
+                      <span class="text-white font-medium">tha_yt</span>
+                      <svg :class="{'open': open}" class="dropdown-arrow ml-1 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                      </svg>
+                  </button>
+                  <div x-show="open" 
+                       x-transition:enter="transition ease-out duration-200"
+                       x-transition:enter-start="opacity-0 transform scale-95"
+                       x-transition:enter-end="opacity-100 transform scale-100"
+                       x-transition:leave="transition ease-in duration-150"
+                       x-transition:leave-start="opacity-100 transform scale-100"
+                       x-transition:leave-end="opacity-0 transform scale-95"
+                       @click.away="open = false"
+                       class="user-dropdown absolute right-0 mt-2 w-48 bg-[#181a1e] rounded-md overflow-hidden shadow-xl z-10" :class="{'open': open}">
+                      <a href="/account" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5">Account</a>
+                      <a href="#" onclick="clearCookiesAndLogout(); return false;" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5">Logout</a>
+                  </div>
+              </div>
+          </div>
+      </header>
+
+<script>
+  function clearCookiesAndLogout() {
+      var cookies = document.cookie.split(";");
+      for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i];
+          var eqPos = cookie.indexOf("=");
+          var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+      }
+      window.location.href = "/logout";
+  }
+</script>

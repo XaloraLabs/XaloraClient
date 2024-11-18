@@ -2,20 +2,20 @@
   "version": "1.0",
   "name": "Xalora",
   "letter": "X",
-  "defaulttheme": "default",
+  "defaulttheme": "pluto",
   "timezone": "Europe/London",
   "resources": {
     "_note": "Options: MB, GB. This is only used on the user side, admin will use GB.",
     "type": "MB"
   },
   "website": {
-    "port": 25002,
+    "port": 3001,
     "secret": "Default Secret (Change this to any string you want)"
   },
   "pterodactyl": {
     "domain": "https://manage.skullnodes.xyz",
-    "key": "ptla_SikYYQnj4V0pu215PRxAXX5tGKHHCtJX6EbPg2RhNLg
-"
+    "key": "ptla_vi0PB6n9kMMoxOBFNjWYoBqVPDr0AL6GR0pPETlptSP"
+
   },
   "linkvertise": {
     "userid": "50000",
@@ -90,9 +90,9 @@
       },
       "oauth2": {
         "_comment": "Go to https://discord.dev/ and create an application to set these up.",
-        "id": "0000000000000000000",
-        "secret": "0000000000000000000000000000",
-        "link": "https://client.example.com",
+        "id": "1269961894001774655",
+        "secret": "emoZN6tQnTXO0Zu7OtZfzXWT2b-tWDWY",
+        "link": "http://localhost:3001",
         "callbackpath": "/callback",
         "prompt": true,
         "ip": {
