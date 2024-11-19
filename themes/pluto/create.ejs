@@ -1,167 +1,1238 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('./components/head') %>
-  <body>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <div class="container-scroller">
-      <!-- partial:partials/_sidebar.html -->
-      <%- include('./components/sidebar') %>
-      <!-- partial -->
-      <div class="container-fluid page-body-wrapper">
-        <!-- partial:partials/_navbar.html -->
-        <%- include('./components/topnav') %>
-        <!-- partial -->
-        <div class="main-panel">
-          <div style="background-color: #111319" class="content-wrapper">
-           <h2>Deploy Server</h2>
-           <p class="text-gray">Deploy your new server.</p>
-            <% if (req.query.err) { %>
-            <div style="border-radius: 15px;" class="alert">
-                <% if (req.query.err == "MISSINGVARIABLE") { %>
-                    You have not filled out all of the server information.
-                <% } else if (req.query.err == "NOTANUMBER") { %>
-                    RAM, disk and CPU must be a number.
-                <% } else if (req.query.err == "ERRORONCREATE") { %>
-                    An error was reported by the Panel while attempting to create the server.
-                <% } else if (req.query.err == "BIGSERVERNAME") { %>
-                    Your server name must be less than <b>191</b> characters.
-                <% } else if (req.query.err == "TOOMUCHSERVERS") { %>
-                    Too many servers!
-                <% } else if (req.query.err == "PREMIUMLOCATION") { %>
-                    Please select a location.
-                <% } else if (req.query.err == "TOOLITTLECOINS") { %>
-                    You do not have enough coins to create a server
-                <% } else if (req.query.err == "MUSTCOMPLETECAPTCHA") { %>
-                    You must complete the captcha to prove you are human!
-                <% } else if (req.query.err == "INVALIDCAPTCHARESPONSE") { %>
-                    You submitted an invalid captcha response, try again.
-                <% } else { %>
-                    <% if (req.query.num) { %>
-                        <% if (!isNaN(parseFloat(req.query.num))) { %>
-                            <% if (req.query.err == "TOOLITTLERAM" || req.query.err == "TOOLITTLEDISK" || req.query.err == "TOOLITTLECPU") { %>
-                                You must make a server with at least <b><%= req.query.num %></b>
-                                <% if (req.query.err.slice(-3) == "RAM") { %>
-                                    MB RAM
-                                <% } else if (req.query.err.slice(-4) == "DISK") { %>
-                                    MB disk
-                                <% } else { // CPU %>
-                                    % CPU
-                                <% } %>
-                                if you want to create a server with the server type you have selected.
-                            <% } else if (req.query.err == "TOOMUCHRAM" || req.query.err == "TOOMUCHDISK" || req.query.err == "TOOMUCHCPU") { %>
-                                With the selected server type, you can have a maximum of <b><%= req.query.num %></b>
-                                <% if (req.query.err.slice(-3) == "RAM") { %>
-                                    MB RAM
-                                <% } else if (req.query.err.slice(-4) == "DISK") { %>
-                                    MB disk
-                                <% } else { // CPU %>
-                                    % CPU
-                                <% } %>
-                                on the server.
-                            <% } else if (req.query.err == "EXCEEDRAM" || req.query.err == "EXCEEDDISK" || req.query.err == "EXCEEDCPU") { %>
-                                You don't have enough resources to make this server.
-                            <% } else { %>
-                                I won't mind to add a little easter egg here. :)
-                            <% } %>
-                        <% } else { %>
-                            I won't mind to add a little easter egg here. :)
-                        <% } %>
-                    <% } else { %>
-                        I won't mind to add a little easter egg here. :)
-                    <% } %>
-                <% } %>
-            </div>
-        <% } %>
-            <div class="row">
-              <div class="col-md-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <form class="forms-sample">
-                      <div class="form-group">
-                        <label for="InputName">Server Name:</label>
-                        <input style="border-radius: 15px; padding: 8px;" type="text" class="form-control" id="InputName" placeholder="My Server">
-                      </div>
-                      <div class="form-group">
-                        <label for="InputCPU">CPU (Cores):</label>
-                        <input style="border-radius: 15px; padding: 8px;" type="number" class="form-control" id="InputCPU" placeholder="1">
-                      </div>
-                      <div class="form-group">
-                        <label for="InputRAM">RAM (<% if (settings.resources.type == "GB") { %>GBs<% } else { %>MBs<% } %>):</label>
-                        <input style="border-radius: 15px; padding: 8px;" type="number" class="form-control" id="InputRAM" placeholder="<% if (settings.resources.type == "GB") { %>2<% } else { %>2048<% } %>">
-                      </div>
-                      <div class="form-group">
-                        <label for="InputDisk">Disk (<% if (settings.resources.type == "GB") { %>GBs<% } else { %>MBs<% } %>):</label>
-                        <input style="border-radius: 15px; padding: 8px;" type="number" class="form-control" id="InputDisk" placeholder="<% if (settings.resources.type == "GB") { %>40<% } else { %>40960<% } %>">
-                      </div>
-                      <div class="form-group">
-                        <label for="InputLoc">Location:</label><BR>
-                        <select class="btn btn-secondary dropdown-toggle" style="background-color: #2a3038; border: 1px solid #2c2e33; color: #e4eaec; border-radius: 15px; padding: 8px;" id="InputLoc">
-                          <% for (let [name, value] of Object.entries(settings.api.client.locations)) { %>
-                            <option value="<%= name %>"><%= value.name %></option>
-                          <% } %>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="InputEgg">Egg:</label><BR>
-                        <select class="btn btn-secondary dropdown-toggle" style="background-color: #2a3038; border: 1px solid #2c2e33; color: #e4eaec; border-radius: 15px; padding: 8px;" id="InputEgg">
-                          <% for (let [name, value] of Object.entries(settings.api.client.eggs)) { %>
-                            <option value="<%= name %>"><%= value.display %></option>
-                          <% } %>
-                        </select>
-                      </div><br>
-                      <a role="button" id="create-btn" class="button"  href="javascript: submitNew()" onclick="this.classList.toggle('button--loading')"><span class="button__text">Deploy
-<% if (settings.servercreation.cost > 1) { %>
-- <%= settings.servercreation.cost %>
-<% } %>
-</span></a><br><br>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- content-wrapper ends -->
-          <%- include('./components/footer') %>
-        </div>
-        <!-- main-panel ends -->
-      </div>
-      <!-- page-body-wrapper ends -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractal - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link 
+    rel="preload" 
+    href="/assets/Ndot-55.otf" 
+    as="font" 
+    type="font/otf" 
+    crossorigin="anonymous"
+>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        .text-3xl {
+            color: white;
+        }
+
+        .text-2xl {
+            color: white;
+        }
+
+        .text-xl {
+            color: white;
+        }
+
+        .text-lg {
+            color: white;
+        }
+
+        h3 {
+            color: white;
+        }
+
+        h2 {
+            color: white
+        }
+
+        h3 {
+            color: white
+        }
+
+        /* Loading bar animation */
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Spinner animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(to right, #4f46e5, #818cf8);
+            animation: loading 0.5s ease-in-out;
+            z-index: 1000;
+        }
+
+        .spinner {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            animation: spin 1s linear infinite;
+            z-index: 1000;
+        }
+
+        /* Sidebar transition for mobile */
+        .sidebar-transition {
+            transition: transform 0.3s ease-in-out;
+        }
+
+.font-mono {
+font-family: 'JetBrains Mono' !important;
+}
+    </style>
+<style>
+@font-face {
+    font-family: 'Ndot-55';
+    src: url('/assets/Ndot-55.otf') format('opentype');
+    font-weight: normal;
+    font-display: swap;
+    font-style: normal;
+    unicode-range: U+000-5FF; /* Latin glyphs */
+    font-synthesis: none;
+}
+
+.heavy {
+    font-family: 'Ndot-55', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+#server-name {
+    font-family: 'Ndot-55', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.extra-bold {
+    font-family: 'Ndot-55', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+</style>
+    <!-- SEO - Meta Tags -->
+    <meta name="description"
+        content="Experience seamless deployment with Fractal's powerful dashboard. Free serverless hosting for web projects, game servers, and containerized applications with automated scaling, monitoring, and zero maintenance.">
+
+    <meta name="keywords"
+        content="container management, serverless hosting, cloud platform, container orchestration, Fractal dashboard, free hosting, game server hosting, Docker containers, cloud deployment, DevOps platform, container scaling, microservices management, cloud infrastructure, container monitoring, Fractal cloud">
+
+    <meta name="author" content="SRYDEN, Inc.">
+
+    <!-- Additional recommended meta tags -->
+    <meta property="og:title" content="Fractal">
+    <meta property="og:description"
+        content="We're Fractal, a free hosting platform for your projects, game servers, and more. Built for cloud-native and serverless projects by design.">
+    <meta property="og:type" content="website">
+
+    <!-- Recommended additional tag for mobile optimization -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body class="bg-[#010103] text-gray-300" style="font-family: 'Inter'" x-data="{ sidebarOpen: false }" @keydown.escape="sidebarOpen = false">
+    <!-- Loading bar -->
+    <div class="loading-bar"></div>
+    <!-- Spinner -->
+    <div class="spinner">
+        <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <script src="../../assets/vendors/select2/select2.min.js"></script>
-    <script src="../../assets/vendors/typeahead.js/typeahead.bundle.min.js"></script>
+        <a href="/servers" class="flex items-center justify-center gap-2 px-3 py-2 text-sm text-white/70 bg-white/5 hover:bg-white/10 transition rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                <path fill-rule="evenodd" d="M9.53 2.47a.75.75 0 0 1 0 1.06L4.81 8.25H15a6.75 6.75 0 0 1 0 13.5h-3a.75.75 0 0 1 0-1.5h3a5.25 5.25 0 1 0 0-10.5H4.81l4.72 4.72a.75.75 0 1 1-1.06 1.06l-6-6a.75.75 0 0 1 0-1.06l6-6a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+            </svg>
+            Back to server list
+        </a>
+    </div>
+</div>
+                
+<!-- Navigation -->
+ 
+<!-- more items -->
+                  
+        <!-- Main Content -->
+        <main class="flex-1">
+            <div class="flex flex-col min-h-screen">
+                <!-- Content -->
+                <script>
+                    // Get the current URL path
+                    const cPath = window.location.pathname;
+            
+                    // Get all navigation links in the sidebar
+                    const sidebarLinks = document.querySelectorAll('aside a');
+            
+                    // Function to normalize paths (remove trailing slash and query params)
+                    const normalizePath = (path) => path.replace(/\/$/, '').split('?')[0];
+            
+                    // Normalize current path
+                    const normalizedCurrentPath = normalizePath(cPath);
+            
+                    // Loop through each link
+                    sidebarLinks.forEach(link => {
+                        // Get the href attribute
+                        const href = link.getAttribute('href');
+                        if (!href) return;
+            
+                        // Remove any '../' from href and normalize
+                        const normalizedHref = normalizePath(href.replace(/^\.\./, ''));
+            
+                        // Check if the current path matches the link's href
+                        if (normalizedCurrentPath === normalizedHref) {
+                            // Add active classes to the link
+                            link.classList.add('bg-white/10');
+                            link.classList.add('text-white');
+            
+                            // Find and update the SVG within the active link
+                            const svg = link.querySelector('svg');
+                            if (svg) {
+                                svg.classList.add('text-indigo-300');
+                            }
+                        }
+                    });
+                </script>
+                
+                
+                <script>
+                    // Remove loading elements after animation
+                    setTimeout(() => {
+                        document.querySelector('.loading-bar').style.display = 'none';
+                        document.querySelector('.spinner').style.display = 'none';
+                    }, 500);
+                </script>
+                <div class="px-10 mt-4">
+                    <div id="application" class="hidden min-h-[490px] flex justify-center">
+<!-- Main Content -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css" integrity="sha512-MpdEaY2YQ3EokN6lCD6bnWMl5Gwk7RjBbpKLovlrH6X+DRokrPRAF3zQJl1hZUiLXfo2e9MrOt+udOnHCAmi5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<main class="flex-grow container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center w-full mx-auto pb-8">
+<a href="/servers" class="px-4 py-2 bg-white/10 hover:bg-white/15 rounded-lg rounded-br-2xl hover:scale-95 transition text-white/70 text-sm">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 mb-0.5 inline-flex mr-1.5">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+</svg>
+Back to server list
+</a>
+    </div>
+
+<style>
+/* Add selected state styling for image cards - mirrors location card selected state */
+.image-card.selected {
+    box-shadow: 0 0 0 2px #9fadf3; /* indigo-500, matching location cards */
+}
+
+/* Prevent scroll to top behavior */
+.image-card a {
+    scroll-behavior: auto;
+}
+</style>
+    <!-- Content -->
+
+    <!-- Error Messages -->
+    
+
+    <div>
+        <div>
+            <form id="createServerForm">
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <div class="sm:col-span-3">
+                        <label for="name" class="block text-sm text-white/70">
+                            Server Name
+                        </label>
+                        <div class="mt-1">
+                            <input type="text" name="name" id="name" class="transition ease-in-out delay-100 shadow-sm block w-full sm:text-sm rounded-lg bg-white/5 text-white border-white/5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="my-awesome-server">
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label class="block text-sm text-white/70 mb-4">
+                            Location
+                        </label>
+                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        
+                        
+<div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="5">
+    <div class="flex items-center space-x-3">
+        <img class="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/9906/9906534.png" alt="United States Flag">
+        <div class="flex-1">
+            <h3 class="text-sm font-medium text-white">United States</h3>
+            <p class="text-xs text-gray-400">Phoenix</p>
+        </div>
+    </div>
+    <div class="space-y-2 pt-2">
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>us-central</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>
+            <span>US-01, US-02, US-03</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>500 server capacity</span>
+        </div>
+    </div>
+    <div class="  absolute top-2 right-2 flex items-center space-x-2">
+        
+    <div class="hardware-info mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div class="hardware-info-tooltip backdrop-blur border border-black/5">
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+                <span>Dual Intel Xeon Gold</span>
+            </div>
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <span>1TB NVMe SSD</span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+                            
+<div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="8">
+    <div class="flex items-center space-x-3">
+        <img class="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/9906/9906534.png" alt="United States Flag">
+        <div class="flex-1">
+            <h3 class="text-sm font-medium text-white">United States</h3>
+            <p class="text-xs text-gray-400">New York</p>
+        </div>
+    </div>
+    <div class="space-y-2 pt-2">
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>us-east</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>
+            <span>US-04, US-05, US-06, US-07, US-08, US-09</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>1800 server capacity</span>
+        </div>
+    </div>
+    <div class="  absolute top-2 right-2 flex items-center space-x-2">
+        
+    <div class="hardware-info mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div class="hardware-info-tooltip backdrop-blur border border-black/5">
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+                <span>Dual Intel Xeon Gold</span>
+            </div>
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <span>1TB NVMe SSD</span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+                            
+<div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="13">
+    <div class="flex items-center space-x-3">
+        <img class="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/9906/9906534.png" alt="United States Flag">
+        <div class="flex-1">
+            <h3 class="text-sm font-medium text-white">United States</h3>
+            <p class="text-xs text-gray-400">Atlanta</p>
+        </div>
+    </div>
+    <div class="space-y-2 pt-2">
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>us-east2</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>
+            <span>US-12</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>750 server capacity</span>
+        </div>
+    </div>
+    <div class="  absolute top-2 right-2 flex items-center space-x-2">
+        
+    <div class="hardware-info mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div class="hardware-info-tooltip backdrop-blur border border-black/5">
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+                <span>Dual Intel Xeon Gold</span>
+            </div>
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <span>1TB NVMe SSD</span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+                            
+<div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="14">
+    <div class="flex items-center space-x-3">
+        <img class="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/197/197430.png" alt="Canada Flag">
+        <div class="flex-1">
+            <h3 class="text-sm font-medium text-white">Canada</h3>
+            <p class="text-xs text-gray-400">Beauharnois</p>
+        </div>
+    </div>
+    <div class="space-y-2 pt-2">
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>ca-east</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>
+            <span>CA-01, CA-02</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>500 server capacity</span>
+        </div>
+    </div>
+    <div class="  absolute top-2 right-2 flex items-center space-x-2">
+        
+    <div class="hardware-info mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div class="hardware-info-tooltip backdrop-blur border border-black/5">
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+                <span>Dual Intel Xeon Gold</span>
+            </div>
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <span>1TB NVMe SSD</span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+                            
+<div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="3">
+    <div class="flex items-center space-x-3">
+        <img class="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/197/197571.png" alt="Germany Flag">
+        <div class="flex-1">
+            <h3 class="text-sm font-medium text-white">Germany</h3>
+            <p class="text-xs text-gray-400">Falkenstein</p>
+        </div>
+    </div>
+    <div class="space-y-2 pt-2">
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>eu-west</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>
+            <span>DE-01, DE-02, DE-03</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>1000 server capacity</span>
+        </div>
+    </div>
+    <div class="  absolute top-2 right-2 flex items-center space-x-2">
+        
+    <div class="hardware-info mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div class="hardware-info-tooltip backdrop-blur border border-black/5">
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+                <span>Dual Intel Xeon Gold</span>
+            </div>
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <span>1TB NVMe SSD</span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+                            
+<div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="6">
+    <div class="flex items-center space-x-3">
+        <img class="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/197/197571.png" alt="Germany Flag">
+        <div class="flex-1">
+            <h3 class="text-sm font-medium text-white">Germany</h3>
+            <p class="text-xs text-gray-400">Frankfurt</p>
+        </div>
+    </div>
+    <div class="space-y-2 pt-2">
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>eu-west</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>
+            <span>DE-04, DE-05, DE-06, DE-08, DE-09, DE-10, ...</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>5000 server capacity</span>
+        </div>
+    </div>
+    <div class="  absolute top-2 right-2 flex items-center space-x-2">
+        
+    <div class="hardware-info mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div class="hardware-info-tooltip backdrop-blur border border-black/5">
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+                <span>Dual Intel Xeon Gold</span>
+            </div>
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <span>1TB NVMe SSD</span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+                            
+<div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="7">
+    <div class="flex items-center space-x-3">
+        <img class="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/16021/16021818.png" alt="United Kingdom Flag">
+        <div class="flex-1">
+            <h3 class="text-sm font-medium text-white">United Kingdom</h3>
+            <p class="text-xs text-gray-400">London</p>
+        </div>
+    </div>
+    <div class="space-y-2 pt-2">
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>eu-west2</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>
+            <span>UK-01, UK-02, UK-03, UK-04, UK-05, UK-06</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>1750 server capacity</span>
+        </div>
+    </div>
+    <div class="  absolute top-2 right-2 flex items-center space-x-2">
+        
+    <div class="hardware-info mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div class="hardware-info-tooltip backdrop-blur border border-black/5">
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+                <span>Dual Intel Xeon Gold</span>
+            </div>
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <span>1TB NVMe SSD</span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+                            
+<div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="4">
+    <div class="flex items-center space-x-3">
+        <img class="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/5922/5922034.png " alt="Finland Flag">
+        <div class="flex-1">
+            <h3 class="text-sm font-medium text-white">Finland</h3>
+            <p class="text-xs text-gray-400">Helsinki</p>
+        </div>
+    </div>
+    <div class="space-y-2 pt-2">
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>eu-north</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>
+            <span>FI-01, FI-02</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>200 server capacity</span>
+        </div>
+    </div>
+    <div class="  absolute top-2 right-2 flex items-center space-x-2">
+        
+    <div class="hardware-info mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div class="hardware-info-tooltip backdrop-blur border border-black/5">
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+                <span>Dual Intel Xeon Gold</span>
+            </div>
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <span>1TB NVMe SSD</span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+                            
+<div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="10">
+    <div class="flex items-center space-x-3">
+        <img class="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/197/197551.png" alt="Morocco Flag">
+        <div class="flex-1">
+            <h3 class="text-sm font-medium text-white">Morocco</h3>
+            <p class="text-xs text-gray-400">Rabat</p>
+        </div>
+    </div>
+    <div class="space-y-2 pt-2">
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>af-north</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>
+            <span>MA-01, MA-02</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>750 server capacity</span>
+        </div>
+    </div>
+    <div class="  absolute top-2 right-2 flex items-center space-x-2">
+        
+    <div class="hardware-info mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div class="hardware-info-tooltip backdrop-blur border border-black/5">
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+                <span>Dual Intel Xeon Gold</span>
+            </div>
+            <div class="tooltip-item">
+                <svg xmlns="http://www.w3.org/2000/svg" class="tooltip-icon h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <span>1TB NVMe SSD</span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+                            
+                        </div>
+                    </div>
+
+<div class="sm:col-span-6">
+  <label class="block text-sm text-white/70 mb-4">
+    Server Image
+  </label>
+  <div class="mb-4 flex items-center space-x-4">
+    <div class="relative flex-grow">
+      <input type="text" id="image-search" placeholder="Search images..." class="w-full py-2 px-4 text-sm rounded-lg rounded-l-xl bg-white/5 border-white/5 text-white focus:ring-indigo-500 focus:border-indigo-500 placeholder-white/60 transition">
+      <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+      </svg>
+    </div>
+    <div class="relative inline-block text-left">
+      <select id="category-select" class="appearance-none bg-white/5 border border-white/5 text-white py-2 px-4 pr-8 rounded-lg rounded-r-2xl focus:outline-none focus:ring-2 text-sm focus:ring-indigo-500 focus:border-transparent">
+        <option value="all">All Categories</option>
+        <option value="Game Servers">Game Servers</option>
+        <option value="Generic">Generic</option>
+      </select>
+    </div>
+  </div>
+  <div id="image-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 transition-all duration-300 ease-in-out">
+    
+    
+      <div class="image-card relative flex hover:scale-95 items-center space-x-3 rounded-xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-white/15 transition focus-within:ring-offset-0 hover:bg-white/10" data-category="Game Servers" data-name="minecraft: paper">
+        <div class="flex-shrink-0">
+          <img class="h-8 w-8 rounded-2xl" src="https://avatars.githubusercontent.com/u/7608950?s=200&amp;v=4" alt="">
+        </div>
+        <div class="min-w-0 flex-1">
+          <a href="#" class="focus:outline-none" onclick="selectImage('paper', 'Minecraft: Paper')">
+            <span class="absolute inset-0" aria-hidden="true"></span>
+            <p class="text-sm font-medium text-white">Minecraft: Paper <span class="ml-1.5 inline-flex items-center rounded-md bg-green-800/30 px-2 py-1 text-xs font-medium text-green-300 ring-1 ring-inset ring-green-600/20">Free</span></p>
+            <p class="text-sm text-gray-400 truncate">Game Servers</p>
+          </a>
+        </div>
+      </div>
+    
+      <div class="image-card relative flex hover:scale-95 items-center space-x-3 rounded-xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-white/15 transition focus-within:ring-offset-0 hover:bg-white/10" data-category="Game Servers" data-name="minecraft: velocity">
+        <div class="flex-shrink-0">
+          <img class="h-8 w-8 rounded-2xl" src="https://avatars.githubusercontent.com/u/41710604?s=200&amp;v=4" alt="">
+        </div>
+        <div class="min-w-0 flex-1">
+          <a href="#" class="focus:outline-none" onclick="selectImage('velocity', 'Minecraft: Velocity')">
+            <span class="absolute inset-0" aria-hidden="true"></span>
+            <p class="text-sm font-medium text-white">Minecraft: Velocity <span class="ml-1.5 inline-flex items-center rounded-md bg-green-800/30 px-2 py-1 text-xs font-medium text-green-300 ring-1 ring-inset ring-green-600/20">Free</span></p>
+            <p class="text-sm text-gray-400 truncate">Game Servers</p>
+          </a>
+        </div>
+      </div>
+    
+  </div>
+</div>
+
+<style>
+#image-grid {
+  transition: opacity 0.3s ease-in-out;
+}
+</style>
+
+                    
+
+                    <div class="sm:col-span-2">
+                        <label for="ram" class="block text-sm text-white/70">
+                            RAM (GB)
+                        </label>
+                        <div class="mt-1">
+                            <input type="number" name="ram" id="ram" class="transition ease-in-out delay-100 shadow-sm block w-full sm:text-sm rounded-lg bg-white/5 border-white/5 text-white focus:ring-indigo-500 focus:border-indigo-500" value="9.25">
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="cpu" class="block text-sm text-white/70">
+                            CPU (%)
+                        </label>
+                        <div class="mt-1">
+                            <input type="number" name="cpu" id="cpu" class="transition ease-in-out delay-100 shadow-sm block w-full sm:text-sm rounded-lg bg-white/5 border-white/5 text-white focus:ring-indigo-500 focus:border-indigo-500" value="300">
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="disk" class="block text-sm text-white/70">
+                            Disk (GB)
+                        </label>
+                        <div class="mt-1">
+                            <input type="number" name="disk" id="disk" class="transition ease-in-out delay-100 shadow-sm block w-full sm:text-sm rounded-lg bg-white/5 border-white/5 text-white focus:ring-indigo-500 focus:border-indigo-500" value="60.00">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <button onclick="submitForm()" class="hover:scale-95 transition ease-in-out mt-5 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-full mt-2 text-white bg-indigo-500 transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Create
+        </button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.js" integrity="sha512-eOUPKZXJTfgptSYQqVilRmxUNYm0XVHwcRHD4mdtCLWf/fC9XWe98IT8H1xzBkLL4Mo9GL0xWMSJtgS5te9rQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-      async function submitNew() {
-        let name = encodeURIComponent(document.getElementById("InputName").value);
-        let egg = encodeURIComponent(document.getElementById("InputEgg").value);
-        <% if (settings.resources.type == "GB") { %>
-          let ram = encodeURIComponent(document.getElementById("InputRAM").value * 1024);
-          let disk = encodeURIComponent(document.getElementById("InputDisk").value * 1024);
-        <% } else { %>
-          let ram = encodeURIComponent(document.getElementById("InputRAM").value);
-          let disk = encodeURIComponent(document.getElementById("InputDisk").value);
-        <% } %>
-        let cpu = encodeURIComponent(document.getElementById("InputCPU").value * 100);
-        let location = encodeURIComponent(document.getElementById("InputLoc").value);
-        document.location.href = `/create?name=${name}&egg=${egg}&ram=${ram}&disk=${disk}&cpu=${cpu}&location=${location}`;
-      };
+ let selectedLocation = "";
+let selectedZone = "";
+let selectedImage = "";
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Image filtering functionality
+    const imageGrid = document.getElementById('image-grid');
+    const categorySelect = document.getElementById('category-select');
+    const searchInput = document.getElementById('image-search');
+
+    // Image selection handling
+    const imageCards = document.querySelectorAll('.image-card');
+    imageCards.forEach(card => {
+        const link = card.querySelector('a');
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default anchor behavior
+            
+            // Remove selected class from all cards
+            imageCards.forEach(c => c.classList.remove('selected'));
+            
+            // Add selected class to clicked card
+            card.classList.add('selected');
+            
+            // Extract image ID and name from the onclick attribute
+            const onclickAttr = link.getAttribute('onclick');
+            const matches = onclickAttr.match(/selectImage\('([^']+)',\s*'([^']+)'\)/);
+            if (matches) {
+                const [_, id, name] = matches;
+                selectImage(id, name);
+            }
+        });
+    });
+
+    // Location selection handling
+    const locationCards = document.querySelectorAll('.location-card');
+    locationCards.forEach(card => {
+        card.addEventListener('click', (event) => {
+            // Ignore clicks on the hardware info icon or select element
+            if (event.target.closest('.hardware-info') || event.target.tagName === 'SELECT') {
+                return;
+            }
+
+            const id = card.dataset.locationId;
+            const nameElement = card.querySelector('.flex-1 h3');
+            const countryElement = card.querySelector('.flex-1 p');
+            const name = nameElement ? nameElement.textContent : '';
+            const country = countryElement ? countryElement.textContent : '';
+            const zoneElement = card.querySelector('select');
+            
+            selectLocation(id, name, country, zoneElement);
+        });
+
+        const zoneSelect = card.querySelector('.zone-selector');
+        if (zoneSelect) {
+            zoneSelect.addEventListener('change', (event) => {
+                const id = card.dataset.locationId;
+                const nameElement = card.querySelector('.flex-1 h3');
+                const countryElement = card.querySelector('.flex-1 p');
+                const name = nameElement ? nameElement.textContent : '';
+                const country = countryElement ? countryElement.textContent : '';
+                selectLocation(id, name, country, event.target);
+            });
+        }
+    });
+
+    function filterImages() {
+        const selectedCategory = categorySelect.value;
+        const searchTerm = searchInput.value.toLowerCase();
+
+        imageGrid.style.opacity = '0';
+        setTimeout(() => {
+            const imageCards = imageGrid.querySelectorAll('.image-card');
+            imageCards.forEach(card => {
+                const category = card.dataset.category;
+                const name = card.dataset.name;
+                const matchesCategory = selectedCategory === 'all' || category === selectedCategory;
+                const matchesSearch = name.includes(searchTerm);
+                card.style.display = matchesCategory && matchesSearch ? 'flex' : 'none';
+            });
+            imageGrid.style.opacity = '1';
+        }, 300);
+    }
+
+    categorySelect.addEventListener('change', filterImages);
+    searchInput.addEventListener('input', filterImages);
+});
+
+function selectImage(id, name) {
+    selectedImage = id;
+}
+
+function selectLocation(id, name, country, zoneElement) {
+    const locationCards = document.querySelectorAll('.location-card');
+    locationCards.forEach(card => card.classList.remove('selected'));
+    
+    const card = document.querySelector(`[data-location-id="${id}"]`);
+    if (card) card.classList.add('selected');
+    
+    selectedLocation = id;
+    selectedZone = zoneElement ? zoneElement.value : "";
+    
+    let locationString = `${name}, ${country}`;
+    if (selectedZone) {
+        const selectedZoneOption = zoneElement.options[zoneElement.selectedIndex];
+        locationString += ` - ${selectedZoneOption.textContent}`;
+    }
+}
+
+async function submitForm() {
+    const form = document.getElementById('createServerForm');
+    const formData = new FormData(form);
+    
+    const name = encodeURIComponent(formData.get('name'));
+    const ram = encodeURIComponent(parseFloat(formData.get('ram')) * 1024);
+    const disk = encodeURIComponent(parseFloat(formData.get('disk')) * 1024);
+    const cpu = encodeURIComponent(formData.get('cpu'));
+    
+    if (!name || !ram || !disk || !cpu || !selectedLocation || !selectedImage) {
+        alertify.error('Please fill out all fields and select a location.');
+        return;
+    }
+
+    if (selectedLocation == 28 || selectedLocation == 29) {
+        if (ram > 6144) {
+            alertify.error('This location only allows up to 6GB RAM to be used due to low capacity.');
+            return;
+        }
+
+        if (cpu > 250) {
+            alertify.error('This location only allows up to 2.5 CPU cores to be used due to low capacity.');
+            return;
+        }
+    }
+
+    // Use the selected zone ID if available, otherwise use the selected location ID
+    let locationId = selectedZone || selectedLocation;
+
+    const url = `/create?name=${name}&egg=${selectedImage}&ram=${ram}&disk=${disk}&cpu=${cpu}&location=${locationId}`;
+    
+    window.location.href = url;
+}
+
+// Initialize Alertify
+alertify.set('notifier','position', 'top-right');
     </script>
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="/assets/js/off-canvas.js"></script>
-    <script src="/assets/js/hoverable-collapse.js"></script>
-    <script src="/assets/js/misc.js"></script>
-    <script src="/assets/js/settings.js"></script>
-    <script src="/assets/js/todolist.js"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page -->
-    <script src="/assets/js/file-upload.js"></script>
-    <script src="/assets/js/typeahead.js"></script>
-    <script src="/assets/js/select2.js"></script>
-    <!-- End custom js for this page -->
-  </body>
+
+<style>
+    /* Existing Alertify styles */
+    .alertify-notifier .ajs-message.ajs-success {
+        background: #2b303b;
+        color: white;
+        border-radius: 10px;
+    }
+    .alertify-notifier .ajs-message.ajs-error {
+        background: #4d1515;
+        color: #ff5c5c;
+        border-radius: 10px;
+    }
+    .alertify-notifier.ajs-right {
+        right: 10px;
+    }
+    .location-card {
+        position: relative;
+        cursor: pointer;
+    }
+    .location-card.selected {
+        box-shadow: 0 0 0 2px #9fadf3; /* indigo-500 */
+    }
+    .online-indicator {
+        height: 0.5rem;
+        width: 0.5rem;
+        border-radius: 9999px;
+        background-color: #4ade80; /* green-400 */
+    }
+    .hardware-info {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 9999px;
+        padding: 0.25rem;
+        cursor: help;
+    }
+    .zone-selector {
+        background-color: rgba(0, 0, 0, 0.5);
+        appearance: none;
+        padding: 0.25rem 1.5rem 0.25rem 0.5rem;
+    }
+    .zone-selector:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #f97316; /* indigo-500 */
+    }
+    .hardware-info-tooltip {
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        text-align: left;
+        padding: 0.75rem;
+        border-radius: 0.475rem;
+        z-index: 1;
+        width: max-content;
+        max-width: 250px;
+        margin-right: 0.75rem;
+        transition: opacity 0.2s, visibility 0.2s;
+    }
+    .hardware-info:hover .hardware-info-tooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+    .hardware-info-tooltip .tooltip-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    .hardware-info-tooltip .tooltip-item:last-child {
+        margin-bottom: 0;
+    }
+    .hardware-info-tooltip .tooltip-icon {
+        margin-right: 0.5rem;
+    }
+    .location-card select:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #9fadf3; /* indigo-500 */
+        border-color: #9fadf3; /* indigo-500 */
+    }
+</style>
+</main>
+
+    </div>
+
+<style>
+#CV {
+    border-radius: 4px;
+}
+
+    <script>
+        // Function to highlight the active tab
+        function setActiveTab() {
+            const currentPath = window.location.pathname;
+            const tabs = document.querySelectorAll('#tabs a');
+            tabs.forEach(tab => {
+                if (tab.getAttribute('href') === currentPath) {
+                    tab.classList.add('border-indigo-500', 'text-indigo-500', 'font-medium');
+                    tab.classList.remove('border-transparent', 'hover:border-gray-300', 'hover:text-white');
+                } else {
+                    tab.classList.remove('border-indigo-500', 'text-indigo-500', 'font-medium');
+                    tab.classList.add('border-transparent', 'hover:border-gray-300', 'hover:text-white');
+                }
+            });
+        }
+
+        // Set active tab on page load
+        setActiveTab();
+
+        // For demonstration purposes, simulate changing routes when clicking tabs
+        document.querySelectorAll('#tabs a').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = e.currentTarget.getAttribute('href');
+                history.pushState(null, '', href);
+                window.location.href = href;
+                setActiveTab();
+            });
+        });
+
+        // Listen for popstate events (back/forward browser navigation)
+        window.addEventListener('popstate', setActiveTab);
+    </script>
+</body>
 </html>
+<script>
+    var options = {
+      classname: 'loadingbar',
+      id: 'loadingbar'
+    };
+    var nanobar = new Nanobar(options);
+    function simulateLoading() {
+      nanobar.go(10); // Change this value to control the loading speed
+      setTimeout(function() {
+        nanobar.go(50);
+      }, 190); // Delay the progress update
+      setTimeout(function() {
+        nanobar.go(100);
+      }, 400); // Another delay
+    }
+    simulateLoading();
+  </script>
+  <style>
+    .loadingbar .bar {
+      background: #fb923c;
+      -webkit-box-shadow: 0px 4px 38px -15px #fb923c;
+      -moz-box-shadow: 0px 4px 38px -15px #fb923c;
+      box-shadow: 0px 4px 38px -15px #fb923c;
+      height: 1.85px;
+    }
+  </style>
+<script>
+(() => {
+    // Immediately inject initial style to hide content
+    const initialStyle = document.createElement('style');
+    initialStyle.textContent = `
+        #application {
+            opacity: 0 !important;
+        }
+    `;
+    document.head.appendChild(initialStyle);
+
+    // Create and inject spinner styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .page-loading-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            background-color: rgb(0 0 0 / 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+        }
+        .loading-logo {
+            width: 4rem;
+            height: 4rem;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .7;
+            }
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Create and inject loading overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'page-loading-overlay';
+    overlay.innerHTML = `
+<div class="flex justify-center">
+<img src="https://i.imgur.com/MTVvWBY.png" class="h-6 w-auto">
+</div>
+        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+    `;
+    document.body.appendChild(overlay);
+
+    // Wait for DOM to be interactive
+    const ready = () => {
+        const app = document.getElementById('application');
+        if (!app) return;
+
+        // Remove hidden class and ensure flex display
+        app.classList.remove('hidden');
+        app.style.display = 'flex';
+
+        // Wait additional time for loading effect
+        setTimeout(() => {
+            // Fade out overlay
+            overlay.style.transition = 'opacity 0.2s ease-out';
+            overlay.style.opacity = '0';
+
+            // Remove the initial style that was hiding the content
+            initialStyle.remove();
+
+            // Animate in content
+            app.style.animation = 'fadeUp 0.3s ease-out forwards';
+
+            // Clean up
+            setTimeout(() => {
+                overlay.remove();
+                style.remove();
+            }, 100);
+        }, 200);
+    };
+
+    // Handle different document ready states
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', ready);
+    } else {
+        ready();
+    }
+})();
+</script>
