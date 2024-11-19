@@ -122,11 +122,7 @@
             <h2 class="text-xl font-semibold">Your Balance</h2>
         </div>
         <div class="text-center py-8">
-            <p  class="text-5xl font-bold mb-4"><span id="balance">Loading...</span></p>
-            <div class="currency-switcher flex justify-center mb-6">
-                <button id="xplButton" class="px-4 py-2 rounded-l-xl text-sm font-medium">XPL</button>
-                <button id="xrsButton" class="px-4 py-2 rounded-r-xl border-l border-white/10 text-sm font-medium">XRS</button>
-            </div>
+            <p  class="text-5xl font-bold mb-4"><span><%= coins %></span> <%= settings.coinname %></p>
             <div class="flex justify-center space-x-4">
                 <button onclick="showTransferModal()" class="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 mb-1 inline-flex mr-0.5">
@@ -136,18 +132,17 @@ Send
                 </button>
             </div>
         </div>
-    </div>
-
-                <div class="bg-yellow-800/30 mt-5 text-yellow-300 p-4 rounded-2xl" role="alert">
+    </div>      
+    <div class="bg-blue-800/30 mt-5 text-white-300 p-4 rounded-2xl" role="alert">
   <div class="flex items-center">
     <div class="py-1">
-      <svg class="fill-current h-6 w-6 text-yellow-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+      <svg class="fill-current h-6 w-6 text-white-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
         <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
       </svg>
     </div>
     <div>
-      <p class="font-bold">XRS will be shut down on November 1st, 2024</p>
-      <p class="text-sm">We have made the decision to discontinue the PlutoCoins Reserve Token.</p>
+      <p class="font-bold">The balance is updated every 5 minutes.</p>
+      <p class="text-sm"></p>
     </div>
   </div>
 </div>
@@ -589,9 +584,4 @@ document.addEventListener('DOMContentLoaded', initDashboard);
       height: 1.85px;
     }
   </style>
-  <script>
-    let balance = document.getElementById("balance");
-    balance.textContent = (Math.floor(<%= coins %> * 100) / 100).toFixed(2);
-</script>
-
-  |
+  
