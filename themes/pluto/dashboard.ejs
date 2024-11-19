@@ -2,51 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pluto</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Cabin', sans-serif;
-        }
-@font-face {
-  font-family: 'Poppins';
-  src: local('Cabin'), local('Cabin-Regular');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Poppins';
-  src: local('Cabin Italic'), local('Cabin-Italic');
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Poppins';
-  src: local('Cabin Bold'), local('Cabin-Bold');
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Poppins';
-  src: local('Cabin Bold Italic'), local('Cabin-BoldItalic');
-  font-weight: bold;
-  font-style: italic;
-}
-.active {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-}
-    </style>
+  <%- include('./components/head') %>
 </head>
 <body class="text-white">
   <%- include('./components/sidebar') %>
@@ -130,7 +86,7 @@
     <h2 class="text-white/90 text-lg font-semibold">Welcome back!</h2>
     <div class="space-y-5">
       <p class="text-white/60 text-sm leading-5">
-        From the Pluto dashboard, you can manage your XPL wallet, deploy resources (ex. a server) and upgrade your deployments.
+        From the <%= settings.name %> dashboard, you can manage your <%= settings.coinname %> wallet, deploy resources (ex. a server) and upgrade your deployments.
       </p>
       <a class="transition hover:scale-95 cursor-pointer font-semibold gap-2 grow-0 items-center justify-center rounded-xl shrink-0 disabled:cursor-not-allowed inline-flex border focus:outline-none px-4 py-[9px] bg-orange-700 border-orange-700 text-white hover:bg-orange-600 hover:border-orange-600 focus:ring-4 focus:ring-orange-900 disabled:bg-orange-900 disabled:border-orange-900 disabled:text-orange-400 text-sm" href="/servers/new">
         <span class="pointer-events-none shrink-0">Get started</span>
@@ -145,7 +101,7 @@
         <div class="flex flex-col flex-auto gap-3 items-start md:flex-row md:items-center">
           <div class="flex-auto space-y-3">
             <div class="space-y-1">
-              <h2 class="text-sm leading-5 font-semibold text-orange-100">Has someone asked you to join their server on Pluto as a subuser?</h2>
+              <h2 class="text-sm leading-5 font-semibold text-orange-100">Has someone asked you to join their server on <%= settings.name %> as a subuser?</h2>
               <div class="text-sm leading-5 text-orange-100/70">
                 <p class="">
                   You'll need to ask them to invite you now that you've signed up.
