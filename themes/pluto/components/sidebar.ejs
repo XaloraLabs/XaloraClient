@@ -241,7 +241,7 @@ class="mt-1">
                        x-transition:leave-end="opacity-0 transform scale-95"
                        @click.away="open = false"
                        class="user-dropdown absolute right-0 mt-2 w-48 bg-[#181a1e] rounded-md overflow-hidden shadow-xl z-10" :class="{'open': open}">
-                      <a href="/account" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5">Account</a>
+                      <a href="/settings" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5">Account</a>
                       <a href="#" onclick="clearCookiesAndLogout(); return false;" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5">Logout</a>
                   </div>
               </div>
@@ -260,3 +260,7 @@ class="mt-1">
       window.location.href = "/logout";
   }
 </script>
+<script>
+    let balance = document.getElementById("balance")
+    balance.textContent = Math.floor(<%= coins %> * 100) / 100
+  </script>

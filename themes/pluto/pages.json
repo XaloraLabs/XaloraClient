@@ -41,6 +41,7 @@
         "removeaccountsuccess": "/admin"
     },
     "pages": {
+        "wallet": "wallet.ejs",
         "dashboard": "dashboard.ejs",
         "servers/new": "create.ejs",
         "servers/edit": "edit.ejs",
