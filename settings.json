@@ -6,6 +6,8 @@
   "timezone": "Europe/London",
   "coinname": "XAR",
 
+  "discordlink": "https://discord.gg/W4VWbqX8fP",
+
   "resources": {
     "_note": "Options: MB, GB. This is only used on the user side, admin will use GB.",
     "type": "MB"
