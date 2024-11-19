@@ -274,7 +274,7 @@
                     <span class="text-white py-2 px-4 hover:scale-95 rounded-xl transition hover:bg-white/5 cursor-pointer" onclick="window.location.href='/wallet'"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-gray-400 mb-0.5 mr-1.5 inline-flex">
   <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
 </svg>
-2,322 XPL</span>
+98.313 XPL</span>
                     <div x-data="{ open: false }" class="relative">
                         <button @click="open = !open" class="flex items-center hover:scale-95 space-x-2 hover:bg-white/5 relative focus:outline-none py-2 px-4 rounded-xl transition">
                             <img src="https://cdn.discordapp.com/avatars/786622617871450122/ed83a03cd5bc59905a6ac5c7598ae5db.jpg?size=1024" class="h-8 w-8 rounded-full" alt="User Avatar">
@@ -316,17 +316,16 @@
                 <div class="container mx-auto px-8 py-2">
                     <!-- Content -->
 
-<!-- Main Content -->
 <main class="flex-grow container mx-auto px-4 py-8">
     <div class="flex justify-between items-center w-full mx-auto pb-4">
         <!-- Welcome text and subtext on the left -->
         <div class="flex flex-col">
-            <h1 class="text-xl font-semibold mb-0.5" style="font-family: 'Cabin';">Join for Resources</h1>
-            <p class="text-gray-400 text-md">Join Discord servers for free PlutoCoins!</p>
+            <h1 class="text-xl font-semibold mb-0.5" style="font-family: 'Cabin';">Staking</h1>
+            <p class="text-gray-400 text-md">Invest your PlutoCoins by staking and earn rewards each day.</p>
         </div>
 
         <!-- Breadcrumbs on the right -->
-        <nav aria-label="Breadcrumb" class="inline-flex py-2 px-4 rounded-xl bg-white/5 transition-colors duration-200">
+        <nav aria-label="Breadcrumb" class="border border-white/15 inline-flex py-2 px-4 rounded-full bg-white/5 shadow hover:bg-white/10 transition-colors duration-200">
             <ol role="list" class="flex items-center space-x-2">
                 <li>
                     <a href="#_" class="text-sm flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition-colors duration-200" aria-current="false">
@@ -366,64 +365,227 @@
                 </li>
                 <li>
                     <a href="#_" class="text-sm flex items-center gap-2 font-medium text-white/80 hover:text-white transition-colors duration-200" aria-current="page">
-                        Join for Resources
+                        Staking
                     </a>
                 </li>
             </ol>
         </nav>
     </div>
 
+    <div class="max-w-4xl mx-auto mt-5">
+        <!-- Header with balance overview -->
+        <header class="bg-white/5 rounded-2xl p-6 mb-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-gray-400 text-sm">Total Balance</p>
+                    <p class="text-3xl font-bold" id="total-balance">Loading...</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-gray-400 text-sm">Staked Balance</p>
+                    <p class="text-xl font-semibold" id="staking-balance">Loading...</p>
+                </div>
+            </div>
+        </header>
 
+        <div class="grid gap-8 md:grid-cols-3">
+            <!-- Staking Stats -->
+            <div class="col-span-2 bg-white/5 rounded-2xl p-6">
+                <h2 class="text-xl font-semibold mb-4">Staking Stats</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-gray-400 text-sm">APY</p>
+                        <p class="text-lg font-medium">5%</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 text-sm">Total Earnings</p>
+                        <p class="text-lg font-medium" id="total-earnings">-</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 text-sm">Last Stake</p>
+                        <p class="text-lg font-medium" id="last-stake-time">-</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 text-sm">Pending Rewards</p>
+                        <p class="text-lg font-medium" id="pending-rewards">-</p>
+                    </div>
+                </div>
+            </div>
 
-    <div>
-        <div class="bg-white/5 rounded-2xl p-6 mb-6">
-            <h3 class="text-xl font-semibold mb-2" style="font-family: 'Cabin';">Skyport Labs</h3>
-            <p class="text-gray-300 mb-2">Join it to earn:</p>
-            <p class="text-2xl font-bold text-white">300 PlutoCoins</p>
-            <a href="https://discord.gg/jXF57AXkUs" class="inline-block mt-4 bg-orange-600 text-white px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Join Server</a>
-            <a href="/login" class="inline-block mt-4 bg-orange-600 text-white ml-2 px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Claim Rewards</a>
+            <!-- Quick Actions -->
+            <div class="bg-white/5 rounded-2xl p-6">
+                <h2 class="text-xl font-semibold mb-4">Quick Actions</h2>
+                <div class="space-y-4">
+                    <button id="stake-btn" class="w-full px-4 py-2 bg-orange-600 text-white rounded-xl font-medium hover:bg-orange-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        Stake XPL
+                    </button>
+                    <button id="unstake-btn" class="w-full px-4 py-2 bg-white/10 text-white rounded-xl font-medium hover:bg-white/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50">
+                        Unstake XPL
+                    </button>
+                    <button id="claim-rewards" class="w-full px-4 py-2 bg-white/10 text-white rounded-xl font-medium hover:bg-white/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50">
+                        Claim Rewards
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <div class="bg-white/5 rounded-2xl p-6 mb-6">
-            <h3 class="text-xl font-semibold mb-2" style="font-family: 'Cabin';">Qerra</h3>
-            <p class="text-gray-300 mb-2">Join it to earn:</p>
-            <p class="text-2xl font-bold text-white">150 PlutoCoins</p>
-            <a href="https://discord.gg/APMN2EEfPT" class="inline-block mt-4 bg-orange-600 text-white px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Join Server</a>
-            <a href="/login" class="inline-block mt-4 bg-orange-600 text-white ml-2 px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Claim Rewards</a>
-        </div>
-
-        <div class="bg-white/5 rounded-2xl p-6 mb-6">
-            <h3 class="text-xl font-semibold mb-2" style="font-family: 'Cabin';">Stacy</h3>
-            <p class="text-gray-300 mb-2">Join it to earn:</p>
-            <p class="text-2xl font-bold text-white">200 PlutoCoins</p>
-            <a href="https://discord.gg/jMyp5gGSVa" class="inline-block mt-4 bg-orange-600 text-white px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Join Server</a>
-            <a href="/login" class="inline-block mt-4 bg-orange-600 text-white ml-2 px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Claim Rewards</a>
-        </div>
-
-        <div class="bg-white/5 rounded-2xl p-6 mb-6">
-            <h3 class="text-xl font-semibold mb-2" style="font-family: 'Cabin';">NorthVM</h3>
-            <p class="text-gray-300 mb-2">Join it to earn:</p>
-            <p class="text-2xl font-bold text-white">300 PlutoCoins</p>
-            <a href="https://discord.gg/Txt8PTR9mB" class="inline-block mt-4 bg-orange-600 text-white px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Join Server</a>
-            <a href="/login" class="inline-block mt-4 bg-orange-600 text-white ml-2 px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Claim Rewards</a>
+        <!-- Staking History -->
+        <div class="mt-8 hidden bg-white/5 border border-white/10 rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Staking History</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-gray-400 text-sm">
+                            <th class="pb-3">Date</th>
+                            <th class="pb-3">Type</th>
+                            <th class="pb-3">Amount</th>
+                            <th class="pb-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staking-history">
+                        <!-- Staking history will be populated here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <div class="bg-white/5 rounded-2xl p-6">
-        <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Cabin';">Add Your Server</h2>
-        <p class="text-gray-300 mb-4">Want to add your Discord server to our program? You can do so for only $9.99/month!</p>
-        <p class="text-gray-300 mb-4">To get started:</p>
-        <ol class="list-decimal list-inside text-gray-300 mb-4">
-            <li>Join the PlutoNodes Discord server</li>
-            <li>Open a ticket in the tickets channel</li>
-            <li>Mention that you want to add your server to the "Join for Resources" page</li>
-        </ol>
-        <a href="https://discord.gg/freemchost" class="inline-block bg-orange-600 text-white px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Join PlutoNodes Discord</a>
+<!-- Updated Modal HTML -->
+<div id="action-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden opacity-0 transition-all duration-300 ease-in-out scale-95">
+    <div class="bg-[#191c20] rounded-lg p-6 w-full max-w-md transform transition-all duration-300 ease-in-out scale-95">
+        <h3 id="modal-title" class="text-xl font-semibold mb-4"></h3>
+        <form id="action-form">
+            <div class="mb-4">
+                <label for="action-amount" class="block text-sm font-medium text-gray-400 mb-1">Amount</label>
+                <input type="number" id="action-amount" required min="0" step="0.01"
+                       class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white focus:ring-orange-500 focus:border-orange-500">
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" id="cancel-action" class="px-4 py-2 bg-white/10 text-white rounded-full font-medium hover:bg-white/20 transition-colors duration-200">
+                    Cancel
+                </button>
+                <button type="submit" id="confirm-action" class="px-4 py-2 bg-orange-600 text-white rounded-full font-medium hover:bg-orange-700 transition-colors duration-200">
+                    Confirm
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 </main>
 
 <script>
-    // You can add any necessary JavaScript here
+    const actionModal = document.getElementById('action-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const actionForm = document.getElementById('action-form');
+    const actionAmount = document.getElementById('action-amount');
+    let currentAction = '';
+
+    async function fetchStakingInfo() {
+        try {
+            const response = await fetch('/stake/balance');
+            const data = await response.json();
+
+            if (data) {
+                document.getElementById('total-balance').textContent = `98.31344635416633 PlutoCoins`;
+                document.getElementById('staking-balance').textContent = `${data.staked.toFixed(2)} PlutoCoins`;
+                document.getElementById('total-earnings').textContent = `${data.earnings.toFixed(2)} PlutoCoins`;
+                document.getElementById('last-stake-time').textContent = new Date(data.lastStakeTime).toLocaleString();
+                document.getElementById('pending-rewards').textContent = `${data.earnings.toFixed(2)} PlutoCoins`;
+            } else {
+                document.getElementById('total-balance').textContent = 'Error fetching data';
+            }
+        } catch (error) {
+            document.getElementById('total-balance').textContent = 'Error fetching data';
+        }
+    }
+
+    async function handleStakeUnstake(action) {
+        const amount = actionAmount.value;
+        try {
+            const response = await fetch(`/${action}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: parseFloat(amount) })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert(`Successfully ${action}d ${amount} PlutoCoins`);
+                fetchStakingInfo();
+                updateStakingHistory();
+                closeModal();
+            } else {
+                alert(`Error: ${data.error}`);
+            }
+        } catch (error) {
+            alert(`An error occurred while ${action}ing`);
+        }
+    }
+
+    async function handleClaimRewards() {
+        try {
+            const response = await fetch('/stake/claim', { method: 'POST' });
+            const data = await response.json();
+            if (response.ok) {
+                alert(`Successfully claimed ${data.claimedAmount.toFixed(2)} PlutoCoins in rewards`);
+                fetchStakingInfo();
+                updateStakingHistory();
+            } else {
+                alert(`Error: ${data.error}`);
+            }
+        } catch (error) {
+            alert('An error occurred while claiming rewards');
+        }
+    }
+
+    function openModal(action) {
+        currentAction = action;
+        modalTitle.textContent = `${action.charAt(0).toUpperCase() + action.slice(1)} PlutoCoins`;
+        actionModal.classList.remove('hidden');
+        setTimeout(() => {
+            actionModal.classList.remove('opacity-0', 'scale-95');
+            modalContent.classList.remove('scale-95');
+        }, 10);
+    }
+
+    function closeModal() {
+        actionModal.classList.add('opacity-0', 'scale-95');
+        modalContent.classList.add('scale-95');
+        setTimeout(() => {
+            actionModal.classList.add('hidden');
+            actionForm.reset();
+        }, 300);
+    }
+
+    async function updateStakingHistory() {
+        try {
+            const response = await fetch('/stake/history');
+            const history = await response.json();
+            const historyTable = document.getElementById('staking-history');
+            historyTable.innerHTML = history.map(item => `
+                <tr>
+                    <td class="py-2">${new Date(item.date).toLocaleString()}</td>
+                    <td class="py-2">${item.type}</td>
+                    <td class="py-2">${item.amount.toFixed(2)} PlutoCoins</td>
+                    <td class="py-2">${item.status}</td>
+                </tr>
+            `).join('');
+        } catch (error) {
+            console.error('Error fetching staking history:', error);
+        }
+    }
+
+    document.getElementById('stake-btn').addEventListener('click', () => openModal('stake'));
+    document.getElementById('unstake-btn').addEventListener('click', () => openModal('unstake'));
+    document.getElementById('claim-rewards').addEventListener('click', handleClaimRewards);
+    document.getElementById('cancel-action').addEventListener('click', closeModal);
+
+    actionForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        handleStakeUnstake(currentAction);
+    });
+
+    fetchStakingInfo();
+    updateStakingHistory();
+    setInterval(fetchStakingInfo, 60000); // Refresh every minute
 </script>
 
 
