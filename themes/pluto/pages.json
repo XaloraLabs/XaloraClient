@@ -50,7 +50,7 @@
         "admin/coupons": "admin-coupons.ejs",
         "admin/coins": "admin-coins.ejs",
         "redeem": "redeem.ejs",
-        "account": "account.ejs",
+        "settings": "settings.ejs",
         "gift-coins": "gift-coins.ejs",
         "gift-resources": "gift-resources.ejs",
         "j4r": "j4r.ejs",
