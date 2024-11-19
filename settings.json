@@ -4,6 +4,8 @@
   "letter": "X",
   "defaulttheme": "pluto",
   "timezone": "Europe/London",
+  "coinname": "XAR",
+
   "resources": {
     "_note": "Options: MB, GB. This is only used on the user side, admin will use GB.",
     "type": "MB"

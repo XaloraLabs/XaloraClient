@@ -1,47 +1,35 @@
-<nav style="background-color: #212530" class="navbar p-0 fixed-top d-flex flex-row">
-    <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-      <a class="navbar-brand brand-logo-mini text-white" href="../dashboard"><%= settings.letter %></a>
-    </div>
-    <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
-      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-        <span class="mdi mdi-menu"></span>
+<div class="flex items-center space-x-4">
+  <button @click="sidebarOpen = !sidebarOpen" class="text-gray-500 focus:outline-none lg:hidden">
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6H20M4 12H20M4 18H11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+  </button>
+</div>
+
+<div class="flex items-center space-x-4">
+  <span class="text-white py-2 px-4 hover:scale-95 rounded-xl transition hover:bg-white/5 cursor-pointer" onclick="window.location.href='/wallet'"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-gray-400 mb-0.5 mr-1.5 inline-flex">
+<path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
+</svg>
+<span id="balance"><%= Math.floor(coins * 100) / 100 %></span> QAX</span>
+  <div x-data="{ open: false }" class="relative">
+      <button @click="open = !open" class="flex items-center hover:scale-95 space-x-2 hover:bg-white/5 relative focus:outline-none py-2 px-4 rounded-xl transition">
+          <img src="https://cdn.discordapp.com/avatars/786622617871450122/ed83a03cd5bc59905a6ac5c7598ae5db.jpg?size=1024" class="h-8 w-8 rounded-full" alt="User Avatar">
+          <span class="text-white font-medium">tha_yt</span>
+          <svg :class="{'open': open}" class="dropdown-arrow ml-1 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
       </button>
-      <ul class="navbar-nav navbar-nav-right">
-        <li class="nav-item dropdown">
-          <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
-            <div class="navbar-profile">
-              <img class="img-xs rounded-circle" src="https://cdn.discordapp.com/avatars/<%= userinfo.id %>/<%= userinfo.avatar %>.png?size=256" alt="">
-              <p class="mb-0 d-none d-sm-block navbar-profile-name"><%= userinfo.username %>#<%= req.session.userinfo.discriminator %></p>
-              <i class="mdi mdi-menu-down d-none d-sm-block"></i>
-            </div>
-          </a>
-          <div style="background-color: #292E3B; padding: 25px; border-radius: 16px;" class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-            <div class="dropdown-divider"></div>
-            <a style="border-radius: 16px; padding: 10px" class="dropdown-item preview-item" href="/afk">
-              <div class="preview-item-content">
-                <p class="preview-subject mb-1">Coins: <span id="balance"></span></p>
-              </div>
-            </a>
-            <a style="border-radius: 16px; padding: 10px" class="dropdown-item preview-item" href="/dashboard">
-              <div class="preview-item-content">
-                  <p class="preview-subject mb-1">Plan: 
-              <% if (typeof packagename.charAt(0) == 'number') { %>
-                <%= packagename %>
-              <% } else { %>
-                <%= packagename.charAt(0).toUpperCase() + packagename.slice(1) %>
-              <% } %>
-              </p>
-              </div>
-            </a>
-          </div>
-        </li>
-      </ul>
-            <script>
-              let balance = document.getElementById("balance")
-              balance.textContent = Math.floor(<%= coins %> * 100) / 100
-            </script>
-      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-        <span class="mdi mdi-format-line-spacing"></span>
-      </button>
-    </div>
-</nav>
+      <div x-show="open" 
+           x-transition:enter="transition ease-out duration-200"
+           x-transition:enter-start="opacity-0 transform scale-95"
+           x-transition:enter-end="opacity-100 transform scale-100"
+           x-transition:leave="transition ease-in duration-150"
+           x-transition:leave-start="opacity-100 transform scale-100"
+           x-transition:leave-end="opacity-0 transform scale-95"
+           @click.away="open = false"
+           class="user-dropdown absolute right-0 mt-2 w-48 bg-[#181a1e] rounded-md overflow-hidden shadow-xl z-10" :class="{'open': open}">
+          <a href="/account" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5">Account</a>
+          <a href="#" onclick="clearCookiesAndLogout(); return false;" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5">Logout</a>
+      </div>
+  </div>
+</div>
