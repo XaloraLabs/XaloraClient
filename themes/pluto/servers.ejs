@@ -101,6 +101,11 @@
     <% } else if (pterodactyl && pterodactyl.relationships && pterodactyl.relationships.servers && pterodactyl.relationships.servers.data) { %>
         <% for (let i = 0, len = pterodactyl.relationships.servers.data.length; i < len; i++) { %> 
             <div class="bg-white/5 rounded-2xl overflow-hidden shadow-none hover:shadow-lg transition-shadow duration-300">
+                <% if (settings.renewals.status) { %> 
+                <a class=" transition hover:scale-95 text-center bg-yellow-600 text-sm hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-full">
+                    Renew Server in 24H
+                </a>
+                <% } %>
                 <div class="p-6">
                     <h4 class="text-lg font-semibold text-white mb-1">
                         <%= pterodactyl.relationships.servers.data[i].attributes.name.length > 40 ? pterodactyl.relationships.servers.data[i].attributes.name.slice(0, 40) + "..." : pterodactyl.relationships.servers.data[i].attributes.name %>
@@ -116,16 +121,30 @@
                         <span class="px-2 py-1 text-xs font-semibold rounded-lg bg-white/10 text-gray-100">
                             <%= pterodactyl.relationships.servers.data[i].attributes.limits.disk / 1024 %> GiB disk
                         </span>
+                        <% if (settings.renewals.status) { %> 
                     </div>
-                    <a href="/servers/edit?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="transition hover:scale-95 block w-full text-center bg-orange-600 text-sm hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-full">
+                    <a href="/servers/edit?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="transition hover:scale-95 ml-1 text-center bg-orange-600 text-sm hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-full">
                         Edit Server
                     </a>
                 </a>
-                <a href="/delete?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="mt-2 transition hover:scale-95 block w-full text-center bg-red-600 text-sm hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full">
+                <a href="/delete?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="ml-2 transition hover:scale-95 text-center bg-red-600 text-sm hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full">
                     Delete Server
                 </a>
+                <a href="/renew?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="ml-2 transition hover:scale-95 text-center bg-yellow-600 text-sm hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-full">
+                    Renew Server
+                </a>
                 </div>
+                <% } else { %>
+                </div>
+                <a href="/servers/edit?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="transition block w-full hover:scale-95 mb-2 text-center bg-orange-600 text-sm hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-full">
+                    Edit Server
+                </a>
+            </a>
+            <a href="/delete?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="block w-full transition hover:scale-95 text-center bg-red-600 text-sm hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full">
+                Delete Server
+            </a>
             </div>
+            <% } %>
         <% } %>
     <% } else { %>
         <h4 class="text-lg font-semibold text-white mb-1">No Server Data Available!</h4>
@@ -204,3 +223,4 @@
     let balance = document.getElementById("balance");
     balance.textContent = <%= Math.floor(coins * 100) / 100 %>;
   </script>
+  
