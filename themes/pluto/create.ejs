@@ -139,6 +139,8 @@ font-family: 'JetBrains Mono' !important;
 </head>
 
 <body class="bg-[#010103] text-gray-300" style="font-family: 'Inter'" x-data="{ sidebarOpen: false }" @keydown.escape="sidebarOpen = false">
+    
+    
     <!-- Loading bar -->
     <div class="loading-bar"></div>
     <!-- Spinner -->
@@ -156,10 +158,14 @@ font-family: 'JetBrains Mono' !important;
         </a>
     </div>
 </div>
+
                 
 <!-- Navigation -->
  
+
+
 <!-- more items -->
+ 
                   
         <!-- Main Content -->
         <main class="flex-1">
@@ -236,12 +242,137 @@ Back to server list
 }
 </style>
     <!-- Content -->
-
+    <div>
+    <% if (req.query.err) { %>
+        <% if (req.query.err == "MISSINGVARIABLE") { %>
     <!-- Error Messages -->
+    <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+        <span>You have not filled out all of the server information.</span>
+        <button @click="showError = false" class="text-red-400 hover:text-red-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+    <% } else if (req.query.err == "NOTANUMBER") { %>
+        <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+            <span>RAM, disk and CPU must be a number.</span>
+            <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <% } else if (req.query.err == "ERRORONCREATE") { %>
+            <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                <span>An error was reported by the Panel while attempting to create the server.</span>
+                <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <% } else if (req.query.err == "BIGSERVERNAME") { %>
+                <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                    <span>Your server name must be less than <b>191</b> characters</span>
+                    <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <% } else if (req.query.err == "TOOMUCHSERVERS") { %>
+                    <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                        <span>Too many servers!</span>
+                        <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <% } else if (req.query.err == "PREMIUMLOCATION") { %>
+                        <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                            <span>Please select a location.</span>
+                            <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <% } else if (req.query.err == "TOOLITTLECOINS") { %>
+                            <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                                <span>You do not have enough coins to create a server</span>
+                                <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 6L6 18M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <% } else if (req.query.err == "MUSTCOMPLETECAPTCHA") { %>
+                                <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                                    <span>You must complete the captcha to prove you are human!</span>
+                                    <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M18 6L6 18M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <% } else if (req.query.err == "INVALIDCAPTCHARESPONSE") { %>
+                                    <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                                        <span>You submitted an invalid captcha response, try again.</span>
+                                        <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M18 6L6 18M6 6l12 12"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <% } else if (req.query.err == "TOOLITTLERAM" || req.query.err == "TOOLITTLEDISK" || req.query.err == "TOOLITTLECPU") { %>
+                                        <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                                            <span>You must make a server with at least <b>above the minimum specs</b></span>
+                                            <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M18 6L6 18M6 6l12 12"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+
+                                        <% } else if (req.query.err == "TOOMUCHRAM" || req.query.err == "TOOMUCHDISK" || req.query.err == "TOOMUCHCPU") { %>
+                                            <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                                                <span>You have exceeded the <b>maximum resource limit.</b></span>
+                                                <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M18 6L6 18M6 6l12 12"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+                                            <% } else if (req.query.err == "EXCEEDRAM" || req.query.err == "EXCEEDDISK" || req.query.err == "EXCEEDCPU") { %>
+                                                <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                                                    <span>You don't have enough resources to make this server.</span>
+                                                    <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M18 6L6 18M6 6l12 12"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+
+                                    
+                <% } %>
+                <% } %>
+
+                
     
 
-    <div>
-        <div>
+
+
+
+
+    
+
             <form id="createServerForm">
                 <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <div class="sm:col-span-3">
@@ -400,7 +531,7 @@ Back to server list
             Create
         </button>
     </div>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.js" integrity="sha512-eOUPKZXJTfgptSYQqVilRmxUNYm0XVHwcRHD4mdtCLWf/fC9XWe98IT8H1xzBkLL4Mo9GL0xWMSJtgS5te9rQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
  let selectedLocation = "";
@@ -510,7 +641,6 @@ function selectLocation(id, name, country, zoneElement) {
         locationString += ` - ${selectedZoneOption.textContent}`;
     }
 }
-
 async function submitForm() {
     const form = document.getElementById('createServerForm');
     const formData = new FormData(form);
