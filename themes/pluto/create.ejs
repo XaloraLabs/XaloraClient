@@ -259,12 +259,12 @@ Back to server list
                         </label>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             <% for (let [name, value] of Object.entries(settings.api.client.locations)) { %>                                 
-                                    <div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="5">
+                                    <div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="<%= value.id %>">
                                         <div class="flex items-center space-x-3">
                                             <img class="h-8 w-8 rounded-full" src="https://flagsapi.com/<%= value.iso %>/flat/64.png" alt="United States Flag">
                                             <div class="flex-1">
             <h3 class="text-sm font-medium text-white"><%= value.name %></h3>
-            <p class="text-xs text-gray-400">Phoenix</p>
+            <p class="text-xs text-gray-400"><%= value.country %></p>
         </div>
     </div>
     <div class="space-y-2 pt-2">
@@ -356,9 +356,6 @@ Back to server list
         </div>
       </div>
       <% } %>
-    
-      
-    
   </div>
 </div>
 
@@ -541,7 +538,7 @@ async function submitForm() {
     }
 
     // Use the selected zone ID if available, otherwise use the selected location ID
-    let locationId = selectedZone.value || selectedLocation.value;
+    let locationId = selectedZone || selectedLocation;
 
     const url = `/create?name=${name}&egg=${selectedImage}&ram=${ram}&disk=${disk}&cpu=${cpu}&location=${locationId}`;
     
