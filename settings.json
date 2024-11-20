@@ -94,9 +94,9 @@
       },
       "oauth2": {
         "_comment": "Go to https://discord.dev/ and create an application to set these up.",
-        "id": "1269961894001774655",
-        "secret": "emoZN6tQnTXO0Zu7OtZfzXWT2b-tWDWY",
-        "link": "http://localhost:3001",
+        "id": "1308423785837232178",
+        "secret": "BAjt3V1x-PM_YLEpZDM6_y6p1VO8Wktn",
+        "link": "https://fgsnr076-3001.inc1.devtunnels.ms",
         "callbackpath": "/callback",
         "prompt": true,
         "ip": {
