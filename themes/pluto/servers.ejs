@@ -119,6 +119,10 @@
                     <a href="/servers/edit?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="transition hover:scale-95 block w-full text-center bg-orange-600 text-sm hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-full">
                         Edit Server
                     </a>
+                </a>
+                <a href="/delete?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="mt-2 transition hover:scale-95 block w-full text-center bg-red-600 text-sm hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full">
+                    Delete Server
+                </a>
                 </div>
             </div>
         <% } %>
