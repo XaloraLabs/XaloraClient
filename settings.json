@@ -48,15 +48,15 @@
         "enabled": true,
         "ads": [
           {
-            "name": "Example server 1",
-            "invite": "https://discord.gg/example",
-            "id": "000000000000000000",
+            "name": "QuakzHosting",
+            "invite": "https://discord.gg/quakzhost",
+            "id": "1278939697217011763",
             "coins": 100
           },
           {
-            "name": "Example server 2",
-            "invite": "https://discord.gg/example",
-            "id": "000000000000000000",
+            "name": "SkullNodes",
+            "invite": "https://discord.gg/MsVnk7Ap5c",
+            "id": "1289947952583802892",
             "coins": 200
           }
         ]
@@ -223,15 +223,15 @@
           "_comment": "The cost and per is not intended to used with 0. This is not intended to sell resources for coins. Make sure coins are enabled too, or else there can be errors.",
           "enabled": true,
           "ram": {
-            "cost": 100,
+            "cost": 10,
             "per": 1024
           },
           "disk": {
-            "cost": 100,
+            "cost": 1090,
             "per": 5120
           },
           "cpu": {
-            "cost": 100,
+            "cost": 1700,
             "per": 75
           },
           "servers": {
