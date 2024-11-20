@@ -1,8 +1,7 @@
-![Heliactyl](https://cdn.discordapp.com/attachments/1063585626022223892/1065304573058764850/PylexPlus_2.png)
 
 <hr>
 
-# Heliactyl • The modern client panel for Pterodactyl
+# Xalora • The modern client panel for Pterodactyl
 
 All features:
 - Resource Management (Use it to create servers, gift them, etc)
@@ -19,20 +18,10 @@ All features:
 - Admin (set/add/remove coins & resources, create/revoke coupons)
 - API (for bots & other things)
 
-# What happened to 13.x and 15.x?
-
-Due to major issues with both versions, we've decided to come back to v12 and recontinue it
-The latest versions will be on v12 now
-
-# Warning
-
-We cannot force you to keep the "Powered by Heliactyl" in the footer, but please consider keeping it. It helps getting more visibility to the project and so getting better. We won't do technical support for installations without the notice in the footer. We may DMCA the website in certain conditions.
-Please do keep the footer though.
-
 <hr>
 
 # Install Guide
-## 1. Configuring heliactyl
+## 1. Configuring Xalora
 ### Pterodactyl method (easiest)
 Warning: You need Pterodactyl already set up on a domain for this method to work
 
