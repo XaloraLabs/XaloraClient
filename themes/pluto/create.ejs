@@ -258,18 +258,11 @@ Back to server list
                             Location
                         </label>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        
-                           
-                            
-                            <% for (let [name, value] of Object.entries(settings.api.client.locations)) { %> 
-                                <% if (value.show) { %>                      
-<div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="5">
-    <div class="flex items-center space-x-3">
-        <img class="h-8 w-8 rounded-full" src="https://cdn-icons-png.flaticon.com/512/9906/9906534.png" alt="United States Flag">
-        <div class="flex-1">
-            data-name="<%= name %>" 
-                 onclick="selectLocation('<%= name %>')">
-            
+                            <% for (let [name, value] of Object.entries(settings.api.client.locations)) { %>                                 
+                                    <div class="location-card relative flex flex-col hover:scale-95 space-y-3 rounded-2xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm transition hover:bg-white/10" data-location-id="5">
+                                        <div class="flex items-center space-x-3">
+                                            <img class="h-8 w-8 rounded-full" src="https://flagsapi.com/<%= value.iso %>/flat/64.png" alt="United States Flag">
+                                            <div class="flex-1">
             <h3 class="text-sm font-medium text-white"><%= value.name %></h3>
             <p class="text-xs text-gray-400">Phoenix</p>
         </div>
@@ -322,11 +315,11 @@ Back to server list
     
 </div>
 <% } %>
-        <% } %>
                             
 
                         </div>
-                    </div>                           
+                    </div>      
+                                         
 
 <div class="sm:col-span-6">
   <label class="block text-sm text-white/70 mb-4">
@@ -349,32 +342,22 @@ Back to server list
   </div>
   <div id="image-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 transition-all duration-300 ease-in-out">
     
-    
+    <% for (let [name, value] of Object.entries(settings.api.client.eggs)) { %>
       <div class="image-card relative flex hover:scale-95 items-center space-x-3 rounded-xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-white/15 transition focus-within:ring-offset-0 hover:bg-white/10" data-category="Game Servers" data-name="minecraft: paper">
         <div class="flex-shrink-0">
-          <img class="h-8 w-8 rounded-2xl" src="https://avatars.githubusercontent.com/u/7608950?s=200&amp;v=4" alt="">
+          <img class="h-8 w-8 rounded-2xl" src="<%= value.icon %>" alt="">
         </div>
         <div class="min-w-0 flex-1">
-          <a href="#" class="focus:outline-none" onclick="selectImage('paper', 'Minecraft: Paper')">
+          <a href="#" class="focus:outline-none" onclick="selectImage('<%= name %>', '<%= value.display %>')">
             <span class="absolute inset-0" aria-hidden="true"></span>
-            <p class="text-sm font-medium text-white">Minecraft: Paper <span class="ml-1.5 inline-flex items-center rounded-md bg-green-800/30 px-2 py-1 text-xs font-medium text-green-300 ring-1 ring-inset ring-green-600/20">Free</span></p>
-            <p class="text-sm text-gray-400 truncate">Game Servers</p>
+            <p class="text-sm font-medium text-white"><%= value.display %> <span class="ml-1.5 inline-flex items-center rounded-md bg-green-800/30 px-2 py-1 text-xs font-medium text-green-300 ring-1 ring-inset ring-green-600/20">Free</span></p>
+            <p class="text-sm text-gray-400 truncate"><%= value.category %></p>
           </a>
         </div>
       </div>
+      <% } %>
     
-      <div class="image-card relative flex hover:scale-95 items-center space-x-3 rounded-xl border border-white/5 bg-white/5 px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-white/15 transition focus-within:ring-offset-0 hover:bg-white/10" data-category="Game Servers" data-name="minecraft: velocity">
-        <div class="flex-shrink-0">
-          <img class="h-8 w-8 rounded-2xl" src="https://avatars.githubusercontent.com/u/41710604?s=200&amp;v=4" alt="">
-        </div>
-        <div class="min-w-0 flex-1">
-          <a href="#" class="focus:outline-none" onclick="selectImage('velocity', 'Minecraft: Velocity')">
-            <span class="absolute inset-0" aria-hidden="true"></span>
-            <p class="text-sm font-medium text-white">Minecraft: Velocity <span class="ml-1.5 inline-flex items-center rounded-md bg-green-800/30 px-2 py-1 text-xs font-medium text-green-300 ring-1 ring-inset ring-green-600/20">Free</span></p>
-            <p class="text-sm text-gray-400 truncate">Game Servers</p>
-          </a>
-        </div>
-      </div>
+      
     
   </div>
 </div>
@@ -558,7 +541,7 @@ async function submitForm() {
     }
 
     // Use the selected zone ID if available, otherwise use the selected location ID
-    let locationId = selectedZone || selectedLocation;
+    let locationId = selectedZone.value || selectedLocation.value;
 
     const url = `/create?name=${name}&egg=${selectedImage}&ram=${ram}&disk=${disk}&cpu=${cpu}&location=${locationId}`;
     

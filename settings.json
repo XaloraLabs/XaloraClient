@@ -137,8 +137,10 @@
       },
       "locations": {
         "1": {
-          "name": "Default Location 1",
-          "package": null
+          "name": "Frankfurt",
+          "country": "Germany",
+          "iso": "DE",
+          "package": "default"
         },
         "2": {
           "name": "Default Location 2",
@@ -147,7 +149,9 @@
       },
       "eggs": {
        "paper": {
-          "display": "Minecraft Java | Paper/Spigot",
+          "category": "Minecraft Java",
+          "display": "Paper/Spigot",
+          "icon": "https://papermc.io/assets/logo/256x.png",
           "minimum": {
             "ram": 1024,
             "disk": 1024,
@@ -173,7 +177,9 @@
           }
         },
         "bungeecord": {
-          "display": "Minecraft Java | BungeeCord",
+          "category": "Minecraft Java",
+          "display": " BungeeCord",
+          "icon": "https://scalacube.com/images/store/minecraft/bungeecord.png",
           "minimum": {
             "ram": 512,
             "disk": 512,
