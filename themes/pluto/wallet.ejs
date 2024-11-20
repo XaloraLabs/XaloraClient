@@ -177,21 +177,28 @@ Send
         <h2 class="text-2xl font-semibold text-white mb-4">Transfer <span id="transferCurrency"></span></h2>
         <form id="transferForm" class="space-y-4">
             <div>
-                <label for="receiverId" class="block text-sm font-medium text-gray-300">Receiver Address</label>
-                <input type="text" id="receiverId" name="receiverId" required class="mt-1 block w-full rounded-md bg-white/5 border border-white/10 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="InputCoins" class="block text-sm font-medium text-gray-300">Receiver Address</label>
+                <input type="text" id="InputID" name="InputID" required class="mt-1 block w-full rounded-md bg-white/5 border border-white/10 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div>
-                <label for="amount" class="block text-sm font-medium text-gray-300">Amount</label>
-                <input type="number" id="amount" name="amount" required min="1" step="1" class="mt-1 block w-full rounded-md bg-white/5 border border-white/10 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="InputCoins" class="block text-sm font-medium text-gray-300">Amount</label>
+                <input type="number" id="InputCoins" name="InputCoins" required min="1" step="1" class="mt-1 block w-full rounded-md bg-white/5 border border-white/10 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div class="flex justify-end space-x-4">
                 <button type="button" onclick="hideTransferModal()" class="text-gray-400 hover:text-white transition-colors">Cancel</button>
-                <button type="submit" class="bg-orange-600 text-white px-4 font-medium py-2 rounded-full hover:bg-orange-700 transition-colors">Transfer</button>
+                <button type="button" onclick="submitGift()" class="bg-orange-600 text-white px-4 font-medium py-2 rounded-full hover:bg-orange-700 transition-colors">Transfer</button>
             </div>
         </form>
     </div>
 </div>
 
+<script>
+    async function submitGift() {
+      let id = encodeURIComponent(document.getElementById("InputID").value);
+      let coins = encodeURIComponent(document.getElementById("InputCoins").value);
+      document.location.href = `/giftcoins?id=${id}&coins=${coins}`;
+    };
+  </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
