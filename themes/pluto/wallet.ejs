@@ -177,21 +177,28 @@ Send
         <h2 class="text-2xl font-semibold text-white mb-4">Transfer <span id="transferCurrency"></span></h2>
         <form id="transferForm" class="space-y-4">
             <div>
-                <label for="receiverId" class="block text-sm font-medium text-gray-300">Receiver Address</label>
-                <input type="text" id="receiverId" name="receiverId" required class="mt-1 block w-full rounded-md bg-white/5 border border-white/10 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="InputCoins" class="block text-sm font-medium text-gray-300">Receiver Address</label>
+                <input type="text" id="InputID" name="InputID" required class="mt-1 block w-full rounded-md bg-white/5 border border-white/10 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div>
-                <label for="amount" class="block text-sm font-medium text-gray-300">Amount</label>
-                <input type="number" id="amount" name="amount" required min="1" step="1" class="mt-1 block w-full rounded-md bg-white/5 border border-white/10 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="InputCoins" class="block text-sm font-medium text-gray-300">Amount</label>
+                <input type="number" id="InputCoins" name="InputCoins" required min="1" step="1" class="mt-1 block w-full rounded-md bg-white/5 border border-white/10 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div class="flex justify-end space-x-4">
                 <button type="button" onclick="hideTransferModal()" class="text-gray-400 hover:text-white transition-colors">Cancel</button>
-                <button type="submit" class="bg-orange-600 text-white px-4 font-medium py-2 rounded-full hover:bg-orange-700 transition-colors">Transfer</button>
+                <button type="button" onclick="submitGift()" class="bg-orange-600 text-white px-4 font-medium py-2 rounded-full hover:bg-orange-700 transition-colors">Transfer</button>
             </div>
         </form>
     </div>
 </div>
 
+<script>
+    async function submitGift() {
+      let id = encodeURIComponent(document.getElementById("InputID").value);
+      let coins = encodeURIComponent(document.getElementById("InputCoins").value);
+      document.location.href = `/giftcoins?id=${id}&coins=${coins}`;
+    };
+  </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -209,62 +216,9 @@ function setRandomBackground() {
     document.querySelector('.balance-card').style.backgroundImage = `url('${selectedBackground}')`;
 }
 
-async function fetchWalletData() {
-    try {
-        const response = await fetch('/wallet/balance');
-        const data = await response.json();
-        updateBalance(data);
-    } catch (error) {
-        console.error('Error fetching wallet data:', error);
-    }
-}
-
-function updateBalance(data) {
-    const balanceElement = document.getElementById('currentBalance');
-    if (currentCurrency === 'XPL') {
-        balanceElement.textContent = `${data.XPL.toLocaleString()} XPL`;
-    } else {
-        balanceElement.textContent = `${data.XRS.toLocaleString()} XRS`;
-    }
-}
-
-async function fetchTransactions() {
-    try {
-        const response = await fetch('/wallet/transactions');
-        transactions = await response.json();
-        displayRecentTransactions();
-    } catch (error) {
-        console.error('Error fetching transactions:', error);
-    }
-}
-
-function displayRecentTransactions() {
-    const container = document.getElementById('recentTransactions');
-    container.innerHTML = '';
-
-    transactions.slice(0, 3).forEach(transaction => {
-        const isReceived = transaction.receiverId === '786622617871450122';
-        const otherParty = isReceived ? transaction.senderId : transaction.receiverId;
-        const icon = isReceived ? '⬇️' : '⬆️';
-        const color = isReceived ? 'text-green-500' : 'text-red-500';
-
-        container.innerHTML += `
-            <div class="transaction-item hover:bg-white/5 flex items-center justify-between p-4 rounded-lg">
-                <div class="flex items-center">
-                    <span class="text-2xl mr-3">${icon}</span>
-                    <div>
-                        <p class="font-semibold">${isReceived ? 'Received' : 'Sent'} ${transaction.currency}</p>
-                        <p class="text-sm text-gray-400">${otherParty}</p>
-                    </div>
-                </div>
-                <p class="text-lg font-semibold ${color}">${isReceived ? '+' : '-'}${transaction.amount} ${transaction.currency}</p>
-            </div>
-        `;
-    });
-}
 
 function showTransferModal() {
-    document.getElementById('transferCurrency').textContent = currentCurrency;
+    document.getElementById('transferCurrency').textContent = "<%= settings.coinname %>";
     const modal = document.getElementById('transferModal');
     const modalContent = document.getElementById('modalContent');
     
@@ -286,228 +240,6 @@ function hideTransferModal() {
     setTimeout(() => {
         modal.classList.add('opacity-0', 'pointer-events-none');
     }, 300);
-}
-
-function initCharts() {
-    // Spending Overview Chart
-    new Chart(document.getElementById('spendingChart'), {
-        type: 'doughnut',
-        data: {
-            labels: ['Food', 'Transportation', 'Entertainment', 'Bills', 'Other'],
-            datasets: [{
-                data: [30, 20, 15, 25, 10],
-                backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        color: '#e2e8f0'
-                    }
-                }
-            }
-        }
-    });
-
-    // Balance History Chart
-    new Chart(document.getElementById('balanceHistoryChart'), {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [{
-                label: 'Balance',
-                data: [1000, 1500, 1300, 1800, 2000, 2500],
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                x: {
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    ticks: {
-                        color: '#e2e8f0'
-                    }
-                },
-                y: {
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    ticks: {
-                        color: '#e2e8f0'
-                    }
-                }
-            }
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    fetchWalletData();
-    fetchTransactions();
-    initCharts();
-
-    const xplButton = document.getElementById('xplButton');
-    const xrsButton = document.getElementById('xrsButton');
-    const copyButton = document.getElementById('userAddress');
-    const showAllTransactionsButton = document.getElementById('showAllTransactions');
-
-    xplButton.addEventListener('click', () => {
-        currentCurrency = 'XPL';
-        xplButton.classList.add('active');
-        xrsButton.classList.remove('active');
-        fetchWalletData();
-    });
-
-    xrsButton.addEventListener('click', () => {
-        currentCurrency = 'XRS';
-        xrsButton.classList.add('active');
-        xplButton.classList.remove('active');
-        fetchWalletData();
-    });
-
-    copyButton.addEventListener('click', () => {
-        navigator.clipboard.writeText(copyButton.textContent.trim()).then(() => {
-            const originalText = copyButton.textContent;
-            copyButton.textContent = 'Copied!';
-            setTimeout(() => {
-                copyButton.textContent = originalText;
-            }, 2000);
-        });
-    });
-
-    showAllTransactionsButton.addEventListener('click', () => {
-        const container = document.getElementById('recentTransactions');
-        transactions.forEach((transaction, index) => {
-            if (index >= 3) {
-                const isReceived = transaction.receiverId === '786622617871450122';
-                const otherParty = isReceived ? transaction.senderId : transaction.receiverId;
-                const icon = isReceived ? '⬇️' : '⬆️';
-                const color = isReceived ? 'text-green-500' : 'text-red-500';
-
-                const transactionElement = document.createElement('div');
-                transactionElement.className = 'transaction-item hover:bg-white/5 flex items-center justify-between p-4 rounded-lg opacity-0 transform translate-y-4';
-                transactionElement.innerHTML = `
-                    <div class="flex items-center">
-                        <span class="text-2xl mr-3">${icon}</span>
-                        <div>
-                            <p class="font-semibold">${isReceived ? 'Received' : 'Sent'} ${transaction.currency}</p>
-                            <p class="text-sm text-gray-400">${otherParty}</p>
-                        </div>
-                    </div>
-                    <p class="text-lg font-semibold ${color}">${isReceived ? '+' : '-'}${transaction.amount} ${transaction.currency}</p>
-                `;
-                container.appendChild(transactionElement);
-
-                setTimeout(() => {
-                    transactionElement.classList.remove('opacity-0', 'transform', 'translate-y-4');
-                }, 50 * (index - 2));
-            }
-        });
-        showAllTransactionsButton.style.display = 'none';
-    });
-});
-
-document.getElementById('transferForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const receiverId = document.getElementById('receiverId').value;
-    const amount = document.getElementById('amount').value;
-
-    try {
-        const response = await fetch('/wallet/transfer', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ receiverId, amount: parseInt(amount), currency: currentCurrency }),
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            alert('Transfer successful!');
-            hideTransferModal();
-            fetchWalletData();
-            fetchTransactions();
-        } else {
-            alert(`Transfer failed: ${result.error}`);
-        }
-    } catch (error) {
-        console.error('Error during transfer:', error);
-        alert('An error occurred during the transfer. Please try again.');
-    }
-});
-
-// Function to update charts with real data
-async function updateCharts() {
-    try {
-        // Fetch spending data (you'll need to create this endpoint)
-        const spendingResponse = await fetch('/wallet/spending');
-        const spendingData = await spendingResponse.json();
-
-        // Update Spending Overview Chart
-        const spendingChart = Chart.getChart('spendingChart');
-        spendingChart.data.labels = spendingData.labels;
-        spendingChart.data.datasets[0].data = spendingData.values;
-        spendingChart.update();
-
-        // Fetch balance history data (you'll need to create this endpoint)
-        const balanceHistoryResponse = await fetch('/wallet/balance-history');
-        const balanceHistoryData = await balanceHistoryResponse.json();
-
-        // Update Balance History Chart
-        const balanceHistoryChart = Chart.getChart('balanceHistoryChart');
-        balanceHistoryChart.data.labels = balanceHistoryData.labels;
-        balanceHistoryChart.data.datasets[0].data = balanceHistoryData.values;
-        balanceHistoryChart.update();
-    } catch (error) {
-        console.error('Error updating charts:', error);
-    }
-}
-
-// Call updateCharts initially and set up an interval to update regularly
-updateCharts();
-setInterval(updateCharts, 60000); // Update every minute
-
-// Add event listener for currency switcher buttons
-document.getElementById('xplButton').addEventListener('click', () => {
-    currentCurrency = 'XPL';
-    document.getElementById('xplButton').classList.add('active');
-    document.getElementById('xrsButton').classList.remove('active');
-    fetchWalletData();
-    updateCharts();
-});
-
-document.getElementById('xrsButton').addEventListener('click', () => {
-    currentCurrency = 'XRS';
-    document.getElementById('xrsButton').classList.add('active');
-    document.getElementById('xplButton').classList.remove('active');
-    fetchWalletData();
-    updateCharts();
-});
-
-
-
-// Initialize the dashboard
-function initDashboard() {
-    fetchWalletData();
-    fetchTransactions();
-    initCharts();
-    updateCharts();    setRandomBackground();
 }
 
 // Call initDashboard when the DOM is loaded
