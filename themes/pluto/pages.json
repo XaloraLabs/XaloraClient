@@ -41,6 +41,9 @@
         "removeaccountsuccess": "/admin"
     },
     "pages": {
+        "referrals": "referrals.ejs",
+        "staking": "staking.ejs",
+        "wallet": "wallet.ejs",
         "dashboard": "dashboard.ejs",
         "servers/new": "create.ejs",
         "servers/edit": "edit.ejs",

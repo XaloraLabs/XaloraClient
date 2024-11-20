@@ -1,153 +1,224 @@
+
 <!DOCTYPE html>
 <html lang="en">
+<head>
   <%- include('./components/head') %>
-  <body>
-    <div class="container-scroller">
-      <!-- partial:partials/_sidebar.html -->
-      <%- include('./components/sidebar') %>
-      <!-- partial -->
-      <div class="container-fluid page-body-wrapper">
-        <!-- partial:partials/_navbar.html -->
-        <%- include('./components/topnav') %>
-        <!-- partial -->
-        <div class="main-panel">
-          <div style="background-color: #111319" class="content-wrapper">
-           <h2>Resources Store</h2>
-           <p class="text-gray">Buy extra resources to upgrade your server.</p>
-            <% if (req.query.err) { %>
-              <% if (req.query.err !== "none") { %>
-                <div style="border-radius: 15px;" class="alert">
-                  <% if (req.query.err == "CANNOTAFFORD") { %>
-                    Insufficient funds.
-                  <% } else if (req.query.err == "MAXCPUEXCEETED") { %>
-                    You have reached the cpu limit!
-                  <% } else if (req.query.err == "MAXRAMEXCEETED") { %>
-                    You have reached the RAM limit!
-                  <% } else if (req.query.err == "MAXDISKEXCEETED") { %>
-                    You have reached the disk limit!
-                  <% } else if (req.query.err == "MAXSERVERSEXCEETED") { %>
-                    You have reached the servers limit!
-                  <% } %>
-                </div>
-              <% } else if (req.query.err == "none") { %>
-                <div class="alert" style="background-color: #00d415; border-radius: 15px;">
-                  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                  Success!
-                </div>
-              <% } %>
-            <% } %>
-            <div class="row">
-              <div class="col-md-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <form class="forms-sample" action="/buycpu">
-                      <div class="form-group">
-                        <label style="font-weight: bold;">CPU:</label><BR>
-                        <select name="amount" id="cpuAmount" class="form-control" style="border-radius: 15px; padding: 8px;">
-                          <option value=1><%= settings.api.client.coins.store.cpu.per %>% CPU - <%= settings.api.client.coins.store.cpu.cost %> coins</option>
-                          <option value=2><%= settings.api.client.coins.store.cpu.per * 2 %>% CPU - <%= settings.api.client.coins.store.cpu.cost * 2 %> coins</option>
-                        </select>
-                      </div><br>
-                      <a class="button" href="javascript: buyCPU()" onclick="this.classList.toggle('button--loading')"><span class="button__text">Purchase</span></a><br><br>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <form class="forms-sample" action="/buyram">
-                      <div class="form-group">
-                        <label style="font-weight: bold;">RAM:</label><BR>
-                        <select id="ramAmount" class="form-control" style="border-radius: 15px; padding: 8px;">
-                          <option value=1><%= settings.api.client.coins.store.ram.per %>MB RAM - <%= settings.api.client.coins.store.ram.cost %> coins</option>
-                          <option value=2><%= settings.api.client.coins.store.ram.per * 2 %>MB RAM - <%= settings.api.client.coins.store.ram.cost * 2 %> coins</option>
-                          <option value=3><%= settings.api.client.coins.store.ram.per * 3 %>MB RAM - <%= settings.api.client.coins.store.ram.cost * 3 %> coins</option>
-                          <option value=4><%= settings.api.client.coins.store.ram.per * 4 %>MB RAM - <%= settings.api.client.coins.store.ram.cost * 4 %> coins</option>
-                        </select>
-                      </div><br>
-                      <a class="button" href="javascript: buyRAM()" onclick="this.classList.toggle('button--loading')"><span class="button__text">Purchase</span></a><br><br>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <form class="forms-sample" action="/buydisk">
-                      <div class="form-group">
-                        <label style="font-weight: bold;">Disk:</label><BR>
-                        <select id="diskAmount" class="form-control" style="border-radius: 15px; padding: 8px;">
-                          <option value=1><%= settings.api.client.coins.store.disk.per %>MB Disk - <%= settings.api.client.coins.store.disk.cost %> coins</option>
-                          <option value=2><%= settings.api.client.coins.store.disk.per * 2 %>MB Disk - <%= settings.api.client.coins.store.disk.cost * 2 %> coins</option>
-                          <option value=3><%= settings.api.client.coins.store.disk.per * 3 %>MB Disk - <%= settings.api.client.coins.store.disk.cost * 3 %> coins</option>
-                          <option value=4><%= settings.api.client.coins.store.disk.per * 4 %>MB Disk - <%= settings.api.client.coins.store.disk.cost * 4 %> coins</option>
-                          <option value=5><%= settings.api.client.coins.store.disk.per * 5 %>MB Disk - <%= settings.api.client.coins.store.disk.cost * 5 %> coins</option>
-                        </select>
-                      </div><br>
-                      <a class="button" href="javascript: buyDisk()" onclick="this.classList.toggle('button--loading')"><span class="button__text">Purchase</span></a><br><br>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <form class="forms-sample" action="/buyservers">
-                      <div class="form-group">
-                        <label style="font-weight: bold;">Servers:</label><BR>
-                        <select id="serversAmount" class="form-control" style="border-radius: 15px; padding: 8px;">
-                          <option value=1><%= settings.api.client.coins.store.servers.per %> Server - <%= settings.api.client.coins.store.servers.cost %> coins</option>
-                          <option value=2><%= settings.api.client.coins.store.servers.per * 2 %> Servers - <%= settings.api.client.coins.store.servers.cost * 2 %> coins</option>
-                          <option value=3><%= settings.api.client.coins.store.servers.per * 3 %> Servers - <%= settings.api.client.coins.store.servers.cost * 3 %> coins</option>
-                          <option value=4><%= settings.api.client.coins.store.servers.per * 4 %> Servers - <%= settings.api.client.coins.store.servers.cost * 4 %> coins</option>
-                        </select>
-                      </div><br>
-                      <a class="button" href="javascript: buyServers()" onclick="this.classList.toggle('button--loading')"><span class="button__text">Purchase</span></a><br><br>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- content-wrapper ends -->
-          <%- include('./components/footer') %>
+</head>
+<body class="text-white">
+  <%- include('./components/sidebar') %>
+
+            <main class="flex-1 overflow-x-hidden overflow-y-auto">
+                <div class="container mx-auto px-8 py-2">
+                    <!-- Content -->
+<!-- Main Content -->
+<main class="flex-grow container mx-auto px-4 py-8" x-data="store()">
+    <div class="flex justify-between items-center w-full mx-auto pb-4">
+        <!-- Welcome text and subtext on the left -->
+        <div class="flex flex-col">
+            <h1 class="text-xl font-semibold mb-0.5" style="font-family: 'Cabin';">Store</h1>
+            <p class="text-gray-400 text-md">Use your <%= settings.coinname %> to upgrade your servers by purchasing resources!</p>
         </div>
-        <!-- main-panel ends -->
-      </div>
-      <!-- page-body-wrapper ends -->
+
+        <!-- Breadcrumbs on the right -->
+        <nav aria-label="Breadcrumb" class="inline-flex py-2 px-4 rounded-xl bg-white/5 transition-colors duration-200">
+            <ol role="list" class="flex items-center space-x-2">
+                <li>
+                    <a href="/dashboard" class="text-sm flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition-colors duration-200" aria-current="false">
+                        <svg
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="icon icon-tabler size-4 icons-tabler-outline icon-tabler-home"
+                        >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                        </svg>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="flex items-center">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right size-4 text-zinc-400"
+                    >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M9 6l6 6l-6 6"></path>
+                    </svg>
+                </li>
+                <li>
+                    <a href="#_" class="text-sm flex items-center gap-2 font-medium text-white/80 hover:text-white transition-colors duration-200" aria-current="page">
+                        Store
+                    </a>
+                </li>
+            </ol>
+        </nav>
     </div>
-    <!-- container-scroller -->
-    <!-- Plugin js for this page -->
-    <script src="/assets/vendors/select2/select2.min.js"></script>
-    <script src="/assets/vendors/typeahead.js/typeahead.bundle.min.js"></script>
+
+    <!-- Store Content -->
+    <div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
+            <!-- RAM Card -->
+            <div class="bg-white/5 rounded-2xl p-8">
+                <h3 class="text-xl font-semibold mb-4">RAM</h3>
+                <p class="text-gray-400 mb-4">Upgrade your server's memory</p>
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-medium">300 <%= settings.coinname %> / GB</span>
+                    <div class="flex items-center">
+                        <button @click="decrementRAM()" class="bg-white/5 text-white px-2 py-1 rounded-l">-</button>
+                        <input x-model.number="ram" type="number" min="1" class="bg-[#1a1f2a]/50 text-white w-16 text-center px-2 py-1 border-t border-b border-white/5">
+                        <button @click="incrementRAM()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
+                    </div>
+                </div>
+                <button @click="buyRAM()" class="w-full bg-orange-600 font-medium text-white py-2 rounded-full hover:bg-orange-700 transition">
+                    Buy RAM
+                </button>
+            </div>
+
+            <!-- Disk Card -->
+            <div class="bg-white/5 rounded-2xl p-8">
+                <h3 class="text-xl font-semibold mb-4">Disk</h3>
+                <p class="text-gray-400 mb-4">Expand your storage capacity</p>
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-medium">200 <%= settings.coinname %> / 5GB</span>
+                    <div class="flex items-center">
+                        <button @click="decrementDisk()" class="bg-white/5 text-white px-2 py-1 rounded-l">-</button>
+                        <input x-model.number="disk" type="number" min="1" class="bg-[#1a1f2a]/50 text-white w-16 text-center px-2 py-1 border-t border-b border-white/5">
+                        <button @click="incrementDisk()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
+                    </div>
+                </div>
+                <button @click="buyDisk()" class="w-full bg-orange-600 font-medium text-white py-2 rounded-full hover:bg-orange-700 transition">
+                    Buy Disk
+                </button>
+            </div>
+
+            <!-- CPU Card -->
+            <div class="bg-white/5 rounded-2xl p-8">
+                <h3 class="text-xl font-semibold mb-4">CPU</h3>
+                <p class="text-gray-400 mb-4">Boost your processing power</p>
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-medium">350 <%= settings.coinname %> / Core</span>
+                    <div class="flex items-center">
+                        <button @click="decrementCPU()" class="bg-white/5 text-white px-2 py-1 rounded-l">-</button>
+                        <input x-model.number="cpu" type="number" min="1" class="bg-[#1a1f2a]/50 text-white w-16 text-center px-2 py-1 border-t border-b border-white/5">
+                        <button @click="incrementCPU()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
+                    </div>
+                </div>
+                <button @click="buyCPU()" class="w-full bg-orange-600 font-medium text-white py-2 rounded-full hover:bg-orange-700 transition">
+                    Buy CPU
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+function store() {
+    return {
+        ram: 1,
+        disk: 1,
+        cpu: 1,
+        incrementRAM() { this.ram++ },
+        decrementRAM() { if (this.ram > 1) this.ram-- },
+        incrementDisk() { this.disk++ },
+        decrementDisk() { if (this.disk > 1) this.disk-- },
+        incrementCPU() { this.cpu++ },
+        decrementCPU() { if (this.cpu > 1) this.cpu-- },
+        buyRAM() {
+            if (this.ram > 0) {
+                window.location.href = `/buyram?amount=${this.ram}`;
+            }
+        },
+        buyDisk() {
+            if (this.disk > 0) {
+                window.location.href = `/buydisk?amount=${this.disk * 5}`;
+            }
+        },
+        buyCPU() {
+            if (this.cpu > 0) {
+                window.location.href = `/buycpu?amount=${this.cpu}`;
+            }
+        }
+    }
+}
+</script>
+
+
+
+        <!-- Footer -->
+        <%- include('./components/footer') %>
+    </div>
+
     <script>
-      async function buyCPU() {
-        let cpu = encodeURIComponent(document.getElementById("cpuAmount").value);
-        document.location.href = `/buycpu?amount=${cpu}`;
-      };
+        // Function to highlight the active tab
+        function setActiveTab() {
+            const currentPath = window.location.pathname;
+            const tabs = document.querySelectorAll('#tabs a');
+            tabs.forEach(tab => {
+                if (tab.getAttribute('href') === currentPath) {
+                    tab.classList.add('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.remove('border-transparent', 'hover:border-gray-300', 'hover:text-white');
+                } else {
+                    tab.classList.remove('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.add('border-transparent', 'hover:border-gray-300', 'hover:text-white');
+                }
+            });
+        }
 
-      async function buyRAM() {
-        let ram = encodeURIComponent(document.getElementById("ramAmount").value);
-        document.location.href = `/buyram?amount=${ram}`;
-      };
+        // Set active tab on page load
+        setActiveTab();
 
-      async function buyDisk() {
-        let disk = encodeURIComponent(document.getElementById("diskAmount").value);
-        document.location.href = `/buydisk?amount=${disk}`;
-      };
+        // For demonstration purposes, simulate changing routes when clicking tabs
+        document.querySelectorAll('#tabs a').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = e.currentTarget.getAttribute('href');
+                history.pushState(null, '', href);
+                window.location.href = href;
+                setActiveTab();
+            });
+        });
 
-      async function buyServers() {
-        let servers = encodeURIComponent(document.getElementById("serversAmount").value);
-        document.location.href = `/buyservers?amount=${servers}`;
-      };
+        // Listen for popstate events (back/forward browser navigation)
+        window.addEventListener('popstate', setActiveTab);
     </script>
-    <!-- End plugin js for this page -->
-    <%- include('./components/scripts') %>
-    <!-- Custom js for this page -->
-    <script src="/assets/js/file-upload.js"></script>
-    <script src="/assets/js/typeahead.js"></script>
-    <script src="/assets/js/select2.js"></script>
-    <!-- End custom js for this page -->
-  </body>
+</body>
 </html>
+<script>
+    var options = {
+      classname: 'loadingbar',
+      id: 'loadingbar'
+    };
+    var nanobar = new Nanobar(options);
+    function simulateLoading() {
+      nanobar.go(10); // Change this value to control the loading speed
+      setTimeout(function() {
+        nanobar.go(50);
+      }, 190); // Delay the progress update
+      setTimeout(function() {
+        nanobar.go(100);
+      }, 400); // Another delay
+    }
+    simulateLoading();
+  </script>
+  <style>
+    .loadingbar .bar {
+      background: #fb923c;
+      -webkit-box-shadow: 0px 4px 38px -15px #fb923c;
+      -moz-box-shadow: 0px 4px 38px -15px #fb923c;
+      box-shadow: 0px 4px 38px -15px #fb923c;
+      height: 1.85px;
+    }
+  </style>

@@ -1,55 +1,166 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('./components/head') %>
-  <body>
-    <div class="container-scroller">
-      <!-- partial:partials/_sidebar.html -->
-      <%- include('./components/sidebar') %>
-      <!-- partial -->
-      <div class="container-fluid page-body-wrapper">
-        <!-- partial:partials/_navbar.html -->
-        <%- include('./components/topnav') %>
-        <!-- partial -->
-        <div style="background-color: #111319" class="main-panel">
-          <div style="background-color: #111319" class="content-wrapper">
+  <head>
+    <%- include('./components/head') %>
+</head>
+<body class="text-white">
+    <%- include('./components/sidebar') %>
 
-           <h2>Join for Rewards</h2>
-           <p class="text-gray">Join discord servers and get extra credits.</p>
-            <div class="row">
-              <% for (let i = 0, len = settings.api.client.j4r.ads.length; i < len; i++) { %>
-                <div class="col-md-6 grid-margin stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title"><%= settings.api.client.j4r.ads[i].name %></h4>
-                      <p class="card-description"> Join this server to receive: <br> <%= settings.api.client.j4r.ads[i].coins %> Coins </p>
-                      <form class="forms-sample">
-                        <a role="button" class="btn btn-primary btn-lg" href="<%= settings.api.client.j4r.ads[i].invite %>" target="_blank">Join Server</a> <a class="btn btn-primary btn-lg" href="../login">Claim reward</a>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              <% } %>
-            </div>
-          </div>
-          <!-- content-wrapper ends -->
-          <%- include('./components/footer') %>
+            <main class="flex-1 overflow-x-hidden overflow-y-auto">
+                <div class="container mx-auto px-8 py-2">
+                    <!-- Content -->
+
+<!-- Main Content -->
+<main class="flex-grow container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center w-full mx-auto pb-4">
+        <!-- Welcome text and subtext on the left -->
+        <div class="flex flex-col">
+            <h1 class="text-xl font-semibold mb-0.5" style="font-family: 'Cabin';">Join for Resources</h1>
+            <p class="text-gray-400 text-md">Join Discord servers for free <%= settings.coinname %>!</p>
         </div>
-        <!-- main-panel ends -->
-      </div>
-      <!-- page-body-wrapper ends -->
+
+        <!-- Breadcrumbs on the right -->
+        <nav aria-label="Breadcrumb" class="inline-flex py-2 px-4 rounded-xl bg-white/5 transition-colors duration-200">
+            <ol role="list" class="flex items-center space-x-2">
+                <li>
+                    <a href="#_" class="text-sm flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition-colors duration-200" aria-current="false">
+                        <svg
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="icon icon-tabler size-4 icons-tabler-outline icon-tabler-home"
+                        >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                        </svg>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="flex items-center">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right size-4 text-zinc-400"
+                    >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M9 6l6 6l-6 6"></path>
+                    </svg>
+                </li>
+                <li>
+                    <a href="#_" class="text-sm flex items-center gap-2 font-medium text-white/80 hover:text-white transition-colors duration-200" aria-current="page">
+                        Join for Resources
+                    </a>
+                </li>
+            </ol>
+        </nav>
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <script src="/assets/vendors/select2/select2.min.js"></script>
-    <script src="/assets/vendors/typeahead.js/typeahead.bundle.min.js"></script>
-    <!-- End plugin js for this page -->
-    <%- include('./components/scripts') %>
-    <!-- Custom js for this page -->
-    <script src="/assets/js/file-upload.js"></script>
-    <script src="/assets/js/typeahead.js"></script>
-    <script src="/assets/js/select2.js"></script>
-    <!-- End custom js for this page -->
-  </body>
+
+
+
+    <div>
+      <% for (let i = 0, len = settings.api.client.j4r.ads.length; i < len; i++) { %>
+        <div class="bg-white/5 rounded-2xl p-6 mb-6">
+            <h3 class="text-xl font-semibold mb-2" style="font-family: 'Cabin';"><%= settings.api.client.j4r.ads[i].name %></h3>
+            <p class="text-gray-300 mb-2">Join it to earn:</p>
+            <p class="text-2xl font-bold text-white"><%= settings.api.client.j4r.ads[i].coins %> <%= settings.coinname %></p>
+            <a href="<%= settings.api.client.j4r.ads[i].invite %>" class="inline-block mt-4 bg-orange-600 text-white px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Join Server</a>
+            <a href="/login" class="inline-block mt-4 bg-orange-600 text-white ml-2 px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Claim Rewards</a>
+        </div>
+        <% } %>
+
+    <div class="bg-white/5 rounded-2xl p-6">
+        <h2 class="text-2xl font-semibold mb-4" style="font-family: 'Cabin';">Add Your Server</h2>
+        <p class="text-gray-300 mb-4">Want to add your Discord server to our program? You can do so for only $9.99/month!</p>
+        <p class="text-gray-300 mb-4">To get started:</p>
+        <ol class="list-decimal list-inside text-gray-300 mb-4">
+            <li>Join the <%= settings.name %> Discord server</li>
+            <li>Open a ticket in the tickets channel</li>
+            <li>Mention that you want to add your server to the "Join for Resources" page</li>
+        </ol>
+        <a href="<%= settings.discordlink %>" class="inline-block bg-orange-600 text-white px-4 py-2 rounded-xl hover:bg-orange-700 transition-colors font-medium">Join <%= settings.name %> Discord</a>
+    </div>
+</main>
+
+<script>
+    // You can add any necessary JavaScript here
+</script>
+
+
+        <!-- Footer -->
+        <%- include('./components/footer') %>
+    </div>
+
+    <script>
+        // Function to highlight the active tab
+        function setActiveTab() {
+            const currentPath = window.location.pathname;
+            const tabs = document.querySelectorAll('#tabs a');
+            tabs.forEach(tab => {
+                if (tab.getAttribute('href') === currentPath) {
+                    tab.classList.add('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.remove('border-transparent', 'hover:border-gray-300', 'hover:text-white');
+                } else {
+                    tab.classList.remove('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.add('border-transparent', 'hover:border-gray-300', 'hover:text-white');
+                }
+            });
+        }
+
+        // Set active tab on page load
+        setActiveTab();
+
+        // For demonstration purposes, simulate changing routes when clicking tabs
+        document.querySelectorAll('#tabs a').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = e.currentTarget.getAttribute('href');
+                history.pushState(null, '', href);
+                window.location.href = href;
+                setActiveTab();
+            });
+        });
+
+        // Listen for popstate events (back/forward browser navigation)
+        window.addEventListener('popstate', setActiveTab);
+    </script>
+</body>
 </html>
+<script>
+    var options = {
+      classname: 'loadingbar',
+      id: 'loadingbar'
+    };
+    var nanobar = new Nanobar(options);
+    function simulateLoading() {
+      nanobar.go(10); // Change this value to control the loading speed
+      setTimeout(function() {
+        nanobar.go(50);
+      }, 190); // Delay the progress update
+      setTimeout(function() {
+        nanobar.go(100);
+      }, 400); // Another delay
+    }
+    simulateLoading();
+  </script>
+  <style>
+    .loadingbar .bar {
+      background: #fb923c;
+      -webkit-box-shadow: 0px 4px 38px -15px #fb923c;
+      -moz-box-shadow: 0px 4px 38px -15px #fb923c;
+      box-shadow: 0px 4px 38px -15px #fb923c;
+      height: 1.85px;
+    }
+  </style>
