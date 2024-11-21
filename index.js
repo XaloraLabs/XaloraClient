@@ -1,7 +1,7 @@
 //
-//  * Heliactyl-Fixed
+//  * XaloraClient
 // 
-//  * Heliactyl 12.7, Codename Gekyume
+//  * Xalora 0.1, Codename Oreo
 //  * Copyright SrydenCloud Limited & Pine Platforms Ltd
 //
 "use strict";
@@ -71,7 +71,7 @@ const Keyv = require("keyv");
 const db = new Keyv(settings.database);
 
 db.on('error', err => {
-  console.log(chalk.red("[Heliactyl] An error has occured when attempting to access the database."))
+  console.log(chalk.red("[Xalora] An error has occured when attempting to access the database."))
 });
 
 module.exports.db = db;
@@ -112,7 +112,7 @@ const listener = app.listen(settings.website.port, async function() {
   console.log(chalk.gray("  "));
   console.log(chalk.gray("  ") + chalk.bgBlue("  APPLICATION IS ONLINE  "));
   console.log(chalk.gray("  "));
-  console.log(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.white(" Checking for updates..."));
+  console.log(chalk.gray("  ") + chalk.cyan("[Xalora]") + chalk.white(" Checking for updates..."));
 
   try {
     let newsettings = JSON.parse(require("fs").readFileSync("./settings.json"));;
@@ -120,15 +120,15 @@ const listener = app.listen(settings.website.port, async function() {
     const latestVersion = response.data.tag_name;
 
     if (latestVersion !== newsettings.version) {
-      console.log(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.yellow(" New version available!"));
-      console.log(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.white(` Current Version: ${newsettings.version}, Latest Version: ${latestVersion}`));
+      console.log(chalk.gray("  ") + chalk.cyan("[Xalora]") + chalk.yellow(" This is a Beta Release!"));
+      console.log(chalk.gray("  ") + chalk.cyan("[Xalora]") + chalk.white(` Current Version: ${newsettings.version}`));
     } else {
-      console.log(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.white(" Your application is up-to-date."));
+      console.log(chalk.gray("  ") + chalk.cyan("[Xalora]") + chalk.white(" Your application is up-to-date."));
     }
   } catch (error) {
-    console.error(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.red(" Error checking for updates:"), error.message);
+    console.error(chalk.gray("  ") + chalk.cyan("[Xalora]") + chalk.red(" Error checking for updates:"), error.message);
   }
-  console.log(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.white(" You can now access the dashboard at ") + chalk.underline(settings.api.client.oauth2.link + "/"));
+  console.log(chalk.gray("  ") + chalk.cyan("[Xalora]") + chalk.white(" You can now access the dashboard at ") + chalk.underline(settings.api.client.oauth2.link + "/"));
 
 });
 
@@ -186,7 +186,7 @@ app.all("*", async (req, res) => {
       delete req.session.password;
       if (!req.session.userinfo || !req.session.pterodactyl) {
         if (err) {
-          console.log(chalk.red(`[Heliactyl] An error has occured on path ${req._parsedUrl.pathname}:`));
+          console.log(chalk.red(`[Xalora] An error has occured on path ${req._parsedUrl.pathname}:`));
           console.log(err);
           return res.send("An error has occured while attempting to load this page. Please contact an administrator to fix this.");
         };
@@ -203,7 +203,7 @@ app.all("*", async (req, res) => {
       );
       if (await cacheaccount.statusText == "Not Found") {
         if (err) {
-          console.log(chalk.red(`[Heliactyl] An error has occured on path ${req._parsedUrl.pathname}:`));
+          console.log(chalk.red(`[Xalora] An error has occured on path ${req._parsedUrl.pathname}:`));
           console.log(err);
           return res.send("An error has occured while attempting to load this page. Please contact an administrator to fix this.");
         };
@@ -214,7 +214,7 @@ app.all("*", async (req, res) => {
       req.session.pterodactyl = cacheaccountinfo.attributes;
       if (cacheaccountinfo.attributes.root_admin !== true) {
         if (err) {
-          console.log(chalk.red(`[Heliactyl] An error has occured on path ${req._parsedUrl.pathname}:`));
+          console.log(chalk.red(`[Xalora] An error has occured on path ${req._parsedUrl.pathname}:`));
           console.log(err);
           return res.send("An error has occured while attempting to load this page. Please contact an administrator to fix this.");
         };
@@ -229,7 +229,7 @@ app.all("*", async (req, res) => {
         delete req.session.newaccount;
         delete req.session.password;
         if (err) {
-          console.log(`[Heliactyl] An error has occured on path ${req._parsedUrl.pathname}:`);
+          console.log(`[Xalora] An error has occured on path ${req._parsedUrl.pathname}:`);
           console.log(err);
           return res.send("An error has occured while attempting to load this page. Please contact an administrator to fix this.");
         };
@@ -248,7 +248,7 @@ app.all("*", async (req, res) => {
     delete req.session.newaccount;
     delete req.session.password;
     if (err) {
-      console.log(chalk.red(`[Heliactyl] An error has occured on path ${req._parsedUrl.pathname}:`));
+      console.log(chalk.red(`[Xalora] An error has occured on path ${req._parsedUrl.pathname}:`));
       console.log(err);
       return res.send("An error has occured while attempting to load this page. Please contact an administrator to fix this.");
     };

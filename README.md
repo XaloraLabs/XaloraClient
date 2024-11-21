@@ -2,7 +2,7 @@
 
 <hr>
 
-# Heliactyl • The modern client panel for Pterodactyl
+# XaloraClient • The modern client panel for Pterodactyl
 
 All features:
 
