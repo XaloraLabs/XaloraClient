@@ -1,6 +1,7 @@
 const indexjs = require("../index.js");
 const adminjs = require('./admin.js');
 const fs = require("fs");
+const Queue = require("../misc/Queue.js");
 const ejs = require("ejs");
 const fetch = require('node-fetch');
 const NodeCache = require("node-cache");
@@ -78,6 +79,43 @@ module.exports.load = async function (app, db) {
       coins: newsettings.api.client.coins.enabled == true ? (await db.get("coins-" + req.query.id) ? await db.get("coins-" + req.query.id) : 0) : null
     });
   });
+
+
+  // GUFT COINS
+  const queue = new Queue()
+  app.get("/giftcoins", async (req, res) => {
+    if (!req.session.pterodactyl) return res.redirect(`/`);
+
+    const coins = parseInt(req.query.coins)
+    if (!coins || !req.query.id) return res.redirect(`/gift-coins?err=MISSINGFIELDS`);
+    if (req.query.id.includes(`${req.session.userinfo.id}`)) return res.redirect(`/gift-coins?err=CANNOTGIFTYOURSELF`)
+
+
+    if (coins < 1) return res.redirect(`/gift-coins?err=TOOLOWCOINS`)
+
+    queue.addJob(async (cb) => {
+
+      const usercoins = await db.get(`coins-${req.session.userinfo.id}`)
+      const othercoins = await db.get(`coins-${req.query.id}`)
+      if (!othercoins) {
+        cb()
+        return res.redirect(`/gift-coins?err=USERDOESNTEXIST`)
+      }
+      if (usercoins < coins) {
+        cb()
+        return res.redirect(`/gift-coins?err=CANTAFFORD`)
+      }
+  
+      await db.set(`coins-${req.query.id}`, othercoins + coins)
+      await db.set(`coins-${req.session.userinfo.id}`, usercoins - coins)
+
+      console.log('Gifted Coins', `${req.session.userinfo.username}#${req.session.userinfo.discriminator} sent ${coins}\ coins to the user with the ID \`${req.query.id}\`.`)
+      cb()
+      return res.redirect(`/gift-coins?success=true`);
+
+    })
+  });
+
 
   app.post("/api/setcoins", async (req, res) => {	
     let settings = await check(req, res);	

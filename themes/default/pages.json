@@ -50,6 +50,7 @@
         "admin/coins": "admin-coins.ejs",
         "redeem": "redeem.ejs",
         "settings": "settings.ejs",
+        "gift-coins": "gift-coins.ejs",
         "j4r": "j4r.ejs",
         "buy": "buy.ejs",
         "afk": "afk.ejs",
@@ -67,6 +68,7 @@
         "/buy",
         "/afk",
         "/store",
+        "/gift",
         "/lv"
     ],
     "mustbeadmin": [
