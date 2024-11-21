@@ -2,7 +2,7 @@
   "version": "1.0",
   "name": "Xalora",
   "letter": "X",
-  "defaulttheme": "pluto",
+  "theme": "pluto",
   "timezone": "Europe/London",
   "coinname": "XAR",
 
