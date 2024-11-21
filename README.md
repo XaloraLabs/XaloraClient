@@ -20,11 +20,6 @@ All features:
 - Admin (set/add/remove coins & resources, create/revoke coupons)
 - API (for bots & other things)
 
-# What happened to 13.x and 15.x?
-
-Due to major issues with both versions, we've decided to return to V12 and continue.
-The latest versions will be on v12 now.
-
 # Warning
 
 We cannot force you to keep "Powered by Heliactyl" in the footer, but please consider keeping it. It helps to get more visibility for the project, which is getting better. We won't provide technical support for installations without the notice in the footer. We may DMCA the website under certain conditions.
