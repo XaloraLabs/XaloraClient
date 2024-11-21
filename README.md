@@ -1,4 +1,4 @@
-!(https://github.com/XaloraLabs/XaloraClient/blob/main/assets/xola.png)
+![Xalora](https://github.com/XaloraLabs/XaloraClient/blob/main/assets/xola.png)
 
 <hr>
 
