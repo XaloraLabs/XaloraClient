@@ -2,7 +2,6 @@
 <html lang="en">
   <%- include('./components/head') %>
   <body>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.html -->
       <%- include('./components/sidebar') %>
@@ -13,8 +12,12 @@
         <!-- partial -->
         <div class="main-panel">
           <div style="background-color: #111319" class="content-wrapper">
-           <h2>Deploy Server</h2>
-           <p class="text-gray">Deploy your new server.</p>
+
+           <div class="container mx-auto mt-1 text-center">
+            <h2 style="display: inline-block; border-bottom: 5px solid #191C24; padding-bottom: 10px; max-width: 200px;">Deploy Server</h2>
+            <p class="text-gray">Deploy your new server.</p>
+           </div>
+
             <% if (req.query.err) { %>
             <div style="border-radius: 15px;" class="alert">
                 <% if (req.query.err == "MISSINGVARIABLE") { %>
@@ -31,10 +34,6 @@
                     Please select a location.
                 <% } else if (req.query.err == "TOOLITTLECOINS") { %>
                     You do not have enough coins to create a server
-                <% } else if (req.query.err == "MUSTCOMPLETECAPTCHA") { %>
-                    You must complete the captcha to prove you are human!
-                <% } else if (req.query.err == "INVALIDCAPTCHARESPONSE") { %>
-                    You submitted an invalid captcha response, try again.
                 <% } else { %>
                     <% if (req.query.num) { %>
                         <% if (!isNaN(parseFloat(req.query.num))) { %>
@@ -72,7 +71,7 @@
                 <% } %>
             </div>
         <% } %>
-            <div class="row">
+            <div class="row justify-content-center">
               <div class="col-md-6 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
@@ -91,7 +90,7 @@
                       </div>
                       <div class="form-group">
                         <label for="InputDisk">Disk (<% if (settings.resources.type == "GB") { %>GBs<% } else { %>MBs<% } %>):</label>
-                        <input style="border-radius: 15px; padding: 8px;" type="number" class="form-control" id="InputDisk" placeholder="<% if (settings.resources.type == "GB") { %>40<% } else { %>40960<% } %>">
+                        <input style="border-radius: 15px; padding: 8px;" type="number" class="form-control" id="InputDisk" placeholder="<% if (settings.resources.type == "GB") { %>2<% } else { %>2048<% } %>">
                       </div>
                       <div class="form-group">
                         <label for="InputLoc">Location:</label><BR>
@@ -108,12 +107,13 @@
                             <option value="<%= name %>"><%= value.display %></option>
                           <% } %>
                         </select>
-                      </div><br>
-                      <a role="button" id="create-btn" class="button"  href="javascript: submitNew()" onclick="this.classList.toggle('button--loading')"><span class="button__text">Deploy
-<% if (settings.servercreation.cost > 1) { %>
-- <%= settings.servercreation.cost %>
-<% } %>
-</span></a><br><br>
+                       </div>
+                        <a role="button" id="create-btn" class="button"  href="javascript: submitNew()" onclick="this.classList.toggle('button--loading')"><span class="button__text">Deploy
+                        <% if (settings.servercreation.cost > 1) { %>
+                        - <%= settings.servercreation.cost %>
+                       <% } %>
+                      </span>
+                     </a>
                     </form>
                   </div>
                 </div>
@@ -129,11 +129,10 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
-    <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
-    <script src="../../assets/vendors/select2/select2.min.js"></script>
-    <script src="../../assets/vendors/typeahead.js/typeahead.bundle.min.js"></script>
+    <script src="/assets/vendors/select2/select2.min.js"></script>
+    <script src="/assets/vendors/typeahead.js/typeahead.bundle.min.js"></script>
     <script>
       async function submitNew() {
         let name = encodeURIComponent(document.getElementById("InputName").value);
@@ -152,11 +151,7 @@
     </script>
     <!-- End plugin js for this page -->
     <!-- inject:js -->
-    <script src="/assets/js/off-canvas.js"></script>
-    <script src="/assets/js/hoverable-collapse.js"></script>
-    <script src="/assets/js/misc.js"></script>
-    <script src="/assets/js/settings.js"></script>
-    <script src="/assets/js/todolist.js"></script>
+    <%- include('./components/scripts') %>
     <!-- endinject -->
     <!-- Custom js for this page -->
     <script src="/assets/js/file-upload.js"></script>

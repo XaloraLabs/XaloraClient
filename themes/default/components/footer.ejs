@@ -4,13 +4,10 @@
 
      ++ WARNING! ++
       
-
-      Removing Heliactyl credits will result in a DMCA takedown against the dashboard if used in public
-      You are free to move the credits if you are theming Heliactyl
+      If you remove the heliactyl, you will remove visibility from the heliactyl fixed. If you're sure you've got it, please credit it somewhere. 
 
       -->
-
-      <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">© <%= settings.name %> | Powered by <a style="color: white" href="https://github.com/OpenHeliactyl/Heliactyl">Heliactyl</a></span>
+      <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">© <%= settings.name %> | Powered by <a style="color: white" href="https://github.com/OvernodeProjets/Heliactyl-fixed/">Heliactyl-fixed</a></span>
       <span class="text-muted d-block text-right text-sm-left d-sm-inline-block"><code style="color: #007fcc;"">v<%= settings.version.replace(/"/g, `\\\\"`) %></code> - <span id="loadtime"></span></span>
     </div>
 </footer>
@@ -21,7 +18,6 @@
          var aftr_loadtime = new Date().getTime();  
          // Time calculating in seconds  
          pgloadtime = (aftr_loadtime - before_loadtime) / 1000  
-  
          document.getElementById("loadtime").innerHTML = pgloadtime + "s";  
      }  
 </script>  

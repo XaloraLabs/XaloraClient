@@ -1,15 +1,12 @@
 const indexjs = require("../index.js");
-const adminjs = require("./admin.js");
+const adminjs = require('./admin.js');
 const settings = require("../settings.json");
+const log = require('../misc/log.js')
+
 const fs = require("fs");
 const ejs = require("ejs");
-const log = require('../misc/log')
 
 module.exports.load = async function(app, db) {
-  let maxram = null;
-  let maxcpu = null;
-  let maxservers = null;
-  let maxdisk = null;
   app.get("/buyram", async (req, res) => {
     let newsettings = await enabledCheck(req, res);
     if (newsettings) {
@@ -68,7 +65,7 @@ module.exports.load = async function(app, db) {
 
       adminjs.suspend(req.session.userinfo.id);
 
-      log(`Resources Purchased`, `${req.session.userinfo.username}#${req.session.userinfo.discriminator} bought ${per}\MB ram from the store for \`${cost}\` Credits.`)
+      log(`ram purchased`, `${req.session.userinfo.username}#${req.session.userinfo.discriminator} bought ${per}\MB ram from the store for \`${cost}\` Credits.`)
 
       res.redirect((theme.settings.redirect.purchaseram ? theme.settings.redirect.purchaseram : "/") + "?err=none");
     }
@@ -132,7 +129,7 @@ module.exports.load = async function(app, db) {
 
       adminjs.suspend(req.session.userinfo.id);
 
-      log(`Resources Purchased`, `${req.session.userinfo.username}#${req.session.userinfo.discriminator} bought ${per}MB disk from the store for \`${cost}\` Credits.`)
+      log(`disk purchased`, `${req.session.userinfo.username}#${req.session.userinfo.discriminator} bought ${per}MB disk from the store for \`${cost}\` Credits.`)
 
       res.redirect((theme.settings.redirect.purchasedisk ? theme.settings.redirect.purchasedisk : "/") + "?err=none");
     }
@@ -196,7 +193,7 @@ module.exports.load = async function(app, db) {
 
       adminjs.suspend(req.session.userinfo.id);
 
-      log(`Resources Purchased`, `${req.session.userinfo.username}#${req.session.userinfo.discriminator} bought ${per}% CPU from the store for \`${cost}\` Credits.`)
+      log(`cpu purchased`, `${req.session.userinfo.username}#${req.session.userinfo.discriminator} bought ${per}% CPU from the store for \`${cost}\` Credits.`)
 
       res.redirect((theme.settings.redirect.purchasecpu ? theme.settings.redirect.purchasecpu : "/") + "?err=none");
     }
@@ -260,7 +257,7 @@ module.exports.load = async function(app, db) {
 
       adminjs.suspend(req.session.userinfo.id);
 
-      log(`Resources Purchased`, `${req.session.userinfo.username}#${req.session.userinfo.discriminator} bought ${per} Slots from the store for \`${cost}\` Credits.`)
+      log(`server purchased`, `${req.session.userinfo.username}#${req.session.userinfo.discriminator} bought ${per} Slots server from the store for \`${cost}\` Credits.`)
 
       res.redirect((theme.settings.redirect.purchaseservers ? theme.settings.redirect.purchaseservers : "/") + "?err=none");
     }

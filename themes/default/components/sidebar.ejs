@@ -1,94 +1,179 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
-    <div style="background-color: #212530" class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-     <a style="color: white" class="sidebar-brand brand-logo" href="/dashboard"><%= settings.name %></a>
-    </div>
-    <ul class="nav">
-          <li class="nav-item nav-category">
-            <span class="nav-link text-white"><h4>Management</h4></span>
-          </li>
+  <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top" style="background-color: #212530">
+    <a class="sidebar-brand brand-logo" style="color: white" href="/dashboard"><%= settings.name %></a>
+  </div>
+  <ul class="nav">
+    <% if (settings.category.management === true) { %>
+        <li class="nav-item nav-category">
+          <span class="nav-link text-white"><h4>Management</h4></span>
+        </li>
+    <% } %>
+
+    <% if (settings.pages['dashboard'] === true) { %>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="../dashboard">
+        <span class="menu-icon">
+          <i class="mdi mdi-speedometer d-flex justify-content-center align-items-center"></i>
+        </span>
+        <span class="menu-title">Dashboard</span>
+      </a>
+    </li>
+    <% } %>
+    <% if (settings.pages['your servers'] === true) { %>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="../servers">
+        <span class="menu-icon">
+          <i class="mdi mdi-file-document-box d-flex justify-content-center align-items-center"></i>
+        </span>
+        <span class="menu-title">Your Servers</span>
+      </a>
+    </li>
+    <% } %>
+    <% if (settings.pages['account settings'] === true) { %>
       <li class="nav-item menu-items">
-        <a class="nav-link" href="../dashboard">
-          <span class="menu-title">Dashboard</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../servers">
-          <span class="menu-title">Your Servers</span>
-        </a>
-      </li>
-        <li class="nav-item menu-items">
-        <a class="nav-link" href="../settings">
-          <span class="menu-title">Account Settings</span>
-        </a>
-      </li>
-          <li class="nav-item nav-category">
-            <span class="nav-link text-white"><h4>Coins & Resources</h4></span>
-          </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../store">
-          <span class="menu-title">Resources Store</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../afk">
-          <span class="menu-title">AFK Page</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../lv">
-          <span class="menu-title">Linkvertise</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../j4r">
-          <span class="menu-title">Join for Rewards</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../gift-coins">
-          <span class="menu-title">Gift Coins</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../gift-resources">
-          <span class="menu-title">Gift Resources</span>
-        </a>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="../redeem">
-          <span class="menu-title">Redeem Coupon</span>
-        </a>
-      </li>
-                  <% if (settings.stripe.enabled == true) { %>
-          <li class="nav-item nav-category">
-            <span class="nav-link text-white"><h4>Billing</h4></span>
-          </li>
+      <a class="nav-link" href="../settings">
+        <span class="menu-icon">
+          <i class="mdi mdi-settings d-flex justify-content-center align-items-center"></i>
+        </span>
+        <span class="menu-title">Account Settings</span>
+      </a>
+    </li>
+    <% } %>
+
+    <% if (settings.category['coins & resources'] === true) { %>
+        <li class="nav-item nav-category">
+          <span class="nav-link text-white"><h4>Coins & Resources</h4></span>
+        </li>
+    <% } %>
+
+    <% if (settings.pages['resources store'] === true) { %>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="../store">
+        <span class="menu-icon">
+          <i class="mdi mdi-store d-flex justify-content-center align-items-center"></i>
+        </span>
+        <span class="menu-title">Resources Store</span>
+      </a>
+    </li>
+    <% } %>
+    <% if (settings.pages['gift coins'] === true) { %>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="../gift-coins">
+        <span class="menu-icon">
+          <i class="mdi mdi-coin d-flex justify-content-center align-items-center"></i>
+        </span>
+        <span class="menu-title">Gift Coins</span>
+      </a>
+    </li>
+    <% } %>
+    <% if (settings.pages['gift resources'] === true) { %>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="../gift-resources">
+        <span class="menu-icon">
+          <i class="mdi mdi-gift d-flex justify-content-center align-items-center"></i>
+        </span>
+        <span class="menu-title">Gift Resources</span>
+      </a>
+    </li>
+    <% } %>
+    <% if (settings.pages['redeem coupon'] === true) { %>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="../redeem">
+        <span class="menu-icon">
+          <i class="mdi mdi-ticket-percent d-flex justify-content-center align-items-center"></i>
+        </span>
+        <span class="menu-title">Redeem Coupon</span>
+      </a>
+    </li>
+    <% } %>
+    <% if (settings.stripe.enabled == true) { %>
       <li class="nav-item menu-items">
         <a class="nav-link" href="../buy">
+          <span class="menu-icon">
+            <i class="mdi mdi-cart-outline d-flex justify-content-center align-items-center"></i>
+          </span>
           <span class="menu-title">Buy Coins</span>
         </a>
       </li>
-                    <% } %>
-          <li class="nav-item nav-category">
-            <span class="nav-link text-white"><h4>Miscellaneous</h4></span>
-          </li>
+      <% } %>
+    <% if (settings.pages['resources store'] === true) { %>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="../store">
+        <span class="menu-icon">
+          <i class="mdi mdi-store d-flex justify-content-center align-items-center"></i>
+        </span>
+        <span class="menu-title">Resources Store</span>
+      </a>
+    </li>
+    <% } %>
+    <% if (settings.pages['redeem coupon'] === true) { %>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="../redeem">
+        <span class="menu-icon">
+          <i class="mdi mdi-ticket-percent d-flex justify-content-center align-items-center"></i>
+        </span>
+        <span class="menu-title">Redeem Coupon</span>
+      </a>
+    </li>
+    <% } %>
+
+      <% if (settings.pages['join for rewards'] === true) { %>
+      <li class="nav-item menu-items">
+        <a class="nav-link" href="../j4r">
+          <span class="menu-icon">
+            <i class="mdi mdi-gift-outline d-flex justify-content-center align-items-center"></i>
+          </span>
+          <span class="menu-title">Join for Rewards</span>
+        </a>
+      </li>
+      <% } %>
+    <% if (settings.pages['afk page'] === true) { %>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="../afk">
+        <span class="menu-icon">
+          <i class="mdi mdi-coin d-flex justify-content-center align-items-center"></i>
+        </span>
+        <span class="menu-title">AFK Page</span>
+      </a>
+    </li>
+    <% } %>
+    <% if (settings.pages['linkvertise'] === true) { %>
+    <li class="nav-item menu-items">
+      <a class="nav-link" href="../lv">
+        <span class="menu-icon">
+          <i class="mdi mdi-link-variant d-flex justify-content-center align-items-center"></i>
+        </span>
+        <span class="menu-title">Linkvertise</span>
+      </a>
+    </li>
+    <% } %>
+        <% if (settings.category['miscellaneous'] === true) { %>
+        <li class="nav-item nav-category">
+          <span class="nav-link text-white"><h4>Miscellaneous</h4></span>
+        </li>
+        <% } %>
+
         <% if (pterodactyl.root_admin == true) { %>
           <li class="nav-item menu-items">
           <a class="nav-link" href="../admin">
+            <span class="menu-icon">
+              <i class="mdi mdi-account d-flex justify-content-center align-items-center"></i>
+            </span>
             <span class="menu-title">Admin</span>
             </a>
           </li>
         <% } %>
-        <li class="nav-item menu-items">
-          <a class="nav-link" href="../panel">
-            <span class="menu-title">Panel</span>
-          </a>
-        </li>
-        <li class="nav-item menu-items">
-          <a class="nav-link" href="../logout">
-            <span class="menu-title">Logout</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-    
+
+      <% if (settings.pages['panel'] === true) { %>
+      <li class="nav-item menu-items">
+        <a class="nav-link" href="../panel">
+          <span class="menu-icon">
+            <i class="mdi mdi-view-list d-flex justify-content-center align-items-center"></i>
+          </span>
+          <span class="menu-title">Panel</span>
+        </a>
+      </li>
+      <% } %>
+
+    </ul>
+  </nav>

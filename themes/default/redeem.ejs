@@ -12,31 +12,36 @@
         <!-- partial -->
         <div class="main-panel">
           <div style="background-color: #111319" class="content-wrapper">
-           <h2>Redeem Coupon</h2>
-           <p class="text-gray">Redeem a coupon.</p>
-						<% if (req.query.err) { %>
-            <div style="border-radius: 15px;" class="alert">
-							<% if (req.query.err == "MISSINGCOUPONCODE") { %>
-								You have not provided a coupon code.
-							<% } else if (req.query.err == "INVALIDCOUPONCODE") { %>
-								Invalid coupon code. Was it claimed already?
-							<% } else if (req.query.err == "SUCCESSCOUPONCODE") { %>
-								Success!
-							<% } else { %>
-								Coupon failure.
-							<% } %>
-							</div>
-						<% } %>
-            <div class="row">
+          
+              <div class="container mx-auto mt-1 text-center">
+                <h2 style="display: inline-block; border-bottom: 5px solid #191C24; padding-bottom: 10px; max-width: 300px; height: 50px; line-height: 1.5; ">Redeem Coupon</h2>
+                <p class="text-gray">Redeem a coupon.</p>
+               </div>
+
+           <% const alertClass = req.query.err === "SUCCESSCOUPONCODE" ? "alert-success" : "alert-danger"; %>
+         <% if (req.query.err) { %>
+           <div style="border-radius: 15px;" class="alert <%= alertClass %>">
+             <% if (req.query.err == "MISSINGCOUPONCODE") { %>
+               You have not provided a coupon code.
+             <% } else if (req.query.err == "INVALIDCOUPONCODE") { %>
+               Invalid coupon code. Was it claimed already?
+             <% } else if (req.query.err == "SUCCESSCOUPONCODE") { %>
+               Success!
+             <% } else { %>
+               Coupon failure.
+             <% } %>
+           </div>
+         <% } %>
+         
+            <div class="row justify-content-center">
               <div class="col-md-6 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-									<form action="/coupon_redeem">
-                                           <label for="code">Code:</label>
-											<input style="border-radius: 15px; padding: 8px;" type="text" class="form-control" placeholder="Enter your coupon code here" name="code">
-											<br>
-											<button class="btn btn-primary btn-lg">Redeem</button>
-									</form>
+		   <form action="/coupon_redeem">
+                     <label for="code">Code:</label>
+                     <input style="border-radius: 15px; padding: 8px; margin-bottom: 10px;" type="text" class="form-control" placeholder="Enter your coupon code here" name="code">
+		    <button class="btn btn-primary btn-lg">Redeem</button>
+		   </form>
                   </div>
                 </div>
               </div>
@@ -51,29 +56,13 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
-    <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
-    <script src="../../assets/vendors/select2/select2.min.js"></script>
-    <script src="../../assets/vendors/typeahead.js/typeahead.bundle.min.js"></script>
-    <script>
-      async function submitNew() {
-        let name = encodeURIComponent(document.getElementById("InputName").value);
-        let egg = encodeURIComponent(document.getElementById("InputEgg").value);
-        let ram = encodeURIComponent(document.getElementById("InputRAM").value);
-        let disk = encodeURIComponent(document.getElementById("InputDisk").value);
-        let cpu = encodeURIComponent(document.getElementById("InputCPU").value);
-        let location = encodeURIComponent(document.getElementById("InputLoc").value);
-        document.location.href = `/create?name=${name}&egg=${egg}&ram=${ram}&disk=${disk}&cpu=${cpu}&location=${location}`;
-      };
-    </script>
+    <script src="/assets/vendors/select2/select2.min.js"></script>
+    <script src="/assets/vendors/typeahead.js/typeahead.bundle.min.js"></script>
     <!-- End plugin js for this page -->
     <!-- inject:js -->
-    <script src="/assets/js/off-canvas.js"></script>
-    <script src="/assets/js/hoverable-collapse.js"></script>
-    <script src="/assets/js/misc.js"></script>
-    <script src="/assets/js/settings.js"></script>
-    <script src="/assets/js/todolist.js"></script>
+    <%- include('./components/scripts') %>
     <!-- endinject -->
     <!-- Custom js for this page -->
     <script src="/assets/js/file-upload.js"></script>

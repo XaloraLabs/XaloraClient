@@ -11,21 +11,21 @@ if (settings.api.client.oauth2.callbackpath.slice(0, 1) !== "/")
 if (settings.pterodactyl.domain.slice(-1) == "/")
   settings.pterodactyl.domain = settings.pterodactyl.domain.slice(0, -1);
 
-const fetch = require('node-fetch');
-
 const indexjs = require("../index.js");
 const log = require('../misc/log')
-
-const fs = require("fs");
-const { renderFile } = require('ejs')
 const vpnCheck = require("../misc/vpnCheck");
 
+const { renderFile } = require('ejs');
+const fetch = require('node-fetch');
+
+
 module.exports.load = async function (app, db) {
+  const settings = require("../settings.json");
+  
   app.get("/login", async (req, res) => {
     if (req.query.redirect) req.session.redirect = "/" + req.query.redirect;
-    let newsettings = JSON.parse(fs.readFileSync("./settings.json"));
-    res.redirect(`https://discord.com/api/oauth2/authorize?client_id=${settings.api.client.oauth2.id}&redirect_uri=${encodeURIComponent(settings.api.client.oauth2.link + settings.api.client.oauth2.callbackpath)}&response_type=code&scope=identify%20email${newsettings.api.client.bot.joinguild.enabled == true ? "%20guilds.join" : ""}${newsettings.api.client.j4r.enabled == true ? "%20guilds" : ""}${settings.api.client.oauth2.prompt == false ? "&prompt=none" : (req.query.prompt ? (req.query.prompt == "none" ? "&prompt=none" : "") : "")}`);
-  });
+    res.redirect(`https://discord.com/api/oauth2/authorize?client_id=${settings.api.client.oauth2.id}&redirect_uri=${encodeURIComponent(settings.api.client.oauth2.link + settings.api.client.oauth2.callbackpath)}&response_type=code&scope=identify%20email${settings.api.client.bot.joinguild.enabled == true ? "%20guilds.join" : ""}${settings.api.client.j4r.enabled == true ? "%20guilds" : ""}${settings.api.client.oauth2.prompt == false ? "&prompt=none" : (req.query.prompt ? (req.query.prompt == "none" ? "&prompt=none" : "") : "")}`);
+});
 
   app.get("/logout", (req, res) => {
     let theme = indexjs.get(req);
@@ -141,7 +141,7 @@ nanobar.go(100);
           const ipuser = await db.get(`ipuser-${ip}`)
           if (ipuser && ipuser !== userinfo.id) {
             renderFile(
-              `./themes/${newsettings.defaulttheme}/alerts/alt.ejs`,
+              `./themes/${newsettings.theme}/alerts/alt.ejs`,
               {
                 settings: newsettings,
                 db,
@@ -230,7 +230,7 @@ nanobar.go(100);
           }
         }
 	      
-        //give role on login
+        // Give a discord role on login
         if (newsettings.api.client.bot.giverole.enabled == true){
           if (typeof newsettings.api.client.bot.giverole.guildid == "string" && typeof newsettings.api.client.bot.giverole.roleid == "string") {
             await fetch(
@@ -362,11 +362,8 @@ nanobar.go(100);
 };
 
 function makeid(length) {
-  let result = '';
-  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let result = Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * charactersLength))).join('');
   return result;
 }

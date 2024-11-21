@@ -1,10 +1,9 @@
 //
-// Heliactyl 12.7, Codename Gekyume
+//  * Heliactyl-Fixed
 // 
+//  * Heliactyl 12.7, Codename Gekyume
 //  * Copyright SrydenCloud Limited & Pine Platforms Ltd
-//  * Please read the "License" file
 //
-
 "use strict";
 
 // Load packages.
@@ -13,17 +12,17 @@ const fs = require("fs");
 const fetch = require('node-fetch');
 const chalk = require("chalk");
 const axios = require("axios");
-const arciotext = require('./stuff/arciotext')
+
 global.Buffer = global.Buffer || require('buffer').Buffer;
 
 if (typeof btoa === 'undefined') {
   global.btoa = function (str) {
-    return new Buffer(str, 'binary').toString('base64');
+    return new Buffer.from(str, 'binary').toString('base64');
   };
 }
 if (typeof atob === 'undefined') {
   global.atob = function (b64Encoded) {
-    return new Buffer(b64Encoded, 'base64').toString('binary');
+    return new Buffer.from(b64Encoded, 'base64').toString('binary');
   };
 }
 
@@ -31,7 +30,7 @@ if (typeof atob === 'undefined') {
 
 const settings = require("./settings.json");
 
-const defaultthemesettings = {
+const themesettings = {
   index: "index.ejs",
   notfound: "index.ejs",
   redirect: {},
@@ -44,8 +43,6 @@ const defaultthemesettings = {
 module.exports.renderdataeval =
   `(async () => {
    let newsettings = JSON.parse(require("fs").readFileSync("./settings.json"));
-	const JavaScriptObfuscator = require('javascript-obfuscator');
-
  
     let renderdata = {
       req: req,
@@ -58,24 +55,13 @@ module.exports.renderdataeval =
         cpu: 0,
         servers: 0
       }),
-		packages: req.session.userinfo ? newsettings.api.client.packages.list[await db.get("package-" + req.session.userinfo.id) ? await db.get("package-" + req.session.userinfo.id) : newsettings.api.client.packages.default] : null,
+	  	packages: req.session.userinfo ? newsettings.api.client.packages.list[await db.get("package-" + req.session.userinfo.id) ? await db.get("package-" + req.session.userinfo.id) : newsettings.api.client.packages.default] : null,
       coins: newsettings.api.client.coins.enabled == true ? (req.session.userinfo ? (await db.get("coins-" + req.session.userinfo.id) ? await db.get("coins-" + req.session.userinfo.id) : 0) : null) : null,
       pterodactyl: req.session.pterodactyl,
       theme: theme.name,
       extra: theme.settings.variables,
-	  db: db
+	    db: db
     };
-    if (newsettings.api.arcio.enabled == true && req.session.arcsessiontoken) {
-      renderdata.arcioafktext = JavaScriptObfuscator.obfuscate(\`
-        let token = "\${req.session.arcsessiontoken}";
-        let everywhat = \${newsettings.api.arcio["afk page"].every};
-        let gaincoins = \${newsettings.api.arcio["afk page"].coins};
-        let arciopath = "\${newsettings.api.arcio["afk page"].path.replace(/\\\\/g, "\\\\\\\\").replace(/"/g, "\\\\\\"")}";
-
-        \${arciotext}
-      \`);
-    };
-
     return renderdata;
   })();`;
 
@@ -85,18 +71,16 @@ const Keyv = require("keyv");
 const db = new Keyv(settings.database);
 
 db.on('error', err => {
-  console.log(chalk.red("[DATABASE] An error has occured when attempting to access the database."))
+  console.log(chalk.red("[Heliactyl] An error has occured when attempting to access the database."))
 });
 
 module.exports.db = db;
 
-// Load websites.
+// Load express addons.
 
 const express = require("express");
 const app = express();
 require('express-ws')(app);
-
-// Load express addons.
 
 const ejs = require("ejs");
 const session = require("express-session");
@@ -106,7 +90,11 @@ const indexjs = require("./index.js");
 
 module.exports.app = app;
 
-app.use(session({secret: settings.website.secret, resave: false, saveUninitialized: false}));
+app.use(session({
+  secret: settings.website.secret,
+  resave: false,
+  saveUninitialized: false
+  }));
 
 app.use(express.json({
   inflate: true,
@@ -117,12 +105,31 @@ app.use(express.json({
   verify: undefined
 }));
 
-const listener = app.listen(settings.website.port, function() {
+// Load the console
+
+const listener = app.listen(settings.website.port, async function() {
   console.clear();
   console.log(chalk.gray("  "));
   console.log(chalk.gray("  ") + chalk.bgBlue("  APPLICATION IS ONLINE  "));
   console.log(chalk.gray("  "));
-  console.log(chalk.gray("  ") + chalk.cyan("[SYSTEM]") + chalk.white(" You can now access the dashboard at ") + chalk.underline(settings.api.client.oauth2.link + "/"));
+  console.log(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.white(" Checking for updates..."));
+
+  try {
+    let newsettings = JSON.parse(require("fs").readFileSync("./settings.json"));;
+    const response = await axios.get(`https://api.github.com/repos/OvernodeProjets/Heliactyl-fixed/releases/latest`);
+    const latestVersion = response.data.tag_name;
+
+    if (latestVersion !== newsettings.version) {
+      console.log(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.yellow(" New version available!"));
+      console.log(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.white(` Current Version: ${newsettings.version}, Latest Version: ${latestVersion}`));
+    } else {
+      console.log(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.white(" Your application is up-to-date."));
+    }
+  } catch (error) {
+    console.error(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.red(" Error checking for updates:"), error.message);
+  }
+  console.log(chalk.gray("  ") + chalk.cyan("[Heliactyl]") + chalk.white(" You can now access the dashboard at ") + chalk.underline(settings.api.client.oauth2.link + "/"));
+
 });
 
 var cache = false;
@@ -159,11 +166,15 @@ apifiles.forEach(file => {
 	apifile.load(app, db);
 });
 
+ // Load route
+
 app.all("*", async (req, res) => {
-  if (req.session.pterodactyl) if (req.session.pterodactyl.id !== await db.get("users-" + req.session.userinfo.id)) return res.redirect("/login?prompt=none");
+  if (req.session.pterodactyl && req.session.pterodactyl.id !== await db.get("users-" + req.session.userinfo.id)) {
+    return res.redirect("/login?prompt=none");
+  }
+
   let theme = indexjs.get(req);
-let newsettings = JSON.parse(require("fs").readFileSync("./settings.json"));
-if (newsettings.api.arcio.enabled == true) req.session.arcsessiontoken = Math.random().toString(36).substring(2, 15);
+  
   if (theme.settings.mustbeloggedin.includes(req._parsedUrl.pathname)) if (!req.session.userinfo || !req.session.pterodactyl) return res.redirect("/login" + (req._parsedUrl.pathname.slice(0, 1) == "/" ? "?redirect=" + req._parsedUrl.pathname.slice(1) : ""));
   if (theme.settings.mustbeadmin.includes(req._parsedUrl.pathname)) {
     ejs.renderFile(
@@ -175,7 +186,7 @@ if (newsettings.api.arcio.enabled == true) req.session.arcsessiontoken = Math.ra
       delete req.session.password;
       if (!req.session.userinfo || !req.session.pterodactyl) {
         if (err) {
-          console.log(chalk.red(`[WEBSITE] An error has occured on path ${req._parsedUrl.pathname}:`));
+          console.log(chalk.red(`[Heliactyl] An error has occured on path ${req._parsedUrl.pathname}:`));
           console.log(err);
           return res.send("An error has occured while attempting to load this page. Please contact an administrator to fix this.");
         };
@@ -192,7 +203,7 @@ if (newsettings.api.arcio.enabled == true) req.session.arcsessiontoken = Math.ra
       );
       if (await cacheaccount.statusText == "Not Found") {
         if (err) {
-          console.log(chalk.red(`[WEBSITE] An error has occured on path ${req._parsedUrl.pathname}:`));
+          console.log(chalk.red(`[Heliactyl] An error has occured on path ${req._parsedUrl.pathname}:`));
           console.log(err);
           return res.send("An error has occured while attempting to load this page. Please contact an administrator to fix this.");
         };
@@ -203,7 +214,7 @@ if (newsettings.api.arcio.enabled == true) req.session.arcsessiontoken = Math.ra
       req.session.pterodactyl = cacheaccountinfo.attributes;
       if (cacheaccountinfo.attributes.root_admin !== true) {
         if (err) {
-          console.log(chalk.red(`[WEBSITE] An error has occured on path ${req._parsedUrl.pathname}:`));
+          console.log(chalk.red(`[Heliactyl] An error has occured on path ${req._parsedUrl.pathname}:`));
           console.log(err);
           return res.send("An error has occured while attempting to load this page. Please contact an administrator to fix this.");
         };
@@ -218,7 +229,7 @@ if (newsettings.api.arcio.enabled == true) req.session.arcsessiontoken = Math.ra
         delete req.session.newaccount;
         delete req.session.password;
         if (err) {
-          console.log(`[WEBSITE] An error has occured on path ${req._parsedUrl.pathname}:`);
+          console.log(`[Heliactyl] An error has occured on path ${req._parsedUrl.pathname}:`);
           console.log(err);
           return res.send("An error has occured while attempting to load this page. Please contact an administrator to fix this.");
         };
@@ -237,7 +248,7 @@ if (newsettings.api.arcio.enabled == true) req.session.arcsessiontoken = Math.ra
     delete req.session.newaccount;
     delete req.session.password;
     if (err) {
-      console.log(chalk.red(`[WEBSITE] An error has occured on path ${req._parsedUrl.pathname}:`));
+      console.log(chalk.red(`[Heliactyl] An error has occured on path ${req._parsedUrl.pathname}:`));
       console.log(err);
       return res.send("An error has occured while attempting to load this page. Please contact an administrator to fix this.");
     };
@@ -247,20 +258,20 @@ if (newsettings.api.arcio.enabled == true) req.session.arcsessiontoken = Math.ra
 });
 
 module.exports.get = function(req) {
-  let defaulttheme = JSON.parse(fs.readFileSync("./settings.json")).defaulttheme;
+  let theme = JSON.parse(fs.readFileSync("./settings.json")).theme;
   let tname = encodeURIComponent(getCookie(req, "theme"));
   let name = (
     tname ?
       fs.existsSync(`./themes/${tname}`) ?
         tname
-      : defaulttheme
-    : defaulttheme
+      : theme
+    : theme
   )
   return {
     settings: (
       fs.existsSync(`./themes/${name}/pages.json`) ?
         JSON.parse(fs.readFileSync(`./themes/${name}/pages.json`).toString())
-      : defaultthemesettings
+      : themesettings
     ),
     name: name
   };

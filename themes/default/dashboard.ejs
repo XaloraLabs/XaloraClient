@@ -11,17 +11,16 @@
         <%- include('./components/topnav') %>
         <!-- partial -->
         <div style="background-color: #111319" class="main-panel">
+          
           <div style="background-color: #111319" class="content-wrapper">
 
-           <h2>Dashboard</h2>
-           <p class="text-gray">View your resources & other things here.</p>
-
+            <div class="container mx-auto mt-1 text-center">
+              <h2 style="display: inline-block; border-bottom: 5px solid #191C24; padding-bottom: 10px; max-width: 200px;">Dashboard</h2>
+              <p class="text-gray">View your resources & other things here.</p>
+            </div>
+            
             <%- include('./components/alert') %>
-            <% if (req.query.err == "ALREADY_OPEN") { %>
-                <div class="alert">
-                	You can't open multiple tabs!
-            	</div>
-            <% } else if (req.query.err === "CANNOTAFFORDRENEWAL") { %>
+            <% if (req.query.err === "CANNOTAFFORDRENEWAL") { %>
               <div class="alert" style="background-color: #007fcc; border-radius: 15px;">
                 You need at least <%= settings.renewals.cost %> coins to purchase a server renewal!
             </div>
@@ -41,33 +40,136 @@
                 <% } %>
             </div>
         <% } %>
+        
         <%- include('./components/status') %>
             <div class="row ">
               <div class="col-md-6 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <%- include('./boxes/1') %>
+                    <h4 class="card-title">Upgrade Resources</h4>
+                    <h5>If you require more resources for your server, click the button below</h5><br>
+                    <a class="btn btn-primary btn-lg" href="../store">Buy Extra Resources</a>
                     </div>
                   </div>
                 </div>
               <div class="col-md-6 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <%- include('./boxes/2') %>
+                    <h4 class="card-title">Deploy Servers</h4>
+                    <h5>If you would like to deploy a server, either go to Manage Servers -> Deploy Server or click the button below</h5><br>
+                    <a class="btn btn-primary btn-lg" href="../servers/new">Deploy Server</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row ">
+                <div class="col-12 grid-margin">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Server Information</h4>
+                      <div class="table-responsive">
+
+                        <table class="table">
+                          <thead>
+                              <tr>
+                                  <th>Server Name</th>
+                                  <% if (settings.renewals.status) { %> 
+                                  <th>Time Left</th>
+                                  <% } %>   
+                                  <th>CPU</th>
+                                  <th>RAM</th>
+                                  <th>Disk</th>
+                                  <th>Options</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <% if (pterodactyl.relationships.servers.data.length == 0) { %>
+                                  <tr>
+                                      <td colspan="6">You do not own any servers! Why not create one?</td>
+                                  </tr>
+                              <% } else { %>
+                                  <% for (let i = 0, len = pterodactyl.relationships.servers.data.length; i < len; i++) { %>
+                                      <tr>
+
+                                          <!-- Server Name --> 
+                                          <td>
+                                              <span class="pl-2"><%= pterodactyl.relationships.servers.data[i].attributes.name.length > 40 ? pterodactyl.relationships.servers.data[i].attributes.name.slice(0, 40) + "..." : pterodactyl.relationships.servers.data[i].attributes.name %></span>
+                                          </td>
+                                          <!-- END Server Name --> 
+                                          
+                                          <!-- Time Left --> 
+                                          <% if (settings.renewals.status) { %> 
+                                          <td>
+                                            <span id="time-left-<%= pterodactyl.relationships.servers.data[i].attributes.id %>">Loading...</span>
+                                            <script>
+                                                fetch(`/api/renewalstatus?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>`)
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        const timeLeftElement = document.getElementById('time-left-<%= pterodactyl.relationships.servers.data[i].attributes.id %>');
+                                                        if (data.renewable) {
+                                                            if (data.text.includes("day")) {
+                                                                const regexResult = /(\d+) days and (\d+\.\d+) hours/.exec(data.text);
+                                                                if (regexResult) {
+                                                                    const days = parseInt(regexResult[1]);
+                                                                    const hours = Math.floor(parseFloat(regexResult[2]));
+                                                                    const minutes = Math.round((parseFloat(regexResult[2]) - hours) * 60);
+                                                                    const formattedTime = days > 0 ? `${days} days, ${hours} hours, and ${minutes} minutes` : `${hours} hours and ${minutes} minutes`;
+                                                                    timeLeftElement.innerText = formattedTime;
+                                                                } else {
+                                                                    timeLeftElement.innerText = data.text;
+                                                                } 
+                                                              } else {
+                                                                const timeParts = data.text.split(" ");
+                                                                const hours = Math.floor(parseFloat(timeParts[0]));
+                                                                const minutes = Math.round((parseFloat(timeParts[0]) - hours) * 60);
+                                                                timeLeftElement.innerText = `${hours} hours and ${minutes} minutes`;
+                                                            }
+                                                        } else {
+                                                            timeLeftElement.innerText = 'Not Renewable';
+                                                        }
+                                                    });
+                                            </script>
+                                        </td>         
+                                        <% } %>                                                                      
+                                          <!-- END Time Left --> 
+
+                                          <!-- Information CPU,RAM and Disk --> 
+                                          <td><%= pterodactyl.relationships.servers.data[i].attributes.limits.cpu %>%</td>
+                                          <td><%= pterodactyl.relationships.servers.data[i].attributes.limits.memory %>MB</td>
+                                          <td><%= pterodactyl.relationships.servers.data[i].attributes.limits.disk %>MB</td>
+                                          <td>
+                                          <!-- END Information CPU,RAM and Disk --> 
+
+                                          <!-- Options --> 
+                                           <div class="btn-g">
+                                               <a role="button" class="badge badge-background-blue" href="/panel">Link</a>
+                                               <a role="button" class="badge badge-background-green" href="/renew?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>">Renew</a>
+                                               <a role="button" class="badge badge-background-orange" href="/servers/edit?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>">Edit</a>
+                                               <a role="button" class="badge badge-background-red" onclick="if (confirm('Are you sure you want to delete the server? This action is irreversible.')) { window.location.href='/delete?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>' }">Delete</a>
+                                           </div>
+                                          <!-- END Options --> 
+
+                                          </td>
+                                      </tr>
+                                  <% } %>
+                              <% } %>                            
+                          </tbody>
+                      </table>                      
+                        
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-         
-          <!-- content-wrapper ends -->
-          <%- include('./components/footer') %>
-        </div>
-        <!-- main-panel ends -->
-      </div>
-      <!-- page-body-wrapper ends -->
+           <!-- content-wrapper ends -->
+         <%- include('./components/footer') %>
+       </div>
+     <!-- main-panel ends -->
     </div>
-    <!-- container-scroller -->
-    <%- include('./components/scripts') %>
-  </body>
-</html>
+   <!-- page-body-wrapper ends -->
+  </div>
+ <!-- container-scroller -->
+ <%- include('./components/scripts') %>
+ </body>
+</html>            

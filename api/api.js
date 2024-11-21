@@ -1,12 +1,13 @@
 const indexjs = require("../index.js");
-const adminjs = require("./admin.js");
+const adminjs = require('./admin.js');
 const fs = require("fs");
 const ejs = require("ejs");
 const fetch = require('node-fetch');
-const NodeCache = require( "node-cache" );
-const Queue = require("../managers/Queue.js");
-const myCache = new NodeCache({ deleteOnExpire: true, stdTTL: 59 });
-const log = require('../misc/log')
+const NodeCache = require("node-cache");
+const myCache = new NodeCache({ 
+  deleteOnExpire: true,
+  stdTTL: 59 
+});
 
 module.exports.load = async function (app, db) {
   app.get("/api", async (req, res) => {
@@ -77,7 +78,7 @@ module.exports.load = async function (app, db) {
       coins: newsettings.api.client.coins.enabled == true ? (await db.get("coins-" + req.query.id) ? await db.get("coins-" + req.query.id) : 0) : null
     });
   });
-    
+
   app.post("/api/setcoins", async (req, res) => {	
     let settings = await check(req, res);	
     if (!settings) return;	
@@ -96,7 +97,7 @@ module.exports.load = async function (app, db) {
     }	
     res.send({status: "success"});	
   });
-    
+
   app.get("/api/updateCoins", async (req, res) => {
     if (!req.session.pterodactyl) return res.redirect("/login");
     let newsettings = JSON.parse(fs.readFileSync("./settings.json").toString());
@@ -108,7 +109,7 @@ module.exports.load = async function (app, db) {
       await db.set(`coins-${req.session.userinfo.id}`, 0)
     } else {
       let e = await db.get(`coins-${req.session.userinfo.id}`)
-      e = e + newsettings.api.arcio["afk page"].coins
+      e = e + newsettings.api["afk page"].coins
       await db.set(`coins-${req.session.userinfo.id}`, e)
     }
     let a = await db.get(`coins-${req.session.userinfo.id}`)
@@ -170,7 +171,6 @@ app.post("/api/createcoupon", async (req, res) => {
 
     res.json({ status: "success" })
 });
-
 
   app.post("/api/setplan", async (req, res) => {
     let settings = await check(req, res);
@@ -266,138 +266,6 @@ app.post("/api/createcoupon", async (req, res) => {
     }
   });
 
-  const queue = new Queue()
-  app.get("/giftcoins", async (req, res) => {
-    if (!req.session.pterodactyl) return res.redirect(`/`);
-
-    const coins = parseInt(req.query.coins)
-    if (!coins || !req.query.id) return res.redirect(`/gift-coins?err=MISSINGFIELDS`);
-    if (req.query.id.includes(`${req.session.userinfo.id}`)) return res.redirect(`/gift-coins?err=CANNOTGIFTYOURSELF`)
-
-
-    if (coins < 1) return res.redirect(`/gift-coins?err=TOOLOWCOINS`)
-
-    queue.addJob(async (cb) => {
-
-      const usercoins = await db.get(`coins-${req.session.userinfo.id}`)
-      const othercoins = await db.get(`coins-${req.query.id}`)
-      if (!othercoins) {
-        cb()
-        return res.redirect(`/gift-coins?err=USERDOESNTEXIST`)
-      }
-      if (usercoins < coins) {
-        cb()
-        return res.redirect(`/gift-coins?err=CANTAFFORD`)
-      }
-  
-      await db.set(`coins-${req.query.id}`, othercoins + coins)
-      await db.set(`coins-${req.session.userinfo.id}`, usercoins - coins)
-
-      log('Gifted Coins', `${req.session.userinfo.username}#${req.session.userinfo.discriminator} sent ${coins}\ coins to the user with the ID \`${req.query.id}\`.`)
-      cb()
-      return res.redirect(`/gift-coins?success=true`);
-
-    })
-  });
-
-  app.get("/giftres", async (req, res) => {
-    if (!req.session.pterodactyl) return res.send("Not logged in.");
-    if (req.query.ram.includes("-")) return res.send("Invalid number.");
-    if (req.query.ram.includes("+")) return res.send("Invalid number.");
-    let theme = indexjs.get(req);
-
-    let newsettings = JSON.parse(fs.readFileSync("./settings.json").toString());
-    let failredirect = theme.settings.redirect.failedgiftresources ? theme.settings.redirect.failedgiftresources : "/";
-    let successredirect = theme.settings.redirect.giftresources ? theme.settings.redirect.giftresources : "/";
-    let usr1 = await db.get("extra-" + req.session.userinfo.id)
-    let usr2 = await db.get("extra-" + req.query.id)
-    let usr3 = await db.get("users-" + req.query.id)
-    if (!req.query.id) return res.redirect(`/gift-resources?err=MISSINGID`);
-    if (!usr3) return res.redirect(`/gift-resources?err=INVALIDID`);
-    if (req.query.ram || req.query.disk || req.query.cpu || req.query.servers) {
-      let ramstring = req.query.ram;
-      let diskstring = req.query.disk;
-      let cpustring = req.query.cpu;
-      let serversstring = req.query.servers;
-
-      let extra1;
-      if (typeof usr1 == "object") {
-        extra1 = usr1;
-      } else {
-        extra1 = {
-          ram: 0,
-          disk: 0,
-          cpu: 0,
-          servers: 0
-        }
-      }
-
-      let extra2;
-      if (typeof usr2 == "object") {
-        extra2 = usr2;
-      } else {
-        extra2 = {
-          ram: 0,
-          disk: 0,
-          cpu: 0,
-          servers: 0
-        }
-      }
-      if (ramstring) {
-        let ram = parseFloat(ramstring);
-        if (ram < 100 || ram > 999999999999999) {
-          return res.redirect(`/gift-resources?err=RAMSIZE`);
-        }
-        if (ramstring > extra1.ram) {
-          return res.redirect(`/gift-resources?err=TOMUCHRAM`);
-        }
-        extra1.ram = extra1.ram - ram
-        extra2.ram = extra2.ram + ram
-      }
-
-      if (diskstring) {
-        let disk = parseFloat(diskstring);
-        if (disk < 100 || disk > 999999999999999) {
-          return res.redirect(`/gift-resources?err=DISKSIZE`);
-        }
-        if (diskstring > extra1.disk) {
-          return res.redirect(`/gift-resources?err=TOMUCHDISK`);
-        }
-        extra1.disk = extra1.disk - disk
-        extra2.disk = extra2.disk + disk
-      }
-
-      if (cpustring) {
-        let cpu = parseFloat(cpustring);
-        if (cpu < 10 || cpu > 999999999999999) {
-          return res.redirect(`/gift-resources?err=CPUSIZE`);
-        }
-        if (cpustring > extra1.cpu) {
-          return res.redirect(`/gift-resources?err=TOMUCHCPU`);
-        }
-        extra1.cpu = extra1.cpu - cpu
-        extra2.cpu = extra2.cpu + cpu
-      }
-
-      if (serversstring) {
-        let servers = parseFloat(serversstring);
-        if (servers < 1 || servers > 999999999999999) {
-          return res.redirect(`/gift-resources?err=SERVERSIZE`);
-        }
-        if (serversstring > extra1.servers) {
-          return res.redirect(`/gift-resources?err=TOMUCHSERVERS`);
-        }
-        extra1.servers = extra1.servers - servers
-        extra2.servers = extra2.servers + servers
-      }
-	  
-      db.set("extra-" + req.session.userinfo.id, extra1)
-      db.set("extra-" + req.query.id, extra2)
-
-      return res.redirect(`/gift-resources?err=none`);
-    }
-  });
-
   async function check(req, res) {
     let settings = JSON.parse(fs.readFileSync("./settings.json").toString());
     if (settings.api.client.api.enabled == true) {
@@ -408,6 +276,7 @@ app.post("/api/createcoupon", async (req, res) => {
         };
       };
     }
+
     let theme = indexjs.get(req);
     ejs.renderFile(
       `./themes/${theme.name}/${theme.settings.notfound}`,

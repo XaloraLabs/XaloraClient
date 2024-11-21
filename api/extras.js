@@ -1,12 +1,23 @@
 const settings = require("../settings.json");
 const fs = require('fs');
-
-const indexjs = require("../index.js");
 const fetch = require('node-fetch');
+const getPteroUser = require('../misc/getPteroUser.js')
 
 module.exports.load = async function(app, db) {
   app.get("/panel", async (req, res) => {
     res.redirect(settings.pterodactyl.domain);
+  });
+
+  app.get("/updateinfo", async (req, res) => {
+    if (!req.session.pterodactyl) return res.redirect("/login");
+    const cacheaccount = await getPteroUser(req.session.userinfo.id, db)
+      .catch(() => {
+        return res.send("An error has occured while attempting to update your account information and server list.");
+      })
+    if (!cacheaccount) return
+    req.session.pterodactyl = cacheaccount.attributes;
+    if (req.query.redirect) if (typeof req.query.redirect == "string") return res.redirect("/" + req.query.redirect);
+    res.redirect("/settings");
   });
 
   app.get("/regen", async (req, res) => {
@@ -36,18 +47,13 @@ module.exports.load = async function(app, db) {
         })
       }
     );
-
-    let theme = indexjs.get(req);
     res.redirect("/settings")
   });
 };
 
 function makeid(length) {
-  let result = '';
-  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let result = Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * charactersLength))).join('');
   return result;
 }

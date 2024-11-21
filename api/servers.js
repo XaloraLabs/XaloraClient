@@ -1,29 +1,19 @@
 const settings = require("../settings.json");
-const fetch = require('node-fetch');
 const indexjs = require("../index.js");
-const adminjs = require("./admin.js");
+const adminjs = require('./admin.js');
+const getPteroUser = require('../misc/getPteroUser.js')
+const Queue = require('../misc/Queue.js')
+const log = require('../misc/log.js')
+
+const fetch = require('node-fetch');
 const fs = require("fs");
-const getPteroUser = require('../misc/getPteroUser')
-const Queue = require('../managers/Queue')
-const log = require('../misc/log')
+
 
 if (settings.pterodactyl) if (settings.pterodactyl.domain) {
   if (settings.pterodactyl.domain.slice(-1) == "/") settings.pterodactyl.domain = settings.pterodactyl.domain.slice(0, -1);
 };
 
 module.exports.load = async function (app, db) {
-  app.get("/updateinfo", async (req, res) => {
-    if (!req.session.pterodactyl) return res.redirect("/login");
-    const cacheaccount = await getPteroUser(req.session.userinfo.id, db)
-      .catch(() => {
-        return res.send("An error has occured while attempting to update your account information and server list.");
-      })
-    if (!cacheaccount) return
-    req.session.pterodactyl = cacheaccount.attributes;
-    if (req.query.redirect) if (typeof req.query.redirect == "string") return res.redirect("/" + req.query.redirect);
-    res.redirect("/servers");
-  });
-
   const queue = new Queue()
   app.get("/create", async (req, res) => {
     if (!req.session.pterodactyl) return res.redirect("/login");
@@ -103,7 +93,6 @@ module.exports.load = async function (app, db) {
             cb()
             return res.redirect(`${redirectlink}?err=PREMIUMLOCATION`);
           }
-
 
           let egg = req.query.egg;
 
@@ -207,7 +196,7 @@ module.exports.load = async function (app, db) {
             if (createdStatus) {
               await db.set("coins-" + req.session.userinfo.id, coins - cost)
             }
-
+            
             await db.set(`lastrenewal-${serverinfotext.attributes.id}`, Date.now())
             await db.set(`createdserver-${req.session.userinfo.id}`, true)
 
@@ -364,13 +353,20 @@ module.exports.load = async function (app, db) {
       let ok = await deletionresults.ok;
       if (ok !== true) return res.send("An error has occur while attempting to delete the server.");
       let pterodactylinfo = req.session.pterodactyl;
+
       pterodactylinfo.relationships.servers.data = pterodactylinfo.relationships.servers.data.filter(server => server.attributes.id.toString() !== req.query.id);
       req.session.pterodactyl = pterodactylinfo;
 
       await db.delete(`lastrenewal-${req.query.id}`)
 
       adminjs.suspend(req.session.userinfo.id);
-
+      const deletedServer = pterodactylinfo.relationships.servers.data.find(server => server.attributes.id.toString() === req.query.id);
+      if (deletedServer && deletedServer.attributes) {
+        log('deleted server', `${req.session.userinfo.username}#${req.session.userinfo.discriminator} deleted server ${deletedServer.attributes.name}.`);
+      } else {
+        log('deleted server', `${req.session.userinfo.username}#${req.session.userinfo.discriminator} deleted server with unknown name.`);
+      };
+      
       return res.redirect('/servers?err=DELETEDSERVER');
     } else {
       res.redirect(theme.settings.redirect.deleteserverdisabled ? theme.settings.redirect.deleteserverdisabled : "/");

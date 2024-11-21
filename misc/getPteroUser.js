@@ -1,5 +1,6 @@
-const fetch = require('node-fetch')
 const settings = require('../settings.json')
+
+const fetch = require('node-fetch')
 
 module.exports = (userid, db) => {
     return new Promise(async (resolve, err) => {

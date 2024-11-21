@@ -2,9 +2,10 @@ const settings = require("../settings.json");
 const { CronJob } = require('cron')
 const getAllServers = require('../misc/getAllServers')
 const fetch = require('node-fetch')
+const chalk = require("chalk");
 
 module.exports.load = async function (app, db) {
-
+    // Renewal system is ...
     app.get(`/api/renewalstatus`, async (req, res) => {
         if (!settings.renewals.status) return res.json({ error: true })
         if (!req.query.id) return res.json({ error: true })
@@ -31,7 +32,7 @@ module.exports.load = async function (app, db) {
         if (req.session.pterodactyl.relationships.servers.data.filter(server => server.attributes.id == req.query.id).length == 0) return res.send(`No server with that ID was found!`);
 
         const lastRenew = await db.get(`lastrenewal-${req.query.id}`)
-        if (!lastRenew) return res.send('Disabled')
+        if (!lastRenew) return res.send('No renewals are recorded for this ID.')
 
         if (lastRenew > Date.now()) return res.redirect(`/dashboard`)
 
@@ -50,7 +51,7 @@ module.exports.load = async function (app, db) {
 
     new CronJob(`0 0 * * *`, () => {
         if (settings.renewals.status) {
-            console.log('Running renewal check...')
+            console.log(chalk.cyan("[heliactyl]") + chalk.white(" Checking renewal servers... "));
             getAllServers().then(async servers => {
                 for (const server of servers) {
                     const id = server.attributes.id
@@ -77,7 +78,7 @@ module.exports.load = async function (app, db) {
                     }
                 }
             })
-            console.log('Renewal check over!')
+            console.log(chalk.cyan("[Heliactyl]") + chalk.white("The renewal check-over is now complete."));
         }
     }, null, true, settings.timezone)
         .start()
@@ -91,14 +92,8 @@ function msToDaysAndHours(ms) {
     const days = Math.floor(ms / msInDay)
     const hours = Math.round((ms - (days * msInDay)) / msInHour * 100) / 100
 
-    let pluralDays = `s`
-    if (days === 1) {
-        pluralDays = ``
-    }
-    let pluralHours = `s`
-    if (hours === 1) {
-        pluralHours = ``
-    }
+    let pluralDays = days === 1 ? '' : 's';
+    let pluralHours = hours === 1 ? '' : 's';    
 
     return `${days} day${pluralDays} and ${hours} hour${pluralHours}`
 }

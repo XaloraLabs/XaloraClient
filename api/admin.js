@@ -1,15 +1,14 @@
+const ejs = require("ejs");
+const fs = require("fs");
+const fetch = require('node-fetch');
 const settings = require("../settings.json");
+const indexjs = require("../index.js");
+const adminjs = require('./admin.js');
+const log = require('../misc/log.js')
 
 if (settings.pterodactyl) if (settings.pterodactyl.domain) {
     if (settings.pterodactyl.domain.slice(-1) == "/") settings.pterodactyl.domain = settings.pterodactyl.domain.slice(0, -1);
 };
-
-const fetch = require('node-fetch');
-const fs = require("fs");
-const indexjs = require("../index.js");
-const adminjs = require("./admin.js");
-const ejs = require("ejs");
-const log = require('../misc/log')
 
 module.exports.load = async function(app, db) {
     app.get("/setcoins", async (req, res) => {
@@ -229,6 +228,7 @@ module.exports.load = async function(app, db) {
             let diskstring = req.query.disk;
             let cpustring = req.query.cpu;
             let serversstring = req.query.servers;
+            let id = req.query.id;
 
             let currentextra = await db.get("extra-" + req.query.id);
             let extra;
@@ -283,6 +283,8 @@ module.exports.load = async function(app, db) {
             }
 
             adminjs.suspend(req.query.id);
+
+            log(`add resources`, `${req.session.userinfo.username}#${req.session.userinfo.discriminator} add the resources of the user with the ID \`${id}\` to:\`\`\`servers: ${serversstring}\nCPU: ${cpustring}%\nMemory: ${ramstring} MB\nDisk: ${diskstring} MB\`\`\``)
             return res.redirect(successredirect + "?err=none");
         } else {
             res.redirect(`${failredirect}?err=MISSINGVARIABLES`);
@@ -367,11 +369,9 @@ module.exports.load = async function(app, db) {
         cpu = parseFloat(cpu);
         servers = parseFloat(servers);
 
-        if (coins < 0) return res.redirect(theme.settings.redirect.couponcreationfailed + "?err=CREATECOUPONLESSTHANONE");
-        if (ram < 0) return res.redirect(theme.settings.redirect.couponcreationfailed + "?err=CREATECOUPONLESSTHANONE");
-        if (disk < 0) return res.redirect(theme.settings.redirect.couponcreationfailed + "?err=CREATECOUPONLESSTHANONE");
-        if (cpu < 0) return res.redirect(theme.settings.redirect.couponcreationfailed + "?err=CREATECOUPONLESSTHANONE");
-        if (servers < 0) return res.redirect(theme.settings.redirect.couponcreationfailed + "?err=CREATECOUPONLESSTHANONE");
+        if (coins < 0 || ram < 0 || disk < 0 || cpu < 0 || servers < 0) {
+            return res.redirect(theme.settings.redirect.couponcreationfailed + "?err=CREATECOUPONLESSTHANONE");
+        }
 
         if (!coins && !ram && !disk && !cpu && !servers) return res.redirect(theme.settings.redirect.couponcreationfailed + "?err=CREATECOUPONEMPTY");
 
@@ -416,6 +416,8 @@ module.exports.load = async function(app, db) {
         log(`revoke coupon`, `${req.session.userinfo.username}#${req.session.userinfo.discriminator} revoked the coupon code \`${code}\`.`)
         res.redirect(theme.settings.redirect.couponrevokesuccess + "?revokedcode=true");
     });
+
+    // remove account never used
 
     app.get("/remove_account", async (req, res) => {
         let theme = indexjs.get(req);
@@ -481,6 +483,8 @@ module.exports.load = async function(app, db) {
         log(`remove account`, `${req.session.userinfo.username}#${req.session.userinfo.discriminator} removed the account with the ID \`${discordid}\`.`)
         res.redirect(theme.settings.redirect.removeaccountsuccess + "?success=REMOVEACCOUNT");
     });
+
+    // Never used (getip)
     
     app.get("/getip", async (req, res) => {
         let theme = indexjs.get(req);
@@ -678,7 +682,7 @@ module.exports.load = async function(app, db) {
                   );
             }
         } else {
-            if (settings.api.client.allow.renewsuspendsystem.enabled == true) return;
+            if (settings.renewals.status == true) return;
             for (let i = 0, len = userinfo.attributes.relationships.servers.data.length; i < len; i++) {
                 let suspendid = userinfo.attributes.relationships.servers.data[i].attributes.id;
                 await fetch(
@@ -692,7 +696,3 @@ module.exports.load = async function(app, db) {
         };
     }
 };
-
-function hexToDecimal(hex) {
-    return parseInt(hex.replace("#",""), 16)
-  }
