@@ -1,8 +1,8 @@
-![Heliactyl](https://github.com/OvernodeProjets/Heliactyl-fixed/assets/73477238/fe5aaf5c-1c01-4145-b37a-b91b184354b5)
+![Xalora](https://github.com/XaloraLabs/XaloraClient/blob/main/assets/xola.png)
 
 <hr>
 
-# Heliactyl • The modern client panel for Pterodactyl
+# XaloraClient • The modern client panel for Pterodactyl
 
 All features:
 
@@ -19,11 +19,6 @@ All features:
 - Join for Rewards (join Discord servers for coins).
 - Admin (set/add/remove coins & resources, create/revoke coupons)
 - API (for bots & other things)
-
-# What happened to 13.x and 15.x?
-
-Due to major issues with both versions, we've decided to return to V12 and continue.
-The latest versions will be on v12 now.
 
 # Warning
 
