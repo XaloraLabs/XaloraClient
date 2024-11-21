@@ -99,12 +99,15 @@ class="mt-1">
 <!-- Networking section -->
 
 <!-- Economy section -->
+ 
 <div x-data="{ 
   open: false,
   economyItems: [
       { name: 'Wallet', path: '/wallet' },
       { name: 'AFK Page', path: '/afk' },
+      <% if (settings.api.client.coins.store.enabled) { %> 
       { name: 'Store', path: '/store' },
+      <% } %>
       { name: 'Staking', path: '/staking' },
       { name: 'Referrals', path: '/referrals' },
       { name: 'J4R Rewards', path: '/j4r' }
