@@ -56,7 +56,7 @@ isInCategory(category) {
   items: [
       { name: 'My Servers', path: '/servers' },
       { name: 'SFTP Access', path: '/settings' },
-      { name: 'Login to Panel', path: '/panel/doAutologin' }
+      { name: 'Login to Panel', path: ' <%= settings.pterodactyl.domain %>' }
   ],
   init() {
       this.open = this.isInCategory(this.items)
