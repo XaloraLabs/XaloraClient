@@ -97,48 +97,6 @@ class="mt-1">
 </div>
 
 <!-- Networking section -->
-<div x-data="{ 
-  open: false,
-  items22: [
-      { name: 'Shield', path: '/shield' }
-  ],
-  init() {
-      this.open = this.isInCategory(this.items22)
-  }
-}" 
-class="mt-1">
-  <button @click="open = !open" 
-          class="flex items-center justify-between w-full py-1.5 text-gray-300 hover:bg-white/5 rounded-lg hover:text-white focus:outline-none transition-colors duration-200"
-          :class="{ 'bg-orange-600/10 text-orange-600 border-2 border-dashed border-orange-600/20 shadow-sm': isInCategory(items22) }">
-      <div class="flex items-center">
-          <span class="mx-3">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 mb-1 mr-1.5 inline-flex" :class="{ 'text-zinc-500': !isInCategory(items22), 'text-orange-600/50': isInCategory(items22) }">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
-              </svg>
-              Networking
-          </span>
-      </div>
-      <svg :class="{'rotate-180': open}" class="w-4 h-4 mr-2 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-      </svg>
-  </button>
-  <div x-show="open" 
-       x-transition:enter="transition ease-out duration-100"
-       x-transition:enter-start="opacity-0 transform scale-95"
-       x-transition:enter-end="opacity-100 transform scale-100"
-       x-transition:leave="transition ease-in duration-75"
-       x-transition:leave-start="opacity-100 transform scale-100"
-       x-transition:leave-end="opacity-0 transform scale-95"
-       class="space-y-1">
-      <template x-for="item in items22" :key="item.path">
-          <a :href="item.path"
-             class="flex items-center py-1.5 px-10 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-lg mr-2 transition-colors duration-200"
-             :class="{ 'bg-white/5 text-white shadow': isActive(item.path) }">
-              <span class="mx-3" x-text="item.name"></span>
-          </a>
-      </template>
-  </div>
-</div>
 
 <!-- Economy section -->
 <div x-data="{ 
