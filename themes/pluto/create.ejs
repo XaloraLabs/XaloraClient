@@ -495,7 +495,7 @@ Back to server list
                             RAM (GB)
                         </label>
                         <div class="mt-1">
-                            <input type="number" name="ram" id="ram" class="transition ease-in-out delay-100 shadow-sm block w-full sm:text-sm rounded-lg bg-white/5 border-white/5 text-white focus:ring-indigo-500 focus:border-indigo-500" value="<%= packages.ram/1024 + extraresources.ram/1024 %>">
+                            <input type="number" name="ram" id="ram" class="transition ease-in-out delay-100 shadow-sm block w-full sm:text-sm rounded-lg bg-white/5 border-white/5 text-white focus:ring-indigo-500 focus:border-indigo-500" value="<%= packages.ram/1024 + extraresources.ram/1024%>">
                         </div>
                     </div>
 
@@ -504,7 +504,7 @@ Back to server list
                             CPU (%)
                         </label>
                         <div class="mt-1">
-                            <input type="number" name="cpu" id="cpu" class="transition ease-in-out delay-100 shadow-sm block w-full sm:text-sm rounded-lg bg-white/5 border-white/5 text-white focus:ring-indigo-500 focus:border-indigo-500" value="<%= packages.cpu + extraresources.cpu %>">
+                            <input type="number" name="cpu" id="cpu" class="transition ease-in-out delay-100 shadow-sm block w-full sm:text-sm rounded-lg bg-white/5 border-white/5 text-white focus:ring-indigo-500 focus:border-indigo-500" value="<%= packages.cpu/100 + extraresources.cpu/100%>">
                         </div>
                     </div>
 
@@ -513,7 +513,7 @@ Back to server list
                             Disk (GB)
                         </label>
                         <div class="mt-1">
-                            <input type="number" name="disk" id="disk" class="transition ease-in-out delay-100 shadow-sm block w-full sm:text-sm rounded-lg bg-white/5 border-white/5 text-white focus:ring-indigo-500 focus:border-indigo-500" value="<%= packages.disk/1024 + extraresources.disk/1024 %>">
+                            <input type="number" name="disk" id="disk" class="transition ease-in-out delay-100 shadow-sm block w-full sm:text-sm rounded-lg bg-white/5 border-white/5 text-white focus:ring-indigo-500 focus:border-indigo-500" value="<%= packages.disk/1024 + extraresources.disk/1024%>">
                         </div>
                     </div>
                 </div>
