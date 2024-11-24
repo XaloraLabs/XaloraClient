@@ -14,6 +14,33 @@
                     <!-- Content -->
 <!-- Main Content -->
 <main class="flex-grow container mx-auto px-4 py-8">
+    <% if (req.query.err) { %>
+    <% if (req.query.err === "CANNOTAFFORDRENEWAL") { %>
+        <%- include('./components/alert') %>
+        <span>You need at least <%= settings.renewals.cost %> coins to purchase a server renewal!</span>
+    </div>
+
+    <% } else if (req.query.success === 'RENEWED') { %>
+        <%- include('./components/success') %>
+        <span>Succesfully purchased renewal for server!</span>
+    </div>
+
+    <% if (req.query.success) { %>
+    <% }else if (req.query.success == 'DELETEDSERVER') { %>
+        <div class="mb-4 mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 flex items-center justify-between">
+        <span>Succesfully purchased renewal for server!</span>
+            <button @click="showError = false" class="text-green-400 hover:text-green-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+            </button>
+    </div>
+
+
+    <% } %>
+    <% } %>
+    <% } %>
+    
     <div class="flex justify-between items-center w-full mx-auto pb-4">
         <!-- Welcome text and subtext on the left -->
         <div class="flex flex-col">
@@ -70,6 +97,10 @@
     </div>
 
     <!-- Content -->
+
+    
+
+
    
 
     
@@ -123,14 +154,14 @@
                         </span>
                         <% if (settings.renewals.status) { %> 
                     </div>
-                    <a href="/servers/edit?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="transition hover:scale-95 ml-1 text-center bg-orange-600 text-sm hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-full">
+                    <a href="/servers/edit?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="transition block w-full mb-3 hover:scale-95 text-center bg-orange-600 text-sm hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-full">
                         Edit Server
                     </a>
                 </a>
-                <a href="/delete?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="ml-2 transition hover:scale-95 text-center bg-red-600 text-sm hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full">
+                <a href="/delete?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="mb-3 transition block w-full hover:scale-95 text-center bg-red-600 text-sm hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full">
                     Delete Server
                 </a>
-                <a href="/renew?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="ml-2 transition hover:scale-95 text-center bg-yellow-600 text-sm hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-full">
+                <a href="/renew?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="transition block w-full hover:scale-95 text-center bg-yellow-600 text-sm hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-full">
                     Renew Server
                 </a>
                 </div>

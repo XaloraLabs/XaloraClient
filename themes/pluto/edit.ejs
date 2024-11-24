@@ -81,25 +81,31 @@
               <div class="col-md-6 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <form class="forms-sample">
-                      <div class="form-group">
+                    <form class="forms-sample ">
+                      <div class="form-group mt-2 mb-3" >
                         <label class="text-white" for="exampleInputUsername1">Name:</label>
+                        <br>
                         <input style="color: #9CA3AF; background-color: #2a3038; border: 0;border-radius: 15px; padding: 8px;" type="text" class="form-control" value="<%= serverinfo.attributes.name %> | Changing this will not do anything, use the panel">
                       </div>
-                      <div class="form-group">
+
+                      <div class="form-group mt-2 mb-3">
                         <label class="text-white" for="InputCPU">CPU (Cores):</label>
+                        <br>
                         <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" id="InputCPU" placeholder="1" value="<%= serverinfo.attributes.limits.cpu/100 %>">
                       </div>
-                      <div class="form-group">
+                      <div class="form-group mt-2 mb-3">
                         <label class="text-white" for="InputRAM">RAM (GBs):</label>
+                        <br>
                         <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" id="InputRAM" placeholder="2" value="<%= serverinfo.attributes.limits.memory/1024 %>">
                       </div>
-                      <div class="form-group">
+                      <div class="form-group mt-2 mb-3">
                         <label class="text-white" for="InputDisk">Disk (GBs):</label>
+                        <br>
                         <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" id="InputDisk" placeholder="5" value="<%= serverinfo.attributes.limits.disk/1024 %>">
                       </div>
-                      <div class="form-group">
-                        <label class="text-white" for="InputEgg">Egg:</label><br>
+                      <div class="form-group mt-2 mb-3">
+                        <label class="text-white" for="InputEgg">Egg:</label>
+                        <br>
                         <select class="btn btn-secondary dropdown-toggle" style="background-color: #2a3038; border: 1px solid #2c2e33; color: #e4eaec; border-radius: 15px; padding: 8px;" disabled>
                           <% for (let [name, value] of Object.entries(settings.api.client.eggs)) { %>
                             <option value="<%= name %>"><%= value.display %></option>
