@@ -46,7 +46,7 @@ Warning: You need Pterodactyl already set up on a domain for this method to work
 
 <strong>1.2</strong> Download XaloraClient files in /var/www/XaloraClient :
 
-- `git clone https://github.com/OvernodeProjets/XaloraClient-fixed.git /var/www/XaloraClient`
+- `git clone https://github.com/XaloraLabs/XaloraClient.git /var/www/XaloraClient`
 
 <strong>1.3</strong> Installing required node modules (and build dependencies to avoid errors) :
 
