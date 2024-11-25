@@ -14,33 +14,7 @@
                     <!-- Content -->
 <!-- Main Content -->
 <main class="flex-grow container mx-auto px-4 py-8">
-    <% if (req.query.err) { %>
-    <% if (req.query.err === "CANNOTAFFORDRENEWAL") { %>
-        <%- include('./components/alert') %>
-        <span>You need at least <%= settings.renewals.cost %> coins to purchase a server renewal!</span>
-    </div>
 
-    <% } else if (req.query.success === 'RENEWED') { %>
-        <%- include('./components/success') %>
-        <span>Succesfully purchased renewal for server!</span>
-    </div>
-
-    <% if (req.query.success) { %>
-    <% }else if (req.query.success == 'DELETEDSERVER') { %>
-        <div class="mb-4 mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 flex items-center justify-between">
-        <span>Succesfully purchased renewal for server!</span>
-            <button @click="showError = false" class="text-green-400 hover:text-green-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 6L6 18M6 6l12 12"></path>
-                </svg>
-            </button>
-    </div>
-
-
-    <% } %>
-    <% } %>
-    <% } %>
-    
     <div class="flex justify-between items-center w-full mx-auto pb-4">
         <!-- Welcome text and subtext on the left -->
         <div class="flex flex-col">
@@ -98,6 +72,38 @@
 
     <!-- Content -->
 
+    <% if (req.query.err) { %>
+        <% if (req.query.err === "CANNOTAFFORDRENEWAL") { %>
+            <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                <span>You need at least <%= settings.renewals.cost %> coins to purchase a server renewal!</span>
+                <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        <% }if (req.query.err === 'RENEWED') { %>
+            <div class="mb-4 mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 flex items-center justify-between">
+            <span>Succesfully purchased renewal for server!</span>
+            <button @click="showError = false" class="text-green-400 hover:text-green-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+            </button>
+    </div>
+    
+        <% }if (req.query.err == 'DELETEDSERVER') { %>
+            <div class="mb-4 mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 flex items-center justify-between">
+            <span>Success! Your server has been deleted, feel free to create a new one now!</span>
+                <button @click="showError = false" class="text-green-400 hover:text-green-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                    </svg>
+                </button>
+        </div>
+        <% } %>
+        <% } %>
+
     
 
 
@@ -126,61 +132,100 @@
             </div>
             
             <!-- Server Cards -->
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    <% if (pterodactyl && pterodactyl.relationships && pterodactyl.relationships.servers && pterodactyl.relationships.servers.data && pterodactyl.relationships.servers.data.length === 0) { %>
-        <h4 class="text-lg font-semibold text-white mb-1">No Servers Yet!</h4>
-    <% } else if (pterodactyl && pterodactyl.relationships && pterodactyl.relationships.servers && pterodactyl.relationships.servers.data) { %>
-        <% for (let i = 0, len = pterodactyl.relationships.servers.data.length; i < len; i++) { %> 
-            <div class="bg-white/5 rounded-2xl overflow-hidden shadow-none hover:shadow-lg transition-shadow duration-300">
-                <% if (settings.renewals.status) { %> 
-                <a class=" transition hover:scale-95 text-center bg-yellow-600 text-sm hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-full">
-                    Renew Server in 24H
-                </a>
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <% if (pterodactyl && pterodactyl.relationships && pterodactyl.relationships.servers && pterodactyl.relationships.servers.data && pterodactyl.relationships.servers.data.length === 0) { %>
+                    <h4 class="text-lg font-semibold text-white mb-1">No Servers Yet!</h4>
+                <% } else if (pterodactyl && pterodactyl.relationships && pterodactyl.relationships.servers && pterodactyl.relationships.servers.data) { %>
+                    <% for (let i = 0, len = pterodactyl.relationships.servers.data.length; i < len; i++) { %>
+                        <div class="bg-white/5 rounded-2xl overflow-hidden shadow-none hover:shadow-lg transition-shadow duration-300">
+                            <div class="p-6">
+                                <h4 class="text-lg font-semibold text-white mb-1">
+                                    <%= pterodactyl.relationships.servers.data[i].attributes.name.length > 40
+                                        ? pterodactyl.relationships.servers.data[i].attributes.name.slice(0, 40) + "..."
+                                        : pterodactyl.relationships.servers.data[i].attributes.name %>
+                                </h4>
+                                <p class="text-xs text-gray-300">UUID: <%= pterodactyl.relationships.servers.data[i].attributes.identifier %></p>
+                                <p class="text-xs text-gray-300 mb-6">ID: <%= pterodactyl.relationships.servers.data[i].attributes.id %></p>
+                                
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-lg bg-white/10 text-gray-100">
+                                        <%= pterodactyl.relationships.servers.data[i].attributes.limits.memory / 1024 %> GiB RAM
+                                    </span>
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-lg bg-white/10 text-gray-100">
+                                        <%= pterodactyl.relationships.servers.data[i].attributes.limits.cpu / 100 %> CPU core(s)
+                                    </span>
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-lg bg-white/10 text-gray-100">
+                                        <%= pterodactyl.relationships.servers.data[i].attributes.limits.disk / 1024 %> GiB disk
+                                    </span>
+                                </div>
+                                
+                                <% if (settings.renewals.status) { %>
+                                    <a type="button" href="/renew?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>"  id="renew-status-btn-<%= pterodactyl.relationships.servers.data[i].attributes.id %>" 
+                                       class="transition block w-full mb-3 hover:scale-95 text-center bg-orange-600 text-sm hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-full">
+                                        Loading...
+                                    </a>
+                                    <script>
+                                        async function fetchRenewalStatus(serverId) {
+                                            try {
+                                                const response = await fetch(`/api/renewalstatus?id=${serverId}`);
+                                                const data = await response.json();
+                                                const renewButton = document.getElementById(`renew-status-btn-${serverId}`);
+                                                if (data.error) {
+                                                    renewButton.textContent = 'Error fetching status';
+                                                    renewButton.classList.add('bg-red-600', 'hover:bg-red-700');
+                                                    renewButton.classList.remove('bg-yellow-600', 'hover:bg-yellow-700', 'bg-green-600', 'hover:bg-green-700');
+                                                } else if (data.text === 'Disabled') {
+                                                    renewButton.textContent = 'Renewals Disabled';
+                                                    renewButton.classList.add('bg-gray-600', 'hover:bg-gray-700');
+                                                    renewButton.classList.remove('bg-yellow-600', 'hover:bg-yellow-700', 'bg-green-600', 'hover:bg-green-700');
+                                                } else if (data.text === 'Renewed') {
+                                                    renewButton.textContent = 'Server Renewed';
+                                                    renewButton.classList.add('bg-green-600', 'hover:bg-green-700');
+                                                    renewButton.classList.remove('bg-yellow-600', 'hover:bg-yellow-700', 'bg-red-600', 'hover:bg-red-700');
+                                                } else if (data.text === 'Last chance to renew!') {
+                                                    renewButton.textContent = 'Renew Now!';
+                                                    renewButton.classList.add('bg-red-600', 'hover:bg-red-700');
+                                                    renewButton.classList.remove('bg-yellow-600', 'hover:bg-yellow-700', 'bg-green-600', 'hover:bg-green-700');
+                                                } else if (data.text) {
+                                                    const remainingTime = data.text;
+                                                    const daysRemaining = parseInt(remainingTime.split(' ')[0]);
+                                                    if (daysRemaining > 4) {
+                                                        renewButton.textContent = `Renew Server in ${remainingTime}`;
+                                                        renewButton.classList.add('bg-green-600', 'hover:bg-green-700');
+                                                        renewButton.classList.remove('bg-yellow-600', 'hover:bg-yellow-700', 'bg-red-600', 'hover:bg-red-700');
+                                                    } else if (daysRemaining > 2) {
+                                                        renewButton.textContent = `Renew Server in ${remainingTime}`;
+                                                        renewButton.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+                                                        renewButton.classList.remove('bg-green-600', 'hover:bg-green-700', 'bg-red-600', 'hover:bg-red-700');
+                                                    } else if (daysRemaining <= 1) {
+                                                        renewButton.textContent = `Renew Server in ${remainingTime}`;
+                                                        renewButton.classList.add('bg-red-600', 'hover:bg-red-700');
+                                                        renewButton.classList.remove('bg-green-600', 'hover:bg-green-700', 'bg-yellow-600', 'hover:bg-yellow-700');
+                                                    }
+                                                }
+                                            } catch (err) {
+                                                console.error('Failed to fetch renewal status:', err);
+                                                const renewButton = document.getElementById(`renew-status-btn-${serverId}`);
+                                                renewButton.textContent = 'Failed to fetch status';
+                                                renewButton.classList.add('bg-red-600', 'hover:bg-red-700');
+                                            }
+                                        }
+                                        fetchRenewalStatus('<%= pterodactyl.relationships.servers.data[i].attributes.id %>');
+                                    </script>
+                                <% } %>
+                                
+                                <a href="/servers/edit?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="transition block w-full mb-3 hover:scale-95 text-center bg-orange-600 text-sm hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-full">
+                                    Edit Server
+                                </a>
+                                <a href="/delete?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="mb-3 transition block w-full hover:scale-95 text-center bg-red-600 text-sm hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full">
+                                    Delete Server
+                                </a>
+                            </div>
+                        </div>
+                    <% } %>
                 <% } %>
-                <div class="p-6">
-                    <h4 class="text-lg font-semibold text-white mb-1">
-                        <%= pterodactyl.relationships.servers.data[i].attributes.name.length > 40 ? pterodactyl.relationships.servers.data[i].attributes.name.slice(0, 40) + "..." : pterodactyl.relationships.servers.data[i].attributes.name %>
-                    </h4>
-                    <p class="text-xs text-gray-300 mb-6">Server ID: <%= pterodactyl.relationships.servers.data[i].attributes.identifier %></p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="px-2 py-1 text-xs font-semibold rounded-lg bg-white/10 text-gray-100">
-                            <%= pterodactyl.relationships.servers.data[i].attributes.limits.memory / 1024 %> GiB RAM
-                        </span>
-                        <span class="px-2 py-1 text-xs font-semibold rounded-lg bg-white/10 text-gray-100">
-                            <%= pterodactyl.relationships.servers.data[i].attributes.limits.cpu / 100 %> CPU core(s)
-                        </span>
-                        <span class="px-2 py-1 text-xs font-semibold rounded-lg bg-white/10 text-gray-100">
-                            <%= pterodactyl.relationships.servers.data[i].attributes.limits.disk / 1024 %> GiB disk
-                        </span>
-                        <% if (settings.renewals.status) { %> 
-                    </div>
-                    <a href="/servers/edit?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="transition block w-full mb-3 hover:scale-95 text-center bg-orange-600 text-sm hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-full">
-                        Edit Server
-                    </a>
-                </a>
-                <a href="/delete?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="mb-3 transition block w-full hover:scale-95 text-center bg-red-600 text-sm hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full">
-                    Delete Server
-                </a>
-                <a href="/renew?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="transition block w-full hover:scale-95 text-center bg-yellow-600 text-sm hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-full">
-                    Renew Server
-                </a>
-                </div>
-                <% } else { %>
-                </div>
-                <a href="/servers/edit?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="transition block w-full hover:scale-95 mb-2 text-center bg-orange-600 text-sm hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-full">
-                    Edit Server
-                </a>
-            </a>
-            <a href="/delete?id=<%= pterodactyl.relationships.servers.data[i].attributes.id %>" class="block w-full transition hover:scale-95 text-center bg-red-600 text-sm hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full">
-                Delete Server
-            </a>
             </div>
-            <% } %>
-        <% } %>
-    <% } else { %>
-        <h4 class="text-lg font-semibold text-white mb-1">No Server Data Available!</h4>
-    <% } %>
-</div>
+            
         </div>
     </div>
 </main>
@@ -254,4 +299,5 @@
     let balance = document.getElementById("balance");
     balance.textContent = <%= Math.floor(coins * 100) / 100 %>;
   </script>
+  
   

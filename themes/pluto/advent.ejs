@@ -1,0 +1,1045 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractal - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link 
+    rel="preload" 
+    href="/assets/Ndot-55.otf" 
+    as="font" 
+    type="font/otf" 
+    crossorigin="anonymous"
+>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        .text-3xl {
+            color: white;
+        }
+
+        .text-2xl {
+            color: white;
+        }
+
+        .text-xl {
+            color: white;
+        }
+
+        .text-lg {
+            color: white;
+        }
+
+        h3 {
+            color: white;
+        }
+
+        h2 {
+            color: white
+        }
+
+        h3 {
+            color: white
+        }
+
+        /* Loading bar animation */
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Spinner animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(to right, #4f46e5, #818cf8);
+            animation: loading 0.5s ease-in-out;
+            z-index: 1000;
+        }
+
+        .spinner {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            animation: spin 1s linear infinite;
+            z-index: 1000;
+        }
+
+        /* Sidebar transition for mobile */
+        .sidebar-transition {
+            transition: transform 0.3s ease-in-out;
+        }
+
+.font-mono {
+font-family: 'JetBrains Mono' !important;
+}
+    </style>
+<style>
+@font-face {
+    font-family: 'Ndot-55';
+    src: url('/assets/Ndot-55.otf') format('opentype');
+    font-weight: normal;
+    font-display: swap;
+    font-style: normal;
+    unicode-range: U+000-5FF; /* Latin glyphs */
+    font-synthesis: none;
+}
+
+.heavy {
+    font-family: 'Ndot-55', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+#server-name {
+    font-family: 'Ndot-55', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.extra-bold {
+    font-family: 'Ndot-55', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+</style>
+    <!-- SEO - Meta Tags -->
+    <meta name="description"
+        content="Experience seamless deployment with Fractal's powerful dashboard. Free serverless hosting for web projects, game servers, and containerized applications with automated scaling, monitoring, and zero maintenance.">
+
+    <meta name="keywords"
+        content="container management, serverless hosting, cloud platform, container orchestration, Fractal dashboard, free hosting, game server hosting, Docker containers, cloud deployment, DevOps platform, container scaling, microservices management, cloud infrastructure, container monitoring, Fractal cloud">
+
+    <meta name="author" content="SRYDEN, Inc.">
+
+    <!-- Additional recommended meta tags -->
+    <meta property="og:title" content="Fractal">
+    <meta property="og:description"
+        content="We're Fractal, a free hosting platform for your projects, game servers, and more. Built for cloud-native and serverless projects by design.">
+    <meta property="og:type" content="website">
+
+    <!-- Recommended additional tag for mobile optimization -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body class="bg-[#010103] text-gray-300" style="font-family: 'Inter'" x-data="{ sidebarOpen: false }" @keydown.escape="sidebarOpen = false">
+    <!-- Loading bar -->
+    <div class="loading-bar"></div>
+    <!-- Spinner -->
+    <div class="spinner">
+        <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+    </div>
+
+    <%- include('./components/sidebar') %>
+
+<script>
+// Add this script tag at the end of your page body
+const snowfallScript = document.createElement('script');
+snowfallScript.textContent = `
+// Create and inject the CSS
+const snowStyle = document.createElement('style');
+snowStyle.textContent = \`
+  #snowflakeContainer {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    pointer-events: none;
+  }
+  .snowflake {
+    position: fixed;
+    background-color: #FFFFFF;
+    user-select: none;
+    z-index: 1000;
+    pointer-events: none;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+  }
+  .snowflake.template {
+    display: none;
+  }
+  #snowToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 7px 16px;
+    border-radius: 800px;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    z-index: 1001;
+    transition: background-color 0.3s ease;
+ font-family: 'Ndot-55', sans-serif;
+ font-weight: 800;
+ text-transform: uppercase;
+  }
+  #snowToggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+\`;
+document.head.appendChild(snowStyle);
+
+// Create and inject the snowflake container
+const container = document.createElement('div');
+container.id = 'snowflakeContainer';
+container.innerHTML = '<span class="snowflake template"></span>';
+document.body.appendChild(container);
+
+// Create and inject the toggle button
+const toggleBtn = document.createElement('button');
+toggleBtn.id = 'snowToggle';
+toggleBtn.textContent = 'Snow: On';
+document.body.appendChild(toggleBtn);
+
+// Cookie functions
+function setCookie(name, value, days) {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+  document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+}
+
+function getCookie(name) {
+  const nameEQ = name + '=';
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+// Snowfall logic
+let snowflakes = [];
+let browserWidth;
+let browserHeight;
+let numberOfSnowflakes = 50;
+let resetPosition = false;
+let enableAnimations = false;
+let reduceMotionQuery = matchMedia("(prefers-reduced-motion)");
+let isSnowing = true; // Set to true by default
+
+function setAccessibilityState() {
+  enableAnimations = !reduceMotionQuery.matches;
+}
+setAccessibilityState();
+reduceMotionQuery.addListener(setAccessibilityState);
+
+class Snowflake {
+  constructor(element, speed, xPos, yPos) {
+    this.element = element;
+    this.speed = speed;
+    this.xPos = xPos;
+    this.yPos = yPos;
+    this.scale = 1;
+    this.counter = 0;
+    this.sign = Math.random() < 0.5 ? 1 : -1;
+    this.element.style.opacity = (0.1 + Math.random()) / 3;
+  }
+
+  update(delta) {
+    this.counter += (this.speed / 5000) * delta;
+    this.xPos += (this.sign * delta * this.speed * Math.cos(this.counter)) / 40;
+    this.yPos += Math.sin(this.counter) / 40 + (this.speed * delta) / 30;
+    this.scale = 0.5 + Math.abs((10 * Math.cos(this.counter)) / 20);
+
+    setTransform(
+      Math.round(this.xPos),
+      Math.round(this.yPos),
+      this.scale,
+      this.element
+    );
+
+    if (this.yPos > browserHeight) {
+      this.yPos = -50;
+    }
+  }
+}
+
+function setTransform(xPos, yPos, scale, el) {
+  el.style.transform = \`translate3d(\${xPos}px, \${yPos}px, 0) scale(\${scale}, \${scale})\`;
+}
+
+function getPosition(offset, size) {
+  return Math.round(-1 * offset + Math.random() * (size + 2 * offset));
+}
+
+function generateSnowflakes() {
+  const originalSnowflake = document.querySelector(".snowflake.template");
+  const snowflakeContainer = originalSnowflake.parentNode;
+
+  browserWidth = document.documentElement.clientWidth;
+  browserHeight = document.documentElement.clientHeight;
+
+  for (let i = 0; i < numberOfSnowflakes; i++) {
+    const snowflakeClone = originalSnowflake.cloneNode(true);
+    snowflakeClone.classList.remove('template');
+    snowflakeContainer.appendChild(snowflakeClone);
+
+    const initialXPos = getPosition(50, browserWidth);
+    const initialYPos = getPosition(50, browserHeight);
+    const speed = (5 + Math.random() * 40) * delta;
+
+    const snowflakeObject = new Snowflake(
+      snowflakeClone,
+      speed,
+      initialXPos,
+      initialYPos
+    );
+    snowflakes.push(snowflakeObject);
+  }
+
+  requestAnimationFrame(moveSnowflakes);
+}
+
+let frames_per_second = 60;
+let frame_interval = 1000 / frames_per_second;
+let previousTime = performance.now();
+let delta = 1;
+
+function moveSnowflakes(currentTime) {
+  delta = (currentTime - previousTime) / frame_interval;
+
+  if (enableAnimations && isSnowing) {
+    for (let i = 0; i < snowflakes.length; i++) {
+      snowflakes[i].update(delta);
+    }
+  }
+
+  previousTime = currentTime;
+
+  if (resetPosition) {
+    browserWidth = document.documentElement.clientWidth;
+    browserHeight = document.documentElement.clientHeight;
+
+    for (let i = 0; i < snowflakes.length; i++) {
+      let snowflake = snowflakes[i];
+      snowflake.xPos = getPosition(50, browserWidth);
+      snowflake.yPos = getPosition(50, browserHeight);
+    }
+
+    resetPosition = false;
+  }
+
+  requestAnimationFrame(moveSnowflakes);
+}
+
+function setResetFlag() {
+  resetPosition = true;
+}
+
+function toggleSnow() {
+  isSnowing = !isSnowing;
+  const snowflakeContainer = document.getElementById('snowflakeContainer');
+  const snowflakes = snowflakeContainer.querySelectorAll('.snowflake:not(.template)');
+  
+  if (isSnowing) {
+    snowflakes.forEach(flake => flake.style.opacity = ''); // Reset to original random opacity
+    toggleBtn.textContent = 'Snow: On';
+  } else {
+    snowflakes.forEach(flake => flake.style.opacity = '0');
+    toggleBtn.textContent = 'Snow: Off';
+  }
+  
+  setCookie('snowEnabled', isSnowing ? '1' : '0', 365);
+}
+
+// Setup
+if (enableAnimations) {
+  window.addEventListener("DOMContentLoaded", () => {
+    generateSnowflakes();
+    
+    // Check cookie and set initial state
+    const snowEnabled = getCookie('snowEnabled');
+    if (snowEnabled === '0') {
+      isSnowing = false;
+      const snowflakes = document.querySelectorAll('.snowflake:not(.template)');
+      snowflakes.forEach(flake => flake.style.opacity = '0');
+      toggleBtn.textContent = 'Snow: Off';
+    }
+  }, false);
+  
+  window.addEventListener("resize", setResetFlag, false);
+  toggleBtn.addEventListener("click", toggleSnow, false);
+}
+`;
+
+document.body.appendChild(snowfallScript);
+</script>
+            
+                <script>
+                    // Remove loading elements after animation
+                    setTimeout(() => {
+                        document.querySelector('.loading-bar').style.display = 'none';
+                        document.querySelector('.spinner').style.display = 'none';
+                    }, 500);
+                </script>
+                <div class="px-10 mt-4">
+                    <div id="application" class="hidden min-h-[490px] flex justify-center">
+
+<main class="flex-grow container mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center w-full mx-auto pb-4">
+        <div class="flex flex-col">
+            <h1 class="text-xl font-semibold mb-0.5 heavy">Advent Calendar</h1>
+            <p class="text-gray-400 text-md">Celebrate the season with daily rewards until Dec 25! The positions are randomized like an actual advent calendar, you'll need to find today's one below.</p>
+        </div>
+
+        <!-- Breadcrumbs -->
+        <nav aria-label="Breadcrumb" class="inline-flex py-2 px-4 rounded-xl bg-white/5 transition-colors duration-200">
+            <ol role="list" class="flex items-center space-x-2">
+                <li>
+                    <a href="/" class="text-sm flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-zinc-400">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </li>
+                <li>
+                    <span class="text-sm text-white/80">Advent Calendar</span>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="relative overflow-hidden mt-4 rounded-2xl mb-8 bg-gradient-to-br from-blue-600/20 to-blue-900/30 border border-blue-500/20">
+        <!-- Frosted Glass Effect Container -->
+        <div class="relative backdrop-blur-sm p-8 md:p-12">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <!-- Text Content -->
+                <div class="max-w-2xl">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-100 to-blue-300 bg-clip-text text-transparent">
+                        <%= settings.name %> Advent Calendar
+                    </h2>
+                    <p class="text-lg text-blue-100/90 mb-6">
+                        Free daily rewards until December 25th! Unlock special prizes including a free VPS, domains, resources, FRAC, Discord Nitro, and more. Your chance of getting a special prize increases with each day you claim!
+                    </p>
+                    <a href="https://discord.gg/frac" 
+                       class="inline-flex items-center px-6 py-3 rounded-xl bg-blue-200/20 backdrop-blur-xl hover:bg-blue-200/30 text-white font-medium transition-all duration-200 group">
+                        Got a special prize? Claim via our Discord
+                        <svg xmlns="http://www.w3.org/2000/svg" 
+                             class="size-5 ml-2 transform group-hover:translate-x-1 transition-transform" 
+                             viewBox="0 0 24 24" 
+                             fill="none" 
+                             stroke="currentColor" 
+                             stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Decorative Ice Crystal -->
+                <div class="relative w-48 h-48 flex-shrink-0 animate-float">
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-blue-200/30">
+                        <path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" 
+                              fill="currentColor" 
+                              class="filter backdrop-blur-sm"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ice Border Effect -->
+        <div class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-blue-300/50 to-transparent"></div>
+    </div>
+
+
+    <!-- Main Content -->
+    <div x-data="adventCalendar()" x-init="initialize()" class="mt-8">
+        <!-- Status Banner -->
+        <div x-show="showBanner" x-transition.duration.300ms class="mb-6">
+            <template x-if="bannerType === 'success'">
+                <div class="bg-green-500/10 border border-green-500/20 rounded-xl p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        <p class="text-green-400" x-text="bannerMessage"></p>
+                    </div>
+                    <button @click="showBanner = false" class="text-green-400 hover:text-green-300 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </template>
+            <template x-if="bannerType === 'error'">
+                <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M15 9l-6 6M9 9l6 6"/>
+                        </svg>
+                        <p class="text-red-400" x-text="bannerMessage"></p>
+                    </div>
+                    <button @click="showBanner = false" class="text-red-400 hover:text-red-300 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </template>
+        </div>
+
+        <!-- Calendar Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+    <template x-for="day in calendarData" :key="day.position">
+        <div 
+            class="relative group"
+            :class="{'opacity-50': !day.available && !day.claimed}"
+        >
+                <div 
+                    class="relative group"
+                    :class="{'opacity-50': !day.available && !day.claimed}"
+                >
+                    <div
+                        class="bg-white/5 rounded-xl p-6 text-center transition-all duration-300 hover:bg-white/10"
+                        :class="{
+                            'cursor-pointer': day.available && !day.claimed,
+                            'ring-2 ring-indigo-500/50': day.claimed
+                        }"
+                        @click="claimDay(day)"
+                    >
+                        <!-- Day Number -->
+                        <div class="text-2xl font-bold mb-2" x-text="'#' + day.day"></div>
+                        
+                        <!-- Date -->
+                        <div class="text-sm text-gray-400 mb-3" x-text="formatDate(day.date)"></div>
+
+                        <!-- Status Icons -->
+                        <div class="flex justify-center items-center h-12">
+                            <!-- Claimed Check -->
+                            <template x-if="day.claimed">
+                                <div class="flex flex-col items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-8 text-green-400 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 6L9 17l-5-5"/>
+                                    </svg>
+                                    <span class="text-xs text-green-400">Claimed</span>
+                                </div>
+                            </template>
+                            
+                            <!-- Available -->
+                            <template x-if="day.available && !day.claimed">
+                                <div class="flex flex-col items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-8 text-indigo-400 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 12V8H4v4M4 12v4h16v-4M12 12v4M12 8v4M8 12h8"/>
+                                    </svg>
+                                    <span class="text-xs text-indigo-400">Available</span>
+                                </div>
+                            </template>
+                            
+                            <!-- Locked -->
+                            <template x-if="!day.available && !day.claimed">
+                                <div class="flex flex-col items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-8 text-gray-400 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                        <path d="M7 11V7a5 5 0 0110 0v4"/>
+                                    </svg>
+                                    <span class="text-xs text-gray-400">Locked</span>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Reward Info (if claimed) -->
+                        <template x-if="day.claimed && day.reward">
+                            <div class="mt-3 pt-3 border-t border-white/10">
+                                <template x-if="day.reward.isSpecial">
+                                    <div class="text-purple-400 font-medium">
+                                        <span x-text="formatSpecialReward(day.reward.special)"></span>
+                                        <div class="text-xs mt-1">Open a ticket in <a href="https://discord.gg/frac" class="text-purple-300 hover:text-purple-200 transition-colors">discord.gg/frac</a> to claim</div>
+                                    </div>
+                                </template>
+                                <template x-if="!day.reward.isSpecial">
+                                    <div class="text-indigo-400 font-medium">
+                                        <span x-text="formatReward(day.reward)"></span>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Hover Effect for Available Days -->
+                    <div
+                        x-show="day.available && !day.claimed"
+                        class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                    >
+                        <div class="absolute inset-0 bg-gradient-to-b from-indigo-500/20 to-transparent rounded-xl"></div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Special Rewards Modal -->
+        <div
+            x-show="showModal"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform scale-95"
+            x-transition:enter-end="opacity-100 transform scale-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 transform scale-100"
+            x-transition:leave-end="opacity-0 transform scale-95"
+            class="fixed inset-0 z-50 overflow-y-auto"
+            style="display: none;"
+        >
+            <div class="flex items-center justify-center min-h-screen px-4">
+                <div class="fixed inset-0 bg-black/50 transition-opacity" @click="showModal = false"></div>
+                
+                <div class="relative bg-[#1a1b1e] rounded-2xl max-w-md w-full p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">🎉 Special Reward!</h3>
+                        <button @click="showModal = false" class="text-gray-400 hover:text-white transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <p class="text-gray-300 mb-4" x-text="modalMessage"></p>
+                    
+                    <div class="bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 mb-6">
+                        <p class="text-purple-400 text-sm">To claim your special reward, please open a ticket in our Discord server at <a href="https://discord.gg/frac" class="font-medium hover:text-purple-300 transition-colors">discord.gg/frac</a></p>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button
+                            @click="showModal = false"
+                            class="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition-colors"
+                        >
+                            Got it!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+function adventCalendar() {
+    return {
+        calendarData: [],
+        showBanner: false,
+        bannerType: '',
+        bannerMessage: '',
+        showModal: false,
+        modalMessage: '',
+        isLoading: false,
+
+        async initialize() {
+            await this.fetchCalendar();
+            this.randomizePositions();
+            // Refresh calendar every minute
+            setInterval(() => this.fetchCalendar(), 60000);
+        },
+
+        async fetchCalendar() {
+            try {
+                const response = await fetch('/api/advent/calendar');
+                if (!response.ok) throw new Error('Failed to fetch calendar');
+                const data = await response.json();
+                this.calendarData = data.calendar;
+                this.randomizePositions();
+            } catch (error) {
+                console.error('Failed to fetch calendar:', error);
+                this.showError('Failed to load calendar data');
+            }
+        },
+
+        getPositions() {
+            // Try to get positions from cookie
+            const savedPositions = this.getCookie('adventPositions');
+            if (savedPositions) {
+                try {
+                    return JSON.parse(savedPositions);
+                } catch (e) {
+                    console.error('Failed to parse saved positions:', e);
+                }
+            }
+            return null;
+        },
+
+        randomizePositions() {
+            // Check for existing positions
+            const savedPositions = this.getPositions();
+            if (savedPositions && savedPositions.length === this.calendarData.length) {
+                // Apply saved positions
+                this.calendarData = this.calendarData.map((day, i) => ({
+                    ...day,
+                    position: savedPositions[i]
+                }));
+            } else {
+                // Generate new random positions
+                const positions = Array.from({ length: this.calendarData.length }, (_, i) => i);
+                for (let i = positions.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [positions[i], positions[j]] = [positions[j], positions[i]];
+                }
+
+                // Apply new positions
+                this.calendarData = this.calendarData.map((day, i) => ({
+                    ...day,
+                    position: positions[i]
+                }));
+
+                // Save to cookie (expires after Christmas)
+                this.setCookie('adventPositions', JSON.stringify(positions), new Date('2024-12-26'));
+            }
+
+            // Sort by position for display
+            this.calendarData.sort((a, b) => a.position - b.position);
+        },
+
+        setCookie(name, value, expires) {
+            const cookie = `${name}=${value}; expires=${expires.toUTCString()}; path=/; SameSite=Strict`;
+            document.cookie = cookie;
+        },
+
+        getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        },
+
+        async claimDay(day) {
+            if (!day.available || day.claimed || this.isLoading) return;
+            
+            this.isLoading = true;
+            try {
+                const response = await fetch(`/api/advent/claim/${day.day}`, {
+                    method: 'POST'
+                });
+
+                if (!response.ok) throw new Error('Failed to claim reward');
+                
+                const data = await response.json();
+                
+                if (data.reward.isSpecial) {
+                    this.modalMessage = `Congratulations! You've won ${this.formatSpecialReward(data.reward.special)}!`;
+                    this.showModal = true;
+                }
+
+                this.showSuccess(`Successfully claimed reward for Day ${day.day}!`);
+                await this.fetchCalendar();
+            } catch (error) {
+                console.error('Failed to claim reward:', error);
+                this.showError('Failed to claim reward. Please try again.');
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
+        formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                month: 'short',
+                day: 'numeric'
+            });
+        },
+
+        formatReward(reward) {
+            if (!reward) return '';
+
+            switch (reward.type) {
+                case 'frac':
+                    return `${reward.value} FRAC`;
+                case 'ram':
+                    return `${reward.value}MiB RAM`;
+                case 'disk':
+                    return `${reward.value}MiB Disk`;
+                case 'cpu':
+                    return `${reward.value}% CPU`;
+                case 'servers':
+return `${reward.value} Server Slots`;
+                default:
+                    return 'Unknown Reward';
+            }
+        },
+
+        formatSpecialReward(special) {
+            const rewards = {
+                'discord_nitro_basic': 'Discord Nitro Basic',
+                'discord_nitro': 'Discord Nitro',
+                'visa_5': '$5 Visa Card',
+                'vps_1gb': '1GB VPS',
+                'vps_2gb': '2GB VPS',
+                'vps_4gb': '4GB VPS',
+                'vps_8gb': '8GB VPS',
+                'domain_com': '.com Domain',
+                'domain_couk': '.co.uk Domain'
+            };
+            return rewards[special] || 'Special Reward';
+        },
+
+        showSuccess(message) {
+            this.bannerType = 'success';
+            this.bannerMessage = message;
+            this.showBanner = true;
+            setTimeout(() => {
+                this.showBanner = false;
+            }, 5000);
+        },
+
+        showError(message) {
+            this.bannerType = 'error';
+            this.bannerMessage = message;
+            this.showBanner = true;
+            setTimeout(() => {
+                this.showBanner = false;
+            }, 5000);
+        }
+    };
+}
+</script>
+
+<style>
+/* Smooth scrolling behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Custom transitions */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+}
+
+/* Hover effects */
+.hover\:shadow-glow:hover {
+    box-shadow: 0 0 20px theme('colors.indigo.500' / 20%);
+}
+
+/* Loading animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+</style>
+
+
+    </div>
+
+<style>
+#CV {
+    border-radius: 4px;
+}
+
+    <script>
+        // Function to highlight the active tab
+        function setActiveTab() {
+            const currentPath = window.location.pathname;
+            const tabs = document.querySelectorAll('#tabs a');
+            tabs.forEach(tab => {
+                if (tab.getAttribute('href') === currentPath) {
+                    tab.classList.add('border-indigo-500', 'text-indigo-500', 'font-medium');
+                    tab.classList.remove('border-transparent', 'hover:border-gray-300', 'hover:text-white');
+                } else {
+                    tab.classList.remove('border-indigo-500', 'text-indigo-500', 'font-medium');
+                    tab.classList.add('border-transparent', 'hover:border-gray-300', 'hover:text-white');
+                }
+            });
+        }
+
+        // Set active tab on page load
+        setActiveTab();
+
+        // For demonstration purposes, simulate changing routes when clicking tabs
+        document.querySelectorAll('#tabs a').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = e.currentTarget.getAttribute('href');
+                history.pushState(null, '', href);
+                window.location.href = href;
+                setActiveTab();
+            });
+        });
+
+        // Listen for popstate events (back/forward browser navigation)
+        window.addEventListener('popstate', setActiveTab);
+    </script>
+</body>
+</html>
+<script>
+    var options = {
+      classname: 'loadingbar',
+      id: 'loadingbar'
+    };
+    var nanobar = new Nanobar(options);
+    function simulateLoading() {
+      nanobar.go(10); // Change this value to control the loading speed
+      setTimeout(function() {
+        nanobar.go(50);
+      }, 190); // Delay the progress update
+      setTimeout(function() {
+        nanobar.go(100);
+      }, 400); // Another delay
+    }
+    simulateLoading();
+  </script>
+  <style>
+    .loadingbar .bar {
+      background: #fb923c;
+      -webkit-box-shadow: 0px 4px 38px -15px #fb923c;
+      -moz-box-shadow: 0px 4px 38px -15px #fb923c;
+      box-shadow: 0px 4px 38px -15px #fb923c;
+      height: 1.85px;
+    }
+  </style>
+<script>
+(() => {
+    // Immediately inject initial style to hide content
+    const initialStyle = document.createElement('style');
+    initialStyle.textContent = `
+        #application {
+            opacity: 0 !important;
+        }
+    `;
+    document.head.appendChild(initialStyle);
+
+    // Create and inject spinner styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .page-loading-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            background-color: rgb(0 0 0 / 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+        }
+        .loading-logo {
+            width: 4rem;
+            height: 4rem;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .7;
+            }
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Create and inject loading overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'page-loading-overlay';
+    overlay.innerHTML = `
+<div class="flex justify-center">
+<img src="https://i.imgur.com/MTVvWBY.png" class="h-6 w-auto">
+</div>
+        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+    `;
+    document.body.appendChild(overlay);
+
+    // Wait for DOM to be interactive
+    const ready = () => {
+        const app = document.getElementById('application');
+        if (!app) return;
+
+        // Remove hidden class and ensure flex display
+        app.classList.remove('hidden');
+        app.style.display = 'flex';
+
+        // Wait additional time for loading effect
+        setTimeout(() => {
+            // Fade out overlay
+            overlay.style.transition = 'opacity 0.2s ease-out';
+            overlay.style.opacity = '0';
+
+            // Remove the initial style that was hiding the content
+            initialStyle.remove();
+
+            // Animate in content
+            app.style.animation = 'fadeUp 0.3s ease-out forwards';
+
+            // Clean up
+            setTimeout(() => {
+                overlay.remove();
+                style.remove();
+            }, 500);
+        }, 600);
+    };
+
+    // Handle different document ready states
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', ready);
+    } else {
+        ready();
+    }
+})();
+</script>

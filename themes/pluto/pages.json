@@ -41,6 +41,7 @@
         "removeaccountsuccess": "/admin"
     },
     "pages": {
+        "advent": "advent.ejs",
         "referrals": "referrals.ejs",
         "staking": "staking.ejs",
         "wallet": "wallet.ejs",

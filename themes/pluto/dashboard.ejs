@@ -83,6 +83,34 @@
     </div>
   </div>
 </div>
+
+<!-- Advent -->
+<% if ( settings.advent) { %>
+<div class="bg-gradient-to-r from-indigo-500/10 to-indigo-600/15 border border-indigo-500/10 rounded-3xl p-1 pl-12 mb-8 container mx-auto mt-8">
+  <div class="flex items-center justify-between">
+      <div class="space-y-4">
+          <div class="flex items-center gap-2">
+              <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300">
+                  <span class="size-2 rounded-full bg-indigo-400 mr-2"></span>
+                  Advent Calendar 2024
+              </div>
+          </div>
+          <h2 class="text-2xl heavy font-semibold text-white">BECAUSE 25 DAYS ISN'T LONG ENOUGH</h2>
+          <p class="text-white/60">Our advent calendar has started on November 11 and will end on December 25!</p>
+          <a href="/advent" class="inline-flex items-center justify-center h-11 gap-2 px-6 text-sm font-medium text-white transition-all duration-200 rounded-full shadow bg-indigo-500 hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2 ring-offset-gray-200 hover:shadow-none">
+              Advent Calendar
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="size-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+              </svg>
+          </a>
+      </div>
+      <div class="hidden md:block">
+          <img src="https://i.imgur.com/e8hcEY1.png" alt="d" class="rounded-lg w-[400px] shadow-sm h-[250px] object-cover">
+      </div>
+  </div>
+</div>
+<% } %>
+
     <!-- Welcome Message and Quick Links -->
 <div class="w-full border-l-4 mt-2 mb-8 bg-orange-600/15 border-orange-600 rounded-r-2xl">
   <div class="p-6">
@@ -94,27 +122,7 @@
       <a class="transition hover:scale-95 cursor-pointer font-semibold gap-2 grow-0 items-center justify-center rounded-xl shrink-0 disabled:cursor-not-allowed inline-flex border focus:outline-none px-4 py-[9px] bg-orange-700 border-orange-700 text-white hover:bg-orange-600 hover:border-orange-600 focus:ring-4 focus:ring-orange-900 disabled:bg-orange-900 disabled:border-orange-900 disabled:text-orange-400 text-sm" href="/servers/new">
         <span class="pointer-events-none shrink-0">Get started</span>
       </a>
-      <div class="flex flex-col xs:flex-row gap-3 items-start p-4 rounded-xl bg-white/5 text-orange-100" dismissable="false">
-        <div class="shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block shrink-0 h-5 w-5">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-</svg>
-
-        </div>
-        <div class="flex flex-col flex-auto gap-3 items-start md:flex-row md:items-center">
-          <div class="flex-auto space-y-3">
-            <div class="space-y-1">
-              <h2 class="text-sm leading-5 font-semibold text-orange-100">Has someone asked you to join their server on <%= settings.name %> as a subuser?</h2>
-              <div class="text-sm leading-5 text-orange-100/70">
-                <p class="">
-                  You'll need to ask them to invite you now that you've signed up.
-                  There's no need to do anything until you receive that.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
     </div>
   </div>
 </div>
@@ -153,6 +161,7 @@
             let cpuLeft = totalCpu - usedCpu;
             let cpuLeftPercent = (cpuLeft / totalCpu) * 100;
             %>
+    
     <div>
       <dl class="mt-4 grid grid-cols-1 divide-y divide-white/5 overflow-hidden rounded-2xl bg-white/5 shadow md:grid-cols-3 md:divide-y-0 md:divide-x">
         <div class="px-4 py-5 sm:p-6">
