@@ -108,3 +108,8 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
     }
 }
+
+# Credits
+<strong>1.1</strong> Our backend is heavily inspired by Heliactyl, and we extend our gratitude to their team for their exceptional work.
+
+Explore Heliactyl: https://github.com/OpenHeliactyl/Heliactyl/
