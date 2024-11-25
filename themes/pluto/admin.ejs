@@ -1,182 +1,358 @@
-<head>
-  <title><%= settings.name %></title>
-  <link rel="icon" type="image/x-icon" href="../assets/favicon.png">
-  <link rel="stylesheet" href="../assets/tailwind.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://unpkg.com/@popperjs/core@2.10.1/dist/umd/popper.min.js"></script>
-  <!-- Inter font -->
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>
-    // Fetch the latest version from the site
-    fetch('https://atqr.pages.dev/heliactyl.json')
-      .then(response => response.json())
-      .then(data => {
-        const currentVersion = '<%= settings.version %>';
-        const latestVersion = data.latest;
-
-        // Update the version information in the content
-        const versionSpan = document.getElementById('currentVersion');
-        const releaseSpan = document.getElementById('releaseInfo');
-        const versionStatusSpan = document.getElementById('versionStatus');
-
-        versionSpan.textContent = currentVersion;
-
-        if (currentVersion === latestVersion) {
-          versionStatusSpan.textContent = 'You are running the latest version. Good job!';
-          versionStatusSpan.classList.add('text-gray-600', 'text-xs', 'pt-2');
-        } else {
-          const link = document.createElement('a');
-          link.href = 'https://github.com/heliactyloss/heliactyl/releases/tag/' + latestVersion;
-          link.classList.add('text-amber-500', 'transition', 'hover:text-amber-600', 'font-medium');
-          link.textContent = 'here';
-
-          const linkText = document.createTextNode(`Heliactyl ${latestVersion} is ready to be updated to. Please click `);
-          versionStatusSpan.appendChild(linkText);
-          versionStatusSpan.appendChild(link);
-          versionStatusSpan.appendChild(document.createTextNode(' to download it'));
-          versionStatusSpan.classList.add('text-amber-500', 'text-xs', 'pt-2');
-        }
-
-        // Show the content
-        document.getElementById('content').classList.remove('hidden');
-      })
-      .catch(error => {
-        console.error('Error fetching latest version:', error);
-        // Show the content even if the fetch fails
-        document.getElementById('content').classList.remove('hidden');
-      });
-  </script>
-</head>
-
-<body class="bg-gray-100" style="font-family: 'Inter', sans-serif;">
-  <div>
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./components/head') %>
+ <body class="text-white">
     <%- include('./components/sidebar') %>
-    
-    <div class="md:pl-48 flex flex-col flex-1 h-screen">
-      <main class="flex-1 overflow-x-hidden overflow-y-auto">
-        <div class="container mx-auto px-8 py-2">
-        </div>
-          <% /* Skeleton loader, lasts about 0.3s to let the page content load */ %>
-          <div class="hidden max-w-7xl pt-8 mx-auto px-4 sm:px-6 md:px-8" id="content">
-            <!-- Content -->
-            <div class="lg:flex lg:items-center lg:justify-between rounded-3xl mb-8">
-              <div class="min-w-0 flex-1">
-                <div class="flex">
-                  <div class="relative">
-                    <div class="bg-gray-200 rounded-2xl h-11 w-11 text-center flex ">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mt-3 ml-3">
-                        <path fill-rule="evenodd" d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm14.25 6a.75.75 0 0 1-.22.53l-2.25 2.25a.75.75 0 1 1-1.06-1.06L15.44 12l-1.72-1.72a.75.75 0 1 1 1.06-1.06l2.25 2.25c.141.14.22.331.22.53Zm-10.28-.53a.75.75 0 0 0 0 1.06l2.25 2.25a.75.75 0 1 0 1.06-1.06L8.56 12l1.72-1.72a.75.75 0 1 0-1.06-1.06l-2.25 2.25Z" clip-rule="evenodd" />
-                      </svg>
+
+            <main class="flex-1 overflow-x-hidden overflow-y-auto">
+                <div class="container mx-auto px-8 py-2">
+                    <!-- Content -->
+      <!-- Main Content -->               
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+        <div class="bg-white/5 rounded-2xl p-6 mb-6">
+          <div style="background-color: #11131900" class="main-panel">
+            <div style="background-color: #11131900" class="content-wrapper">
+  
+             <div class="container mx-auto mt-1 text-center">
+              <h2 class="title-page">Admin</h2>
+              <p class="text-gray">Use <%= settings.name %> admin settings.</p>
+             </div>
+             
+              <!-- alert -->
+              <% if (req.query.err && (req.query.err !== "success" && req.query.err === "MISSINGID" || req.query.err === "INVALIDCOINNUMBER" || req.query.err === "MISSINGCOINS" || req.query.err === "INVALIDID" || req.query.err === "COINSIZE" || req.query.err === "RAMSIZE" || req.query.err === "DISKSIZE" || req.query.err === "CPUSIZE" || req.query.err === "SERVERSIZE" || req.query.err === "MISSINGVARIABLES" || req.query.err === "INVALIDPACKAGE" || req.query.err === "CREATECOUPONINVALIDCHARACTERS" || req.query.err === "CREATECOUPONEMPTY" || req.query.err === "CREATECOUPONLESSTHANONE" || req.query.err === "REVOKECOUPONCANNOTFINDCODE" || req.query.err === "REMOVEACCOUNTMISSINGID" || req.query.err === "REVOKECOUPONCANNOTFINDCODE" || req.query.err === "NOIP")) { %>
+              
+                <% if (req.query.err === "MISSINGID") { %>
+                  <div class="alert alert-danger">Missing ID</div>
+                <% } else if (req.query.err === "INVALIDCOINNUMBER") { %>
+                  <div class="alert alert-danger">Invalid coin number</div>
+                <% } else if (req.query.err === "MISSINGCOINS") { %>
+                  <div class="alert alert-danger">Missing coins</div>
+                <% } else if (req.query.err === "INVALIDID") { %>
+                  <div class="alert alert-danger">Invalid ID</div>
+                <% } else if (req.query.err === "COINSIZE") { %>
+                  <div class="alert alert-danger">Coin size error</div>
+                <% } else if (req.query.err === "RAMSIZE") { %>
+                  <div class="alert alert-danger">RAM size error</div>
+                <% } else if (req.query.err === "DISKSIZE") { %>
+                  <div class="alert alert-danger">Disk size error</div>
+                <% } else if (req.query.err === "CPUSIZE") { %>
+                  <div class="alert alert-danger">CPU size error</div>
+                <% } else if (req.query.err === "SERVERSIZE") { %>
+                  <div class="alert alert-danger">Server size error</div>
+                <% } else if (req.query.err === "MISSINGVARIABLES") { %>
+                  <div class="alert alert-danger">Missing variables</div>
+                <% } else if (req.query.err === "INVALIDPACKAGE") { %>
+                  <div class="alert alert-danger">Invalid package</div>
+                <% } else if (req.query.err === "CREATECOUPONINVALIDCHARACTERS") { %>
+                  <div class="alert alert-danger">Coupon code contains invalid characters</div>
+                <% } else if (req.query.err === "CREATECOUPONEMPTY") { %>
+                  <div class="alert alert-danger">Coupon code cannot be empty</div>
+                <% } else if (req.query.err === "CREATECOUPONLESSTHANONE") { %>
+                  <div class="alert alert-danger">Coupon code must be at least one character long</div>
+                <% } else if (req.query.err === "REVOKECOUPONCANNOTFINDCODE") { %>
+                  <div class="alert alert-danger">Cannot find coupon code</div>
+                <% } else if (req.query.err === "REMOVEACCOUNTMISSINGID") { %>
+                  <div class="alert alert-danger">Missing account ID</div>
+                <% } else if (req.query.err === "REVOKECOUPONCANNOTFINDCODE") { %>
+                  <div class="alert alert-danger">Cannot find coupon code</div>
+                <% } else if (req.query.err === "NOIP") { %>
+                  <div class="alert alert-danger">No IP address found</div>
+                <% } %>
+  
+                <% if (req.query.success === "IP" && req.query.ip) { %>
+                  <div class="alert alert-success">IP address: <%= req.query.ip %></div>
+                <% } %>
+                
+              <% } else if (req.query.success === "SUCCESS" || req.query.code) { %>
+                  <% if (req.query.success === "SUCCESS") { %>
+                    <div class="alert alert-success">
+                      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                      Success!
                     </div>
+                  <% } else if (req.query.code) { %>
+                  <div class="alert alert-success">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    Success! You have created a coupon code with the name of: <%= req.query.code %>
                   </div>
-                  <div class="relative ml-4">
-                    <h2 class="text-xl font-semibold text-white sm:truncate tracking-tight">Admin</h2>
-                    <p class="text-xs font-thin text-gray-500">Perform admin actions on the Heliactyl dashboard.</p>
+                  <% } %>
+                </div>
+              <% } %>
+    
+            <div class="row">
+  
+              <!-- Stats & Information -->
+  
+              <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title"><%= settings.name %> Information</h4>
+                    <form class="forms-sample">
+                      <div class="form-group">
+                      </div>
+                    </form>
+                    <form class="forms-sample">
+                      <div class="form-group">
+                          <a href="https://github.com/XaloraLabs/XaloraClient" class="btn btn-primary btn-lg">View latest version</a> <a href="https://discord.gg/ex7BT4TT9Q" class="btn btn-primary btn-lg">Get support</a>
+                      </div>
+                    </form>
+                 </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Statistics</h4>
+                    <form class="forms-sample">
+                      <div class="form-group">
+                        <p id="userStats">Total number of users: <span>Loading...</span></p>
+                    </div>
+                    </form>
                   </div>
                 </div>
               </div>
-            </div>
-            <% if (req.query.err) { %>
-            <div class="rounded-3xl bg-gray-200 p-8 mb-5">
-              <div class="flex">
-                <div class="flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-gray-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div class="ml-3">
-                  <h3 class="text-md font-medium tracking-tight text-gray-700">An error was encountered</h3>
-                  <div class="mt-1 text-sm text-gray-500">
-                    <p>Error code: <code><%= req.query.err %></code></p>
+  
+              <!-- Set & Add resources -->
+  
+              <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Set user's resources</h4>
+                    <form class="forms-sample">
+                      <div class="form-group">
+                        <label for="setID">Discord ID:</label>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" placeholder="Enter user ID" id="setID">
+                      </div>
+                      <div class="form-group">
+                        <label for="setCPU">CPU (Cores):</label><br>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" placeholder="1" id="setCPU">
+                      </div>
+                      <div class="form-group">
+                        <label for="setRAM">RAM (GBs):</label><br>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" placeholder="2" id="setRAM">
+                      </div>
+                      <div class="form-group">
+                        <label for="setDisk">Disk (GBs):</label><br>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" placeholder="10" id="setDisk">
+                      </div>
+                      <div class="form-group">
+                        <label for="setServers">Servers:</label><br>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" placeholder="1" id="setServers">
+                      </div>
+                      <a onclick="setResources()" role="button" class="btn btn-primary btn-lg">Apply Changes</a>
+                    </form>
                   </div>
                 </div>
               </div>
-            </div>
-            <% } %>
-            <div class="lg:flex lg:items-center lg:justify-between p-8 border border-gray-200 rounded-3xl">
-              <div class="min-w-0 flex-1 ml-4">
-                <h2 class="text-xl font-semibold text-gray-700 sm:truncate tracking-tight">Heliactyl version 14</h2>
-                <p class="text-xs mt-2 font-thin text-gray-500 mb-2">
-                  This dashboard is running Heliactyl version <span class="bg-gray-200 px-2 py-1 mb-2 rounded-full" id="currentVersion"></span>
-                </p>
-                <span id="versionStatus"></span>
-              </div>
-              <div class="mt-5 flex lg:ml-4 lg:mt-0">
-                <span class="sm:ml-3 mr-3">
-                  <img src="https://atqr.pages.dev/v2Favicon.png" class="h-20 rounded-3xl bg-gray-200 p-3">
-                </span>
-              </div>
-            </div>
-
-            <!-- Add coins -->
-            <div class="card mt-10">
-              <div class="card-body">
-                <h1 class="text-xl font-semibold text-gray-700 sm:truncate tracking-tight mb-4">Add coins</h1>
-                <% /* Discord ID */ %>
-                <label for="location" class="text-sm font-medium text-gray-600">Discord ID</label><br>
-                <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-400 focus:ring-gray-600 border border-gray-200 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-gray-600" id="id1" placeholder="000000000000000000">
-
-                <% /* Amount */ %>
-                <label for="location" class="text-sm font-medium text-gray-600">Amount</label><br>
-                <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-400 focus:ring-gray-600 border border-gray-200 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-gray-600" id="amount1" placeholder="100">
-
-                <% /* Submit form */ %>
-                <a href="javascript:addCoins()" type="button" class="mt-6 transition inline-flex items-center rounded-2xl bg-gray-200 px-8 py-2 text-sm font-medium text-gray-600 hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-                  Add
-                </a>
-              </div>
-              <script>
-                async function addCoins() {
-                  let id1 = encodeURIComponent(document.getElementById("id1").value);
-                  let amount1 = encodeURIComponent(document.getElementById("amount1").value);
-                  document.location.href = `/addcoins?id=${id1}&coins=${amount1}`;
-                };
-              </script>
-
-              <!-- Add resources -->
-              <div class="card mt-10">
-                <div class="card-body">
-                  <h1 class="text-xl font-semibold text-gray-700 sm:truncate tracking-tight mb-4">Add resources</h1>
-                  <% /* Discord ID */ %>
-                  <label for="location" class="text-sm font-medium text-gray-600">Discord ID</label><br>
-                  <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-400 focus:ring-gray-600 border border-gray-200 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-gray-600" id="id2" placeholder="000000000000000000">
-
-                  <% /* CPU */ %>
-                  <label for="location" class="text-sm font-medium text-gray-600">CPU Cores</label><br>
-                  <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-400 focus:ring-gray-600 border border-gray-200 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-gray-600" id="cpu" placeholder="1">
-
-                  <% /* Memory */ %>
-                  <label for="location" class="text-sm font-medium text-gray-600">Memory (GiB)</label><br>
-                  <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-400 focus:ring-gray-600 border border-gray-200 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-gray-600" id="memory" placeholder="2">
-
-                  <% /* Storage */ %>
-                  <label for="location" class="text-sm font-medium text-gray-600">Storage (GiB)</label><br>
-                  <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-400 focus:ring-gray-600 border border-gray-200 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-gray-600" id="storage" placeholder="10">
-
-                  <% /* Servers */ %>
-                  <label for="location" class="text-sm font-medium text-gray-600">Servers</label><br>
-                  <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-400 focus:ring-gray-600 border border-gray-200 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-gray-600" id="servers" placeholder="5">
-
-                  <% /* Submit form */ %>
-                  <a href="javascript:addResources()" type="button" class="mt-6 transition inline-flex items-center rounded-2xl bg-gray-200 px-8 py-2 text-sm font-medium text-gray-600 hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-                    Add
-                  </a>
+              <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Add user's resources</h4>
+                    <form class="forms-sample">
+                      <div class="form-group">
+                        <label for="addID">Discord ID:</label>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" placeholder="Enter user ID" id="addID">
+                      </div>
+                      <div class="form-group">
+                        <label for="addCPU">CPU (Cores):</label><br>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" placeholder="1" id="addCPU">
+                      </div>
+                      <div class="form-group">
+                        <label for="addRAM">RAM (GBs):</label><br>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" placeholder="2" id="addRAM">
+                      </div>
+                      <div class="form-group">
+                        <label for="addDisk">Disk (GBs):</label><br>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" placeholder="10" id="addDisk">
+                      </div>
+                      <div class="form-group">
+                        <label for="addServers">Servers:</label><br>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" placeholder="1" id="addServers">
+                      </div>
+                      <a onclick="addResources()" role="button" class="btn btn-primary btn-lg">Apply Changes</a>
+                    </form>
+                  </div>
                 </div>
-                <script>
-                  async function addResources() {
-                    let id2 = encodeURIComponent(document.getElementById("id2").value);
-                    let cpu = encodeURIComponent(document.getElementById("cpu").value * 100);
-                    let memory = encodeURIComponent(document.getElementById("memory").value * 1024);
-                    let storage = encodeURIComponent(document.getElementById("storage").value * 1024);
-                    let servers = encodeURIComponent(document.getElementById("servers").value);
-                    document.location.href = `/addresources?id=${id2}&cpu=${cpu}&ram=${memory}&disk=${storage}&servers=${servers}`;
-                  };
-                </script>
               </div>
+  
+              <!-- Create & Revoke coupon -->
+  
+              <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Create a coupon</h4>
+                      <form action="/create_coupon">
+                        <div class="form-group mb-3">
+                          <label for="code">Code:</label>
+                          <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" class="form-control" name="code" placeholder="Put nothing here to generate a random code">
+                        </div>
+                        <div class="form-group mb-3">
+                          <label for="coins">Coins:</label>
+                          <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" class="form-control" placeholder="100" name="coins" type="number">
+                        </div>
+                        <div class="form-group mb-3">
+                          <label for="ram">RAM (GBs):</label>
+                          <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" class="form-control" placeholder="2" name="ram" type="number">
+                        </div>
+                        <div class="form-group mb-3">
+                          <label for="disk">Disk (GBs):</label>
+                          <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" class="form-control" placeholder="10" name="disk" type="number">
+                        </div>
+                          <div class="form-group mb-3">
+                          <label for="cpu">CPU (Cores):</label>
+                          <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" class="form-control" placeholder="1" name="cpu" type="number">
+                        </div>
+                        <div class="form-group mb-3">
+                          <label for="servers">Servers:</label>
+                          <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" class="form-control" placeholder="1" name="servers" type="number">
+                        </div> 
+                        <button class="btn btn-primary btn-lg" type="submit">Create</button>
+                      </form>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Revoke coupon</h4>
+                      <form action="/revoke_coupon">
+                        <div class="form-group mb-3">
+                          <label for="code">Code:</label>
+                          <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" placeholder="EXAMPLE100" class="form-control" name="code">
+                        </div>
+                        <button class="btn btn-primary btn-lg" type="submit">Revoke</button>
+                      </form>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Set user's coins</h4>
+                    <form action="/setcoins">
+                      <div class="form-group mb-3">
+                        <label for="id">Discord ID:</label>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" class="form-control" name="id" placeholder="0000000000000000">
+                      </div>
+                      <div class="form-group mb-3">
+                        <label for="coins">Coins:</label>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" class="form-control" name="coins" placeholder="100" type="number">
+                      </div>
+                      <button class="btn btn-primary btn-lg" type="submit">Set</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Add user's coins</h4>
+                    <form action="/addcoins">
+                      <div class="form-group mb-3">
+                        <label for="id">Discord ID:</label>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" class="form-control" name="id" placeholder="0000000000000000">
+                      </div>
+                      <div class="form-group mb-3">
+                        <label for="coins">Coins:</label>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" class="form-control" name="coins" placeholder="100" type="number">
+                      </div>
+                      <button class="btn btn-primary btn-lg" type="submit">Add</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Set plan -->
+  
+              <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Set user's plan</h4>
+                    <form class="forms-sample">
+                      <div class="form-group mb-3">
+                        <label for="setIDPlan">Discord ID:</label>
+                        <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" placeholder="Enter user ID" id="setIDPlan">
+                      </div>
+                      <div class="form-group">
+                      </div>
+                      <a onclick="setPlan()" role="button" class="btn btn-primary btn-lg">Submit</a>
+                      <br><br>
+                      <p>You cannot set a plan which is managed by the automatic role rewards, <%= settings.name %> requires you to create a duplicate plan if you want to do that.</p>
+                    </form>
+                  </div>
+                </div>
+              </div>
+  
             </div>
-      </main>
-      <%- include('./components/footer') %>
+      </div>
+        </div>
+          <!-- content-wrapper ends -->
+          <%- include('./components/footer') %>
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
     </div>
-  </div>
-</body>
+    <!-- container-scroller -->
+    <!-- Plugin js for this page -->
+    <script src="/assets/vendors/select2/select2.min.js"></script>
+    <!-- End plugin js for this page -->
+    <%- include('./components/scripts') %>
+    <script>
+      fetch("https://api.github.com/repos/OvernodeProjets/Fixed-Heliactyl/releases/latest")
+       .then(response => response.json())
+       .then(data => {
+         let latestVersion = data.tag_name.replace('v', '');
+         let currentVersion = "<%= settings.version.replace(/\"/g, '\\\\\"') %>";
+         if (latestVersion === currentVersion) {
+           document.getElementById("latestversion").innerHTML = `<span>You are running Heliactyl version <code style="color: #007fcc">v${currentVersion}</code>. Heliactyl is up-to-date!</span>`;
+         } else {
+           document.getElementById("latestversion").innerHTML = `<span>Heliactyl is <b>not up-to-date!</b> The latest version is <code style="color: #007fcc">v${latestVersion}</code> and you are currently running version <code style="color: #007fcc">v${currentVersion}</code>.</span>`;
+       }
+     })
+     .catch(error => {
+       console.error("Error fetching GitHub API:", error);
+       document.getElementById("latestversion").innerHTML = "<span>Error checking for updates.</span>";
+      });
+
+      fetch("/stats")
+        .then(response => response.json())
+        .then(data => {
+          let TotalUsers = data.total_users;
+            document.getElementById("userStats").innerHTML = `Total number of users: <code style="color: #007fcc">${TotalUsers}</code>`;
+        })
+        .catch(error => {
+            console.error("Error fetching stats:", error);
+            document.getElementById("userStats").innerHTML = "Error loading statistics."; 
+        });
+    </script>
+    <script>
+      async function setResources() {
+          let id = encodeURIComponent(document.getElementById("setID").value);
+          let cpu = encodeURIComponent(document.getElementById("setCPU").value * 100);
+          let ram = encodeURIComponent(document.getElementById("setRAM").value * 1024);
+          let disk = encodeURIComponent(document.getElementById("setDisk").value * 1024);
+          let servers = encodeURIComponent(document.getElementById("setServers").value);
+          window.location.href = `/setresources?id=${id}&cpu=${cpu}&ram=${ram}&disk=${disk}&servers=${servers}`
+      }
+      async function addResources() {
+          let id = encodeURIComponent(document.getElementById("addID").value);
+          let cpu = encodeURIComponent(document.getElementById("addCPU").value * 100);
+          let ram = encodeURIComponent(document.getElementById("addRAM").value * 1024);
+          let disk = encodeURIComponent(document.getElementById("addDisk").value * 1024);
+          let servers = encodeURIComponent(document.getElementById("addServers").value);
+          window.location.href = `/addresources?id=${id}&cpu=${cpu}&ram=${ram}&disk=${disk}&servers=${servers}`
+      }
+      async function setPlan() {
+        let id = encodeURIComponent(document.getElementById("setIDPlan").value);
+        let planName = encodeURIComponent(document.getElementById("planName").value);
+        window.location.href = `/setplan?id=${id}&package=${planName}`
+      }
+    </script>
+    <!-- Custom js for this page -->
+    <script src="/assets/js/select2.js"></script>
+    <!-- End custom js for this page -->
+  </body>
+</html>
