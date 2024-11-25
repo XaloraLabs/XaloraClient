@@ -76,6 +76,13 @@ To run in the background, use PM2 (see PM2 section)</br>
 
 <strong>2.9</strong> Run `systemctl restart nginx` and try open your domain.
 
+
+# Credits
+<strong>1.1</strong> Our backend is heavily inspired by Heliactyl, and we extend our gratitude to their team for their exceptional work.
+
+Explore Heliactyl: https://github.com/OpenHeliactyl/Heliactyl/
+
+
 # Nginx Proxy Config
 
 ```Nginx
@@ -109,7 +116,3 @@ server {
     }
 }
 
-# Credits
-<strong>1.1</strong> Our backend is heavily inspired by Heliactyl, and we extend our gratitude to their team for their exceptional work.
-
-Explore Heliactyl: https://github.com/OpenHeliactyl/Heliactyl/
