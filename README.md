@@ -21,11 +21,6 @@ All features:
 - API (for bots & other things)
 
 
-# Warning
-
-We cannot force you to keep "Powered by XaloraClient" in the footer, but please consider keeping it. It helps to get more visibility for the project, which is getting better. We won't provide technical support for installations without the notice in the footer. We may DMCA the website under certain conditions.
-Please do keep the footer, though.
-
 <hr>
 
 # Install Guide

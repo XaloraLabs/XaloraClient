@@ -5,6 +5,9 @@
   "icon": "https://cdn.discordapp.com/attachments/1063585626022223892/1065305275826966609/Screenshot_2023-01-18_162220.jpg",
   "theme": "pluto",
   "timezone": "Europe/Paris",
+  "coinname": "XAR",
+  "discordlink": "https://discord.gg/W4VWbqX8fP",
+  
   "resources": {
     "_comment": "Options: MB, GB. This is only used on the user side, admin will use GB.",
     "type": "MB"
@@ -160,11 +163,17 @@
       },
       "locations": {
         "1": {
-          "name": "Default Location 1",
-          "package": null
+          "name": "Frankfurt",
+          "country": "Germany",
+          "iso": "DE",
+          "id": 1,
+          "package": "default"
         },
         "2": {
-          "name": "Default Location 2",
+          "name": "SGP",
+          "country": "Singapore",
+          "id": 2,
+          "iso": "SG",
           "package": null
         }
       },

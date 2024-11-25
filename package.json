@@ -1,9 +1,9 @@
 {
-  "name": "heliactyl",
-  "version": "12.7.8",
+  "name": "XaloraClient",
+  "version": "0.1",
   "description": "The best Pterodactyl client area.",
   "main": "index.js",
-  "author": "Heliactyl-Fixed",
+  "author": "XaloraClient",
   "dependencies": {
     "@keyv/mongo": "^1.2.1",
     "@keyv/mysql": "^1.1.5",

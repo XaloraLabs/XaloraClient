@@ -67,6 +67,67 @@
         </nav>
     </div>
 
+    <% if (req.query.err) { %>
+        <% if (req.query.err !== "none") { %>
+            <% if (req.query.err == "CANNOTAFFORD") { %>
+                <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                    <span>Insufficient funds.</span>
+                    <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <% } else if (req.query.err == "MAXCPUEXCEETED") { %>
+                    <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                        <span>You have reached the cpu limit!</span>
+                        <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                  <% } else if (req.query.err == "MAXRAMEXCEETED") { %>
+                    <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                        <span>You have reached the RAM limit!</span>
+                        <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                  <% } else if (req.query.err == "MAXDISKEXCEETED") { %>
+                    <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                        <span>You have reached the disk limit!</span>
+                        <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                  <% } else if (req.query.err == "MAXSERVERSEXCEETED") { %>
+                    <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                        <span>You have reached the servers limit!</span>
+                        <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                  <% } %>
+                  <% } else if (req.query.err == "none") { %>
+                    <div class="mb-4 mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 flex items-center justify-between">
+                        <span>Success!</b></span>
+                        <button @click="showError = false" class="text-green-400 hover:text-green-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <% } %>
+                    <% } %>
+
     <!-- Store Content -->
     <div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
