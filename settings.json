@@ -140,22 +140,7 @@
           "name": "Frankfurt",
           "country": "Germany",
           "iso": "DE",
-          "id": 1,
-          "package": "default"
-        },
-        "2": {
-          "name": "IDK MAN",
-          "country": "Singapore",
           "id": 2,
-          "iso": "SG",
-
-          "package": null
-        },
-        "3": {
-          "name": "Mumbai",
-          "country": "India",
-          "iso": "IN",
-          "id": 3,
           "package": "default"
         }
       },
