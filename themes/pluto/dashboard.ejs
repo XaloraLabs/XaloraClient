@@ -181,7 +181,7 @@
             </div>
           </dd>
         </div>
-    
+
         <div class="px-4 py-5 sm:p-6">
           <dt class="text-base font-medium text-white">Available Disk</dt>
           <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
@@ -190,8 +190,19 @@
             </div>
           </dd>
         </div>
+    
+        <div class="px-4 py-5 sm:p-6">
+          <dt class="text-base font-medium text-white">Available Server Slots</dt>
+          <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+            <div class="flex items-baseline text-2xl font-semibold text-orange-500">
+            <%= packages.servers + extraresources.servers - servers %> Slots
+            </div>
+          </dd>
+        </div>
       </dl>
     </div>
+
+    
     
         <!-- Stats Section -->
 
