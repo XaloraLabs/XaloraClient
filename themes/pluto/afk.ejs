@@ -81,7 +81,7 @@
             <p class="text-gray-400 mb-6">Earn <%= settings.coinname %> for free, by leaving this page open. <span class="hidden" id="sessionDuration">-</span></p>
             
             <script>
-              const coinsPerMinute = <%= settings.api.afk.coins %>;          
+              const coinsPerMinute = '<%= settings.api.afk.coins %>';          
                 let totalCoins = 0;
 
                 function connect() {
