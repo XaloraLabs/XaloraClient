@@ -7,6 +7,8 @@
   "timezone": "Europe/Paris",
   "coinname": "XAR",
   "discordlink": "https://discord.gg/W4VWbqX8fP",
+  "advent": false,
+  "logo": "https://i.ibb.co/bNH0ZwC/Xalorawhite.png",
   
   "resources": {
     "_comment": "Options: MB, GB. This is only used on the user side, admin will use GB.",
