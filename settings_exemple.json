@@ -21,7 +21,7 @@
     "key": "ptla_0000000000000000000000000000000000000000000"
   },
   "linkvertise": {
-    "userid": "50000",
+    "userid": "1152726",
     "coins": 5
   },
   "storelimits": {
@@ -165,6 +165,9 @@
         "1": {
           "name": "Frankfurt",
           "country": "Germany",
+          "region": "Europe",
+          "capacity": 100,
+          "node": "DE-1",
           "iso": "DE",
           "id": 1,
           "package": "default"
@@ -172,40 +175,19 @@
         "2": {
           "name": "SGP",
           "country": "Singapore",
+          "region": "Asia",
+          "capacity": 120,
+          "node": "SGP-1",
           "id": 2,
           "iso": "SG",
           "package": null
         }
       },
       "eggs": {
-        "bungeecord": {
-          "display": "Minecraft Java | BungeeCord",
-          "minimum": {
-            "ram": 512,
-            "disk": 512,
-            "cpu": 75
-          },
-          "maximum": {
-            "ram": null,
-            "disk": null,
-            "cpu": null
-          },
-          "info": {
-            "egg": 4,
-            "docker_image": "ghcr.io/pterodactyl/yolks:java_17",
-            "startup": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
-            "environment": {
-              "SERVER_JARFILE": "bungeecord.jar",
-              "BUNGEE_VERSION": "latest"
-            },
-            "feature_limits": {
-              "databases": 4,
-              "backups": 4
-            }
-          }
-        },
         "paper": {
-          "display": "Minecraft Java | Paper",
+          "category": "Minecraft Java",
+          "display": "Paper/Spigot",
+          "icon": "https://papermc.io/assets/logo/256x.png",
           "minimum": {
             "ram": 1024,
             "disk": 1024,
@@ -217,12 +199,40 @@
             "cpu": null
           },
           "info": {
-            "egg": 1,
+            "egg": 2,
             "docker_image": "ghcr.io/pterodactyl/yolks:java_17",
             "startup": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -Dterminal.jline=false -Dterminal.ansi=true -jar {{SERVER_JARFILE}}",
             "environment": {
               "SERVER_JARFILE": "server.jar",
               "BUILD_NUMBER": "latest"
+            },
+            "feature_limits": {
+              "databases": 4,
+              "backups": 4
+            }
+          }
+        },
+        "bungeecord": {
+          "category": "Minecraft Java",
+          "display": " BungeeCord",
+          "icon": "https://scalacube.com/images/store/minecraft/bungeecord.png",
+          "minimum": {
+            "ram": 512,
+            "disk": 512,
+            "cpu": 75
+          },
+          "maximum": {
+            "ram": null,
+            "disk": null,
+            "cpu": null
+          },
+          "info": {
+            "egg": 1,
+            "docker_image": "ghcr.io/pterodactyl/yolks:java_17",
+            "startup": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
+            "environment": {
+              "SERVER_JARFILE": "bungeecord.jar",
+              "BUNGEE_VERSION": "latest"
             },
             "feature_limits": {
               "databases": 4,
@@ -255,14 +265,18 @@
         }
       }
     },
-    "afk page": {
+    "afk": {
       "enabled": true,
-      "_comment": "This afk page will give the users [coins variable] coins every [every variable] seconds.",
-      "every": 5,
-      "_comment1": "The coins variable is meant to not be under 1. There may be bugs if the coins variable is less than 1.",
-      "coins": 1
-    }
-  },
+      "limit": 5,
+      "_comment": "This is no longer supported and will be removed in the future. The AFK page has worked without arc.io since v11.4.0.",
+      "path": "afkwspath",
+      "_comment4": "This afk page will give the users [coins variable] coins every [every variable] seconds.",
+      "every": 60,
+      "_comment5": "The coins variable is meant to not be under 1. There may be bugs if the coins variable is less than 1.",
+      "coins": 5
+      
+      }
+    },
   "whitelist": {
     "_comment": "This allows only specific people to be able to use the dashboard.",
     "status": false,
