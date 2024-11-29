@@ -11,7 +11,7 @@ module.exports.load = async function(app, db) {
 
     let newsettings = JSON.parse(fs.readFileSync("./settings.json"));
 
-    if (newsettings.api["afk page"].enabled !== true || !req.session || !req.session.userinfo) {
+    if (newsettings.api.afk.enabled !== true || !req.session || !req.session.userinfo) {
       return ws.close();
     }
 
@@ -25,11 +25,11 @@ module.exports.load = async function(app, db) {
       async function() {
         let usercoins = await db.get("coins-" + req.session.userinfo.id);
         usercoins = usercoins ? usercoins : 0;
-        usercoins = usercoins + newsettings.api["afk page"].coins;
+        usercoins = usercoins + newsettings.api.afk.coins;
         if (usercoins > 999999999999999) return ws.close();
         await db.set("coins-" + req.session.userinfo.id, usercoins);  
         ws.send(JSON.stringify({"type":"coin"}))
-      }, newsettings.api["afk page"].every * 1000
+      }, newsettings.api.afk.every * 1000
     );
 
     ws.onclose = async() => {

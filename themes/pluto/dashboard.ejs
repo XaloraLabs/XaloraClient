@@ -112,20 +112,42 @@
 <% } %>
 
     <!-- Welcome Message and Quick Links -->
-<div class="w-full border-l-4 mt-2 mb-8 bg-orange-600/15 border-orange-600 rounded-r-2xl">
-  <div class="p-6">
-    <h2 class="text-white/90 text-lg font-semibold">Welcome back!</h2>
-    <div class="space-y-5">
-      <p class="text-white/60 text-sm leading-5">
-        From the <%= settings.name %> dashboard, you can manage your <%= settings.coinname %> wallet, deploy resources (ex. a server) and upgrade your deployments.
-      </p>
-      <a class="transition hover:scale-95 cursor-pointer font-semibold gap-2 grow-0 items-center justify-center rounded-xl shrink-0 disabled:cursor-not-allowed inline-flex border focus:outline-none px-4 py-[9px] bg-orange-700 border-orange-700 text-white hover:bg-orange-600 hover:border-orange-600 focus:ring-4 focus:ring-orange-900 disabled:bg-orange-900 disabled:border-orange-900 disabled:text-orange-400 text-sm" href="/servers/new">
-        <span class="pointer-events-none shrink-0">Get started</span>
-      </a>
-      
+    <% if (!settings.advent) { %>
+    <div class="w-full border-l-4 mt-2 mb-8 bg-orange-600/15 border-orange-600 rounded-r-2xl">
+      <div class="p-6">
+        <h2 class="text-white/90 text-lg font-semibold">Welcome back!</h2>
+        <div class="space-y-5">
+          <p class="text-white/60 text-sm leading-5">
+            From the <%= settings.name %> dashboard, you can manage your <%= settings.coinname %> wallet, deploy resources (ex. a server) and upgrade your deployments.
+          </p>
+          <a class="transition hover:scale-95 cursor-pointer font-semibold gap-2 grow-0 items-center justify-center rounded-xl shrink-0 disabled:cursor-not-allowed inline-flex border focus:outline-none px-4 py-[9px] bg-orange-700 border-orange-700 text-white hover:bg-orange-600 hover:border-orange-600 focus:ring-4 focus:ring-orange-900 disabled:bg-orange-900 disabled:border-orange-900 disabled:text-orange-400 text-sm" href="/servers/new">
+            <span class="pointer-events-none shrink-0">Get started</span>
+          </a>
+          <div class="flex flex-col xs:flex-row gap-3 items-start p-4 rounded-xl bg-white/5 text-orange-100" dismissable="false">
+            <div class="shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block shrink-0 h-5 w-5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+    </svg>
+    
+            </div>
+            <div class="flex flex-col flex-auto gap-3 items-start md:flex-row md:items-center">
+              <div class="flex-auto space-y-3">
+                <div class="space-y-1">
+                  <h2 class="text-sm leading-5 font-semibold text-orange-100">Has someone asked you to join their server on <%= settings.name %> as a subuser?</h2>
+                  <div class="text-sm leading-5 text-orange-100/70">
+                    <p class="">
+                      You'll need to ask them to invite you now that you've signed up.
+                      There's no need to do anything until you receive that.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+    <% } %>
 <%
                let ram = 0;
                let disk = 0;

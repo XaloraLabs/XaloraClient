@@ -1,132 +1,163 @@
+
 <!DOCTYPE html>
 <html lang="en">
+<head>
   <%- include('./components/head') %>
-    <body>
-      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-      <div class="container-scroller">
-        <!-- partial:partials/_sidebar.html -->
-      <%- include('./components/sidebar') %>
-        <!-- partial -->
-        <div class="container-fluid page-body-wrapper">
-          <!-- partial:partials/_navbar.html -->
-           <%- include('./components/topnav') %>
-          <!-- partial -->
-        <div style="background-color: #111319" class="main-panel">
-          <div style="background-color: #111319" class="content-wrapper">
+</head>
+<body class="text-white">
+  
+  <%- include('./components/sidebar') %>
 
-           <h2>Linkvertise</h2>
-           <p class="text-gray">Earn coins by completing Linkvertise links.</p>
-            <% if (req.query.err) { %>
-              <div style="border-radius: 15px;" class="alert">
-                  <% if (req.query.err == "MUSTCOMPLETECAPTCHA") { %>
-                    You must complete the captcha to prove you are human!
-                <% } else if (req.query.err == "INVALIDCAPTCHARESPONSE") { %>
-                    You submitted an invalid captcha response, try again.
-                <% } %>
-              </div>
-            <% } %>
-            <% if (req.query.success) { %>
-              <div class="alert" style="background-color: #00b950; border-radius: 15px;">
-                Success! <%= settings.linkvertise.coins%> coins were added to your account.
-            </div>
-            <% } %>
-              <div class="row">
-                <div class="col-md-6 grid-margin stretch-card">
-                    <div class="card">
-                    <div class="card-body" style="display: none;" id="generate-panel">
-                      <p>Every time you complete a linkvertise link, you will earn <%= settings.linkvertise.coins%> coins!<br>Generate a link below:<br><br>
-                        <button class="btn btn-primary btn-lg" onclick="generate()">Generate Link</button></p></center>
-									  </div>
-                    <div class="card-body" id="loading-panel">
-                      <center><h3>Loading...</h3></center>
-                    </div>
-                    <div class="card-body" id="error-panel" style="display: none;">
-                      <center><h3>An error occured! Refresh the page and try again</h3></center>
-                    </div>
-                    <div class="card-body" id="cooldown-panel" style="display: none;">
-                      <center>
-                        <h3>You are on cooldown before you can complete another linkvertise link!</h3>
-                        <p>Please wait <span id="cooldown-seconds"></span> seconds before you can complete another link.</p>
-                      </center>
-                    </div>
-                    <div class="card-body" id="dailylimit-panel" style="display: none;">
-                      <center>
-                        <h3>You have reached the maximum number of links you can complete today!</h3>
-                        <p>You can complete more after <span id="daily-timeleft"></span>.</p>
-                      </center>
-                    </div>
-                    <script type="text/javascript">
-                      const loadingPanel = document.getElementById('loading-panel')
-                      fetch(`/api/lvcooldown`).then(res => res.json())
-                      .then(json => {
-                        if (json.cooldown === null) {
-                          const genPanel = document.getElementById('generate-panel')
-                          loadingPanel.style.display = 'none'
-                          return genPanel.style.display = ''
-                        } else if (json.dailyLimit) {
-                          const dailyPanel = document.getElementById('dailylimit-panel')
-                          dailyPanel.style.display = ''
-                          loadingPanel.style.display = 'none'
-                          const timeLeft = document.getElementById('daily-timeleft')
-                          timeLeft.innerHTML = json.readable
-                        } else if (json.error) {
-                          const errorPanel = document.getElementById('error-panel')
-                          loadingPanel.style.display = 'none'
-                          errorPanel.style.display = ''
-                        } else {
-                          loadingPanel.style.display = 'none'
-                          const cooldownPanel = document.getElementById('cooldown-panel')
-                          const cooldownTimer = document.getElementById('cooldown-seconds')
-
-                          setInterval(() => {
-                            const timeLeft = json.cooldown - Date.now()
-                            if (timeLeft < 0) return window.location.replace('/lv')
-                            cooldownTimer.innerHTML = Math.floor(timeLeft / 1000)
-                          }, 1000)
-
-                          cooldownPanel.style.display = ''
-                        }
-                      })
-                      .catch(() => {
-                        loadingPanel.style.display = 'none'
-                        const errorPanel = document.getElementById('error-panel')
-                        errorPanel.style.display = ''
-                      })
-                    </script>
-                  <script type="text/javascript">
-                    function generate() {
-                      window.location.replace(`/lv/gen`)
-                    }
-                  </script>
-              </div>
-            </div>
-            </div></div>
-            <!-- content-wrapper ends -->
-          <%- include('./components/footer') %>
-          </div>
-          <!-- main-panel ends -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto">
+                <div class="container mx-auto px-8 py-2">
+                    <!-- Content -->
+<!-- Main Content -->
+<main class="flex-grow container mx-auto px-4 py-8">
+  
+    <div class="flex justify-between items-center w-full mx-auto pb-4">
+        <!-- Welcome text and subtext on the left -->
+        <div class="flex flex-col">
+            <h1 class="text-xl font-semibold mb-0.5" style="font-family: 'Cabin';">Linkvertise Page</h1>
+            <p class="text-gray-400 text-md">Earn free rewards for keeping this page open.</p>
         </div>
-        <!-- page-body-wrapper ends -->
-      </div>
-      <!-- container-scroller -->
-      <!-- plugins:js -->
-      <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
-      <!-- endinject -->
-      <!-- Plugin js for this page -->
-      <script src="../../assets/vendors/select2/select2.min.js"></script>
-      <script src="../../assets/vendors/typeahead.js/typeahead.bundle.min.js"></script>
-      <!-- End plugin js for this page -->
-      <!-- inject:js -->
-      <script src="../../assets/js/off-canvas.js"></script>
-      <script src="../../assets/js/hoverable-collapse.js"></script>
-      <script src="../../assets/js/misc.js"></script>
-      <script src="../../assets/js/settings.js"></script>
-      <script src="../../assets/js/todolist.js"></script>
-      <!-- endinject -->
-      <!-- Custom js for this page -->
-      <script src="../../assets/js/file-upload.js"></script>
-      <script src="../../assets/js/typeahead.js"></script>
-      <script src="../../assets/js/select2.js"></script>
-      <!-- End custom js for this page -->
-    </body>
-  </html>
+
+        <!-- Breadcrumbs on the right -->
+        <nav aria-label="Breadcrumb" class="inline-flex py-2 px-4 rounded-xl bg-white/5 transition-colors duration-200">
+            <ol role="list" class="flex items-center space-x-2">
+                <li>
+                    <a href="/dashboard" class="text-sm flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition-colors duration-200" aria-current="false">
+                        <svg
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="icon icon-tabler size-4 icons-tabler-outline icon-tabler-home"
+                        >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                        </svg>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="flex items-center">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right size-4 text-zinc-400"
+                    >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M9 6l6 6l-6 6"></path>
+                    </svg>
+                </li>
+                <li>
+                    <a href="#_" class="text-sm flex items-center gap-2 font-medium text-white/80 hover:text-white transition-colors duration-200" aria-current="page">
+                        Linkvertise
+                    </a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- AFK Page Content -->
+    <div class="mt-24 flex justify-center">
+        <div class="text-center">
+            
+            <p class="text-sm tracking-widest text-gray-500 uppercase mb-3 mt-16">WHY NOT COMPLETE LINKVERTISE LINKS WHILE YOU AFK?</p>
+                <p class="text-2xl font-bold text-white"><%= settings.api.afk.limit %> Linkvertise Links Per Day</p>
+                <p class="mt-2 text-sm text-gray-300">For every Linkvertise link you complete, you will get <%= settings.linkvertise.coins %> <%= settings.name %>.</p>
+                <div class="mt-4 flex justify-center">
+                    <a href="/lv/gen" class="cursor-pointer transition ease-in-out group relative flex justify-center rounded-full border border-transparent py-2 px-6 text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none">
+                        Generate Link
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+        <!-- Footer -->
+        <%- include('./components/footer') %>
+    </div>
+
+    <script>
+        // Function to highlight the active tab
+        function setActiveTab() {
+            const currentPath = window.location.pathname;
+            const tabs = document.querySelectorAll('#tabs a');
+            tabs.forEach(tab => {
+                if (tab.getAttribute('href') === currentPath) {
+                    tab.classList.add('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.remove('border-transparent', 'hover:border-gray-300', 'hover:text-white');
+                } else {
+                    tab.classList.remove('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.add('border-transparent', 'hover:border-gray-300', 'hover:text-white');
+                }
+            });
+        }
+
+        // Set active tab on page load
+        setActiveTab();
+
+        // For demonstration purposes, simulate changing routes when clicking tabs
+        document.querySelectorAll('#tabs a').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = e.currentTarget.getAttribute('href');
+                history.pushState(null, '', href);
+                window.location.href = href;
+                setActiveTab();
+            });
+        });
+
+        // Listen for popstate events (back/forward browser navigation)
+        window.addEventListener('popstate', setActiveTab);
+    </script>
+</body>
+</html>
+<script>
+    var options = {
+      classname: 'loadingbar',
+      id: 'loadingbar'
+    };
+    var nanobar = new Nanobar(options);
+    function simulateLoading() {
+      nanobar.go(10); // Change this value to control the loading speed
+      setTimeout(function() {
+        nanobar.go(50);
+      }, 190); // Delay the progress update
+      setTimeout(function() {
+        nanobar.go(100);
+      }, 400); // Another delay
+    }
+    simulateLoading();
+  </script>
+  <style>
+    .loadingbar .bar {
+      background: #fb923c;
+      -webkit-box-shadow: 0px 4px 38px -15px #fb923c;
+      -moz-box-shadow: 0px 4px 38px -15px #fb923c;
+      box-shadow: 0px 4px 38px -15px #fb923c;
+      height: 1.85px;
+    }
+  </style>
+
+<script>
+  let afkTime = 0;
+  let afkInterval = setInterval(() => {
+    afkTime++;
+    document.getElementById("afk-time").textContent = `AFK Time: ${afkTime} seconds`;
+  }, 1000);
+
+</script>
