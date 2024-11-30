@@ -55,7 +55,7 @@ isInCategory(category) {
   open: false,
   items: [
       { name: 'My Servers', path: '/servers' },
-      { name: 'SFTP Access', path: '/settings' },
+      { name: 'Credentials', path: '/settings' },
       { name: 'Login to Panel', path: ' <%= settings.pterodactyl.domain %>' }
   ],
   init() {
@@ -104,12 +104,12 @@ class="mt-1">
   open: false,
   economyItems: [
       { name: 'Wallet', path: '/wallet' },
+      { name: 'Linkvertise', path: '/lv' },
       { name: 'AFK Page', path: '/afk' },
       <% if (settings.api.client.coins.store.enabled) { %> 
       { name: 'Store', path: '/store' },
       <% } %>
       { name: 'Referrals', path: '/referrals' },
-      { name: 'Linkvertise', path: '/lv' },
       { name: 'J4R Rewards', path: '/j4r' }
   ],
   init() {

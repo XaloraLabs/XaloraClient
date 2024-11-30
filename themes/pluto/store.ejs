@@ -190,7 +190,7 @@
                     <span class="text-lg font-medium"><%= settings.api.client.coins.store.servers.cost %> <%= settings.coinname %> / Slot</span>
                     <div class="flex items-center">
                         <button @click="decrementServer()" class="bg-white/5 text-white px-2 py-1 rounded-l">-</button>
-                        <input x-model.number="cpu" type="number" min="1" class="bg-[#1a1f2a]/50 text-white w-16 text-center px-2 py-1 border-t border-b border-white/5">
+                        <input x-model.number="server" type="number" min="1" class="bg-[#1a1f2a]/50 text-white w-16 text-center px-2 py-1 border-t border-b border-white/5">
                         <button @click="incrementServer()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
                     </div>
                 </div>

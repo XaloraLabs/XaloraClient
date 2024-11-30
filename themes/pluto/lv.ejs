@@ -69,12 +69,22 @@
         </nav>
     </div>
 
+    <% if (req.query.err == 'REACHEDDAILYLIMIT') { %>
+        <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+            <span>You have reached you daily limit of linkvertise links</span>
+            <button @click="showError = false" class="text-red-400 hover:text-red-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    <% } %>
     <!-- AFK Page Content -->
     <div class="mt-24 flex justify-center">
         <div class="text-center">
             
             <p class="text-sm tracking-widest text-gray-500 uppercase mb-3 mt-16">WHY NOT COMPLETE LINKVERTISE LINKS WHILE YOU AFK?</p>
-                <p class="text-2xl font-bold text-white"><%= settings.api.afk.limit %> Linkvertise Links Per Day</p>
+                <p class="text-2xl font-bold text-white"><%= settings.linkvertise.dailyLimit %> Linkvertise Links Per Day</p>
                 <p class="mt-2 text-sm text-gray-300">For every Linkvertise link you complete, you will get <%= settings.linkvertise.coins %> <%= settings.name %>.</p>
                 <div class="mt-4 flex justify-center">
                     <a href="/lv/gen" class="cursor-pointer transition ease-in-out group relative flex justify-center rounded-full border border-transparent py-2 px-6 text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none">

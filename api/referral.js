@@ -5,7 +5,7 @@ const fs = require("fs");
 const ejs = require("ejs");
 const fetch = require("node-fetch");
 const NodeCache = require("node-cache");
-const log = require("../handlers/log.js");
+const log = require("../misc/log.js");
 const crypto = require('crypto')
 
 const myCache = new NodeCache({ deleteOnExpire: true, stdTTL: 59 });
