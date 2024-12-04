@@ -60,9 +60,8 @@
     "admin": true,
     "logout": true
   },
-  "adsense": {
-    "_devcomment": "Doesn't work, i will add soon",
-    "_comment": "This feature facilitates the integration of AdSense, adsterra, and other similar applications into Heliactyl.",
+  "ads": {
+    "_comment": "This feature facilitates the integration of AdSense, adsterra, and other similar applications",
     "enabled": false,
     "script": "Add your AdSense links here."
   },

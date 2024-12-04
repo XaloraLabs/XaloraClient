@@ -1,11 +1,17 @@
-<script src="https://cdn.tailwindcss.com"></script> 
+<head>
+    <link rel="stylesheet" href="../assets/tailwind.css">
+</head>
+
+
 <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gradient-to-b from-[#101319] to-[#0b0d10]">
   <!-- Sidebar -->
 <div :class="{'translate-x-0 ease-out': sidebarOpen, '-translate-x-full ease-in': !sidebarOpen}" class="fixed z-30 inset-y-0 left-0 w-64 transition duration-300 transform bg-[#1c1e23] border-r border-white/5 overflow-y-auto lg:translate-x-0 lg:static lg:inset-0 flex flex-col">
 <div class="flex items-center justify-center mt-8">
   <div class="flex items-center">
+    <a href="<%= settings.api.client.oauth2.link %>/dashboard">
       <img class="transition hover:scale-95" src="<%= settings.logo %>" alt="<%= settings.name %>" class="w-auto h-10">
-  </div>
+    </a>
+    </div>
 </div>
 
 <!-- New search and buttons section -->
@@ -105,7 +111,9 @@ class="mt-1">
   economyItems: [
       { name: 'Wallet', path: '/wallet' },
       { name: 'Linkvertise', path: '/lv' },
+      <% if (settings.api.afk.enabled) { %> 
       { name: 'AFK Page', path: '/afk' },
+      <% } %>
       <% if (settings.api.client.coins.store.enabled) { %> 
       { name: 'Store', path: '/store' },
       <% } %>

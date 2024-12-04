@@ -52,39 +52,39 @@
 <body class="bg-gray-900" style="font-family: 'Inter', sans-serif; color: white;">
   <div>
     <%- include('./components/sidebar') %>
-    <div class="md:pl-48 flex flex-col flex-1 h-screen">
+    <div class="flex flex-col flex-1 h-screen md:pl-48">
       <main class="flex-1 overflow-x-hidden overflow-y-auto">
         <div class="py-6">
           <% /* Skeleton loader, lasts about 0.3s to let the page content load */ %>
-          <div class="hidden max-w-7xl pt-8 mx-auto px-4 sm:px-6 md:px-8" id="content">
+          <div class="hidden px-4 pt-8 mx-auto max-w-7xl sm:px-6 md:px-8" id="content">
             <!-- Content -->
-            <div class="lg:flex lg:items-center lg:justify-between rounded-3xl mb-8">
-              <div class="min-w-0 flex-1">
+            <div class="mb-8 lg:flex lg:items-center lg:justify-between rounded-3xl">
+              <div class="flex-1 min-w-0">
                 <div class="flex">
                   <div class="relative">
-                    <div class="bg-gray-700 rounded-2xl h-11 w-11 text-center flex text-white">
+                    <div class="flex text-center text-white bg-gray-700 rounded-2xl h-11 w-11">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mt-3 ml-3">
                         <path fill-rule="evenodd" d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm14.25 6a.75.75 0 0 1-.22.53l-2.25 2.25a.75.75 0 1 1-1.06-1.06L15.44 12l-1.72-1.72a.75.75 0 1 1 1.06-1.06l2.25 2.25c.141.14.22.331.22.53Zm-10.28-.53a.75.75 0 0 0 0 1.06l2.25 2.25a.75.75 0 1 0 1.06-1.06L8.56 12l1.72-1.72a.75.75 0 1 0-1.06-1.06l-2.25 2.25Z" clip-rule="evenodd" />
                       </svg>
                     </div>
                   </div>
                   <div class="relative ml-4">
-                    <h2 class="text-xl font-semibold text-white sm:truncate tracking-tight">Admin</h2>
+                    <h2 class="text-xl font-semibold tracking-tight text-white sm:truncate">Admin</h2>
                     <p class="text-xs font-thin text-white">Perform admin actions on the Xalora dashboard.</p>
                   </div>
                 </div>
               </div>
             </div>
             <% if (req.query.err) { %>
-              <div class="rounded-3xl bg-gray-200 p-8 mb-5">
+              <div class="p-8 mb-5 bg-gray-200 rounded-3xl">
                 <div class="flex">
                   <div class="flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-400">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
                   <div class="ml-3">
-                    <h3 class="text-md font-medium tracking-tight text-gray-700">An error was encountered</h3>
+                    <h3 class="font-medium tracking-tight text-gray-700 text-md">An error was encountered</h3>
                     <div class="mt-1 text-sm text-gray-500">
                       <p>Error code: <code><%= req.query.err %></code></p>
                     </div>
@@ -92,76 +92,127 @@
                 </div>
               </div>
               <% } %>
-              <div class="lg:flex lg:items-center lg:justify-between p-8 border border-gray-200 rounded-3xl">
-                <div class="min-w-0 flex-1 ml-4">
-                  <h2 class="text-xl font-semibold text-gray-700 sm:truncate tracking-tight">XaloraClient <%= settings.version %></h2>
-                  <p class="text-xs mt-2 font-thin text-gray-500 mb-2">
-                    This dashboard is running XaloraClient version <span class="bg-gray-200 px-2 py-1 mb-2 rounded-full" ><%= settings.version %></span>
+              <div class="p-8 border border-gray-200 lg:flex lg:items-center lg:justify-between rounded-3xl">
+                <div class="flex-1 min-w-0 ml-4">
+                  <h2 class="text-xl font-semibold tracking-tight text-gray-700 sm:truncate">XaloraClient <%= settings.version %></h2>
+                  <p class="mt-2 mb-2 text-xs font-thin text-gray-500">
+                    This dashboard is running XaloraClient version <span class="px-2 py-1 mb-2 bg-gray-200 rounded-full" ><%= settings.version %></span>
                   </p>
                   <span id="versionStatus"></span>
                 </div>
-                <div class="mt-5 flex lg:ml-4 lg:mt-0">
-                  <span class="sm:ml-3 mr-3">
-                    <img src="https://atqr.pages.dev/v2Favicon.png" class="h-20 rounded-3xl bg-gray-200 p-3">
+                <div class="flex mt-5 lg:ml-4 lg:mt-0">
+                  <span class="mr-3 sm:ml-3">
+                    <img src="https://atqr.pages.dev/v2Favicon.png" class="h-20 p-3 bg-gray-200 rounded-3xl">
                   </span>
                 </div>
               </div>
             
 
             <!-- Add coins -->
-            <div class="card mt-10">
+            <div class="mt-10 card">
               <div class="card-body">
-                <h1 class="text-xl font-semibold text-white sm:truncate tracking-tight mb-4">Theme Selector</h1>
+                <h1 class="mb-4 text-xl font-semibold tracking-tight text-white sm:truncate">Theme Selector</h1>
     <label for="themeSelect" class="text-sm font-medium text-white">Select Theme</label>
-    <select id="themeSelect" class="mt-3 px-4 py-2 border border-gray-700 rounded-xl bg-gray-800 text-white">
+    <select id="themeSelect" class="px-4 py-2 mt-3 text-white bg-gray-800 border border-gray-700 rounded-xl">
       <!-- Options populated dynamically -->
     </select>
-    <button onclick="setTheme()" class="mb-4 mt-4 transition block inline-flex items-center rounded-2xl bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800">
+    <button onclick="setTheme()" class="items-center block px-4 py-2 mt-4 mb-4 text-sm font-medium text-white transition bg-gray-700 rounded-2xl hover:bg-gray-800">
       Apply Theme
     </button>
 
-                <h1 class="text-xl font-semibold text-white sm:truncate tracking-tight mb-4">Add coins</h1>
+    <div class="mt-10 card">
+      <div class="card-body">
+        <h1 class="mb-4 text-xl font-semibold tracking-tight text-white sm:truncate">Purge Servers</h1>
+        <label for="keyword" class="text-sm font-medium text-white">Exclude Keyword</label><br>
+        <input
+          type="text"
+          id="keyword"
+          placeholder="Enter keyword to exclude"
+          value="[ACTIVE]"
+          class="relative flex justify-center w-1/4 px-4 py-2 mt-3 mb-4 text-sm text-white bg-gray-800 border border-gray-700 rounded-xl"
+        >
+        <button
+          onclick="confirmPurge()"
+          class="inline-flex items-center px-8 py-2 mt-2 mb-3 text-sm font-medium text-white bg-red-600 rounded-2xl hover:bg-red-700"
+        >
+          Purge Servers
+        </button>
+      </div>
+    </div>
+    
+    <script>
+
+      function confirmPurge() {
+        const confirmation = confirm("Are you sure you want to purge all servers except those with the specified keyword? This action cannot be undone!");
+        const keyword = document.getElementById("keyword").value;
+        if (confirmation) {
+          fetch('/api/purge', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ keyword }),
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Servers purged successfully!');
+        } else {
+          alert('Failed to purge servers.');
+        }
+      })
+      .catch(error => {
+        console.error('Error during purge:', error);
+        alert('An error occurred while purging servers.');
+      });
+    } else {
+      alert('Purge action cancelled.');
+    }
+  }
+
+    </script>
+    
+                <h1 class="mb-4 text-xl font-semibold tracking-tight text-white sm:truncate">Add coins</h1>
                 <% /* Discord ID */ %>
                 <label for="location" class="text-sm font-medium text-white">Discord ID</label><br>
-                <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-500 focus:ring-gray-700 border border-gray-700 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-white bg-gray-800" id="id1" placeholder="000000000000000000">
+                <input type="text" class="relative flex justify-center w-1/4 px-4 py-2 mt-3 mb-4 text-sm text-white transition ease-in-out delay-100 bg-gray-800 border border-gray-700 shadow-sm focus:border-gray-500 focus:ring-gray-700 group form-control rounded-xl placeholder:text-gray-400" id="id1" placeholder="000000000000000000">
 
                 <% /* Amount */ %>
                 <label for="location" class="text-sm font-medium text-white">Amount</label><br>
-                <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-500 focus:ring-gray-700 border border-gray-700 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-white bg-gray-800" id="amount1" placeholder="100">
+                <input type="text" class="relative flex justify-center w-1/4 px-4 py-2 mt-3 mb-4 text-sm text-white transition ease-in-out delay-100 bg-gray-800 border border-gray-700 shadow-sm focus:border-gray-500 focus:ring-gray-700 group form-control rounded-xl placeholder:text-gray-400" id="amount1" placeholder="100">
 
                 <% /* Submit form */ %>
-                <a href="javascript:addCoins()" type="button" class="mt-6 transition inline-flex items-center rounded-2xl bg-gray-700 px-8 py-2 text-sm font-medium text-white hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700">
+                <a href="javascript:addCoins()" type="button" class="inline-flex items-center px-8 py-2 mt-6 text-sm font-medium text-white transition bg-gray-700 rounded-2xl hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700">
                   Add
                 </a>
               </div>
               
 
               <!-- Add resources -->
-              <div class="card mt-10">
+              <div class="mt-10 card">
                 <div class="card-body">
-                  <h1 class="text-xl font-semibold text-white sm:truncate tracking-tight mb-4">Add resources</h1>
+                  <h1 class="mb-4 text-xl font-semibold tracking-tight text-white sm:truncate">Add resources</h1>
                   <% /* Discord ID */ %>
                   <label for="location" class="text-sm font-medium text-gray-600">Discord ID</label><br>
-                  <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-500 focus:ring-gray-700 border border-gray-700 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-white bg-gray-800" id="id2" placeholder="000000000000000000">
+                  <input type="text" class="relative flex justify-center w-1/4 px-4 py-2 mt-3 mb-4 text-sm text-white transition ease-in-out delay-100 bg-gray-800 border border-gray-700 shadow-sm focus:border-gray-500 focus:ring-gray-700 group form-control rounded-xl placeholder:text-gray-400" id="id2" placeholder="000000000000000000">
 
                   <% /* CPU */ %>
                   <label for="location" class="text-sm font-medium text-gray-600">CPU Cores</label><br>
-                  <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-500 focus:ring-gray-700 border border-gray-700 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-white bg-gray-800" id="cpu" placeholder="1">
+                  <input type="text" class="relative flex justify-center w-1/4 px-4 py-2 mt-3 mb-4 text-sm text-white transition ease-in-out delay-100 bg-gray-800 border border-gray-700 shadow-sm focus:border-gray-500 focus:ring-gray-700 group form-control rounded-xl placeholder:text-gray-400" id="cpu" placeholder="1">
 
                   <% /* Memory */ %>
                   <label for="location" class="text-sm font-medium text-gray-600">Memory (GiB)</label><br>
-                  <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-500 focus:ring-gray-700 border border-gray-700 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-white bg-gray-800" id="memory" placeholder="2">
+                  <input type="text" class="relative flex justify-center w-1/4 px-4 py-2 mt-3 mb-4 text-sm text-white transition ease-in-out delay-100 bg-gray-800 border border-gray-700 shadow-sm focus:border-gray-500 focus:ring-gray-700 group form-control rounded-xl placeholder:text-gray-400" id="memory" placeholder="2">
 
                   <% /* Storage */ %>
                   <label for="location" class="text-sm font-medium text-gray-600">Storage (GiB)</label><br>
-                  <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-500 focus:ring-gray-700 border border-gray-700 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-white bg-gray-800" id="storage" placeholder="10">
+                  <input type="text" class="relative flex justify-center w-1/4 px-4 py-2 mt-3 mb-4 text-sm text-white transition ease-in-out delay-100 bg-gray-800 border border-gray-700 shadow-sm focus:border-gray-500 focus:ring-gray-700 group form-control rounded-xl placeholder:text-gray-400" id="storage" placeholder="10">
 
                   <% /* Servers */ %>
                   <label for="location" class="text-sm font-medium text-gray-600">Servers</label><br>
-                  <input type="text" class="mt-3 mb-4 px-4 py-2 focus:border-gray-500 focus:ring-gray-700 border border-gray-700 shadow-sm transition ease-in-out delay-100 group relative flex w-1/4 text-sm justify-center form-control rounded-xl placeholder:text-gray-400 text-white bg-gray-800" id="servers" placeholder="5">
+                  <input type="text" class="relative flex justify-center w-1/4 px-4 py-2 mt-3 mb-4 text-sm text-white transition ease-in-out delay-100 bg-gray-800 border border-gray-700 shadow-sm focus:border-gray-500 focus:ring-gray-700 group form-control rounded-xl placeholder:text-gray-400" id="servers" placeholder="5">
 
                   <% /* Submit form */ %>
-                  <a href="javascript:addResources()" type="button" class="mt-6 transition inline-flex items-center rounded-2xl bg-gray-700 px-8 py-2 text-sm font-medium text-white hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700">
+                  <a href="javascript:addResources()" type="button" class="inline-flex items-center px-8 py-2 mt-6 text-sm font-medium text-white transition bg-gray-700 rounded-2xl hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700">
                     Add
                   </a>
                 </div>
