@@ -215,6 +215,9 @@
                   <a href="javascript:addResources()" type="button" class="inline-flex items-center px-8 py-2 mt-6 text-sm font-medium text-white transition bg-gray-700 rounded-2xl hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700">
                     Add
                   </a>
+                  <a href="javascript:setResources()" type="button" class="inline-flex items-center px-8 py-2 mt-6 text-sm font-medium text-white transition bg-gray-700 rounded-2xl hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700">
+                    Set
+                  </a>
                 </div>
                 <script>
                   async function addCoins() {
@@ -231,6 +234,16 @@
                     let storage = encodeURIComponent(document.getElementById("storage").value * 1024);
                     let servers = encodeURIComponent(document.getElementById("servers").value);
                     document.location.href = `/addresources?id=${id2}&cpu=${cpu}&ram=${memory}&disk=${storage}&servers=${servers}`;
+                  };
+                </script>
+                <script>
+                  async function setResources() {
+                    let id2 = encodeURIComponent(document.getElementById("id2").value);
+                    let cpu = encodeURIComponent(document.getElementById("cpu").value * 100);
+                    let memory = encodeURIComponent(document.getElementById("memory").value * 1024);
+                    let storage = encodeURIComponent(document.getElementById("storage").value * 1024);
+                    let servers = encodeURIComponent(document.getElementById("servers").value);
+                    document.location.href = `/setresources?id=${id2}&cpu=${cpu}&ram=${memory}&disk=${storage}&servers=${servers}`;
                   };
                 </script>
                 <script>
