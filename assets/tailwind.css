@@ -1378,6 +1378,9 @@ video {
 .border-blue-500\/20 {
   border-color: rgb(59 130 246 / 0.2);
 }
+.border-blue-500\/15 {
+  border-color: rgb(59 130 246 / 0.2);
+}
 
 .border-emerald-700 {
   --tw-border-opacity: 1;
@@ -1425,7 +1428,7 @@ video {
   border-color: rgba(255, 2, 2, 0.808);
 }
 
-.border-blue-600\/20 {
+.border-blue-600 {
   border-color: rgba(2, 19, 255, 0.808);
 }
 
