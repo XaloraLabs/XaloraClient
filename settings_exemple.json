@@ -1,7 +1,9 @@
 {
-  "version": "0.1",
+  "version": "0.4.4",
   "name": "Xalora",
   "letter": "X",
+  "_note_primarycolor": "Main supported colors, Red, Green, Blue, Orange",
+  "primarycolor": "blue", 
   "icon": "https://cdn.discordapp.com/attachments/1063585626022223892/1065305275826966609/Screenshot_2023-01-18_162220.jpg",
   "theme": "pluto",
   "timezone": "Europe/Paris",
