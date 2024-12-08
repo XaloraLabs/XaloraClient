@@ -11,31 +11,36 @@
         <!-- partial:partials/_navbar.html -->
         <%- include('./components/topnav') %>
         <!-- partial -->
-        <div class="mt-8">
-          <h2 class="text-2xl font-semibold mb-4">Buy Coins</h2>
-          <form action="/buycoins" method="GET" class="bg-white/5 p-8 rounded-2xl">
+        <div class="row">
+          <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <form class="forms-sample ">
+                  <div class="mt-2 mb-3 form-group" >
+          <h2 class="mb-4 text-2xl font-semibold">Buy Coins</h2>
+          <form action="/buycoins" method="GET" class="p-8 bg-white/5 rounded-2xl">
             <div class="mb-4">
-              <label for="Amount" class="block text-gray-400 mb-2">Money Amount (£1/<%= settings.stripe.coins %> coins):</label>
+              <label for="Amount" class="block mb-2 text-gray-400">Money Amount (£1/<%= settings.stripe.coins %> coins):</label>
               <input type="number" class="w-full bg-[#1a1f2a]/50 text-white p-2 rounded-lg" id="Amount" placeholder="5" name="amt">
             </div>
             <div class="mb-4">
-              <label for="InputName1" class="block text-gray-400 mb-2">First Name:</label>
+              <label for="InputName1" class="block mb-2 text-gray-400">First Name:</label>
               <input type="text" class="w-full bg-[#1a1f2a]/50 text-white p-2 rounded-lg" id="InputName1" placeholder="John" name="fn">
             </div>
             <div class="mb-4">
-              <label for="InputName2" class="block text-gray-400 mb-2">Last Name:</label>
+              <label for="InputName2" class="block mb-2 text-gray-400">Last Name:</label>
               <input type="text" class="w-full bg-[#1a1f2a]/50 text-white p-2 rounded-lg" id="InputName2" placeholder="Doe" name="sn">
             </div>
             <div class="mb-4">
-              <label for="InputNumber" class="block text-gray-400 mb-2">Credit Card Number:</label>
+              <label for="InputNumber" class="block mb-2 text-gray-400">Credit Card Number:</label>
               <input type="text" class="w-full bg-[#1a1f2a]/50 text-white p-2 rounded-lg" id="InputNumber" name="number" placeholder="00000000000000">
             </div>
             <div class="mb-4">
-              <label for="InputCVV" class="block text-gray-400 mb-2">CVV:</label>
+              <label for="InputCVV" class="block mb-2 text-gray-400">CVV:</label>
               <input type="text" class="w-full bg-[#1a1f2a]/50 text-white p-2 rounded-lg" id="InputCVV" name="vrf" placeholder="000">
             </div>
             <div class="mb-4">
-              <label for="InputExpir" class="block text-gray-400 mb-2">Expiration Date:</label>
+              <label for="InputExpir" class="block mb-2 text-gray-400">Expiration Date:</label>
               <div class="flex space-x-4">
                 <select class="w-1/2 bg-[#1a1f2a]/50 text-white p-2 rounded-lg" name="month">
                   <option value="1">1st</option>

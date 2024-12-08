@@ -232,7 +232,7 @@ Send
         <div id="recentTransactions" class="space-y-4 mb-4">
             <!-- Transactions will be dynamically inserted here -->
         </div>
-        <button id="showAllTransactions" class="w-full text-center text-orange-400 hover:text-orange-300 transition-colors duration-200">Show All Transactions</button>
+        <button id="showAllTransactions" class="w-full text-center text-<%= settings.primarycolor %>-400 hover:text-<%= settings.primarycolor %>-300 transition-colors duration-200">Show All Transactions</button>
     </div>
 
     <!-- Charts Section -->
@@ -265,7 +265,7 @@ Send
             </div>
             <div class="flex justify-end space-x-4">
                 <button type="button" onclick="hideTransferModal()" class="text-gray-400 hover:text-white transition-colors">Cancel</button>
-                <button type="button" onclick="submitGift()" class="bg-orange-600 text-white px-4 font-medium py-2 rounded-full hover:bg-orange-700 transition-colors">Transfer</button>
+                <button type="button" onclick="submitGift()" class="bg-<%= settings.primarycolor %>-600 text-white px-4 font-medium py-2 rounded-full hover:bg-<%= settings.primarycolor %>-700 transition-colors">Transfer</button>
             </div>
         </form>
     </div>
@@ -337,10 +337,10 @@ document.addEventListener('DOMContentLoaded', initDashboard);
             const tabs = document.querySelectorAll('#tabs a');
             tabs.forEach(tab => {
                 if (tab.getAttribute('href') === currentPath) {
-                    tab.classList.add('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.add('border-<%= settings.primarycolor %>-500', 'text-<%= settings.primarycolor %>-500', 'font-medium');
                     tab.classList.remove('border-transparent', 'hover:border-gray-300', 'hover:text-white');
                 } else {
-                    tab.classList.remove('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.remove('border-<%= settings.primarycolor %>-500', 'text-<%= settings.primarycolor %>-500', 'font-medium');
                     tab.classList.add('border-transparent', 'hover:border-gray-300', 'hover:text-white');
                 }
             });

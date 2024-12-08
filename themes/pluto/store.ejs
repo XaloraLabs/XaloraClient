@@ -143,7 +143,7 @@
                         <button @click="incrementRAM()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
                     </div>
                 </div>
-                <button @click="buyRAM()" class="w-full bg-orange-600 font-medium text-white py-2 rounded-full hover:bg-orange-700 transition">
+                <button @click="buyRAM()" class="w-full bg-<%= settings.primarycolor %>-600 font-medium text-white py-2 rounded-full hover:bg-<%= settings.primarycolor %>-700 transition">
                     Buy RAM
                 </button>
             </div>
@@ -160,7 +160,7 @@
                         <button @click="incrementDisk()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
                     </div>
                 </div>
-                <button @click="buyDisk()" class="w-full bg-orange-600 font-medium text-white py-2 rounded-full hover:bg-orange-700 transition">
+                <button @click="buyDisk()" class="w-full bg-<%= settings.primarycolor %>-600 font-medium text-white py-2 rounded-full hover:bg-<%= settings.primarycolor %>-700 transition">
                     Buy Disk
                 </button>
             </div>
@@ -177,7 +177,7 @@
                         <button @click="incrementCPU()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
                     </div>
                 </div>
-                <button @click="buyCPU()" class="w-full bg-orange-600 font-medium text-white py-2 rounded-full hover:bg-orange-700 transition">
+                <button @click="buyCPU()" class="w-full bg-<%= settings.primarycolor %>-600 font-medium text-white py-2 rounded-full hover:bg-<%= settings.primarycolor %>-700 transition">
                     Buy CPU
                 </button>
             </div>
@@ -194,7 +194,7 @@
                         <button @click="incrementServer()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
                     </div>
                 </div>
-                <button @click="buyServer()" class="w-full bg-orange-600 font-medium text-white py-2 rounded-full hover:bg-orange-700 transition">
+                <button @click="buyServer()" class="w-full bg-<%= settings.primarycolor %>-600 font-medium text-white py-2 rounded-full hover:bg-<%= settings.primarycolor %>-700 transition">
                     Buy Slots
                 </button>
             </div>
@@ -256,10 +256,10 @@ function store() {
             const tabs = document.querySelectorAll('#tabs a');
             tabs.forEach(tab => {
                 if (tab.getAttribute('href') === currentPath) {
-                    tab.classList.add('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.add('border-<%= settings.primarycolor %>-500', 'text-<%= settings.primarycolor %>-500', 'font-medium');
                     tab.classList.remove('border-transparent', 'hover:border-gray-300', 'hover:text-white');
                 } else {
-                    tab.classList.remove('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.remove('border-<%= settings.primarycolor %>-500', 'text-<%= settings.primarycolor %>-500', 'font-medium');
                     tab.classList.add('border-transparent', 'hover:border-gray-300', 'hover:text-white');
                 }
             });

@@ -7,8 +7,8 @@
       <!-- partial:partials/_sidebar.html -->
       <%- include('./components/sidebar') %>
       <!-- partial -->
-      <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ml-5">
-        <div class="bg-white/5 rounded-2xl overflow-hidden shadow-none hover:shadow-lg transition-shadow duration-300">
+      <div class="grid grid-cols-1 gap-4 mt-4 ml-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="overflow-hidden transition-shadow duration-300 shadow-none bg-white/5 rounded-2xl hover:shadow-lg">
           <div class="p-6">
             <div style="background-color: #11131900" class="main-panel">
               <div style="background-color: #11131900" class="content-wrapper">
@@ -82,28 +82,28 @@
                 <div class="card">
                   <div class="card-body">
                     <form class="forms-sample ">
-                      <div class="form-group mt-2 mb-3" >
+                      <div class="mt-2 mb-3 form-group" >
                         <label class="text-white" for="exampleInputUsername1">Name:</label>
                         <br>
                         <input style="color: #9CA3AF; background-color: #2a3038; border: 0;border-radius: 15px; padding: 8px;" type="text" class="form-control" value="<%= serverinfo.attributes.name %> | Changing this will not do anything, use the panel">
                       </div>
 
-                      <div class="form-group mt-2 mb-3">
+                      <div class="mt-2 mb-3 form-group">
                         <label class="text-white" for="InputCPU">CPU (Cores):</label>
                         <br>
                         <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" id="InputCPU" placeholder="1" value="<%= serverinfo.attributes.limits.cpu/100 %>">
                       </div>
-                      <div class="form-group mt-2 mb-3">
+                      <div class="mt-2 mb-3 form-group">
                         <label class="text-white" for="InputRAM">RAM (GBs):</label>
                         <br>
                         <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" id="InputRAM" placeholder="2" value="<%= serverinfo.attributes.limits.memory/1024 %>">
                       </div>
-                      <div class="form-group mt-2 mb-3">
+                      <div class="mt-2 mb-3 form-group">
                         <label class="text-white" for="InputDisk">Disk (GBs):</label>
                         <br>
                         <input style="color: #9CA3AF; background-color: #2a3038; border: 0; border-radius: 15px; padding: 8px;" type="number" class="form-control" id="InputDisk" placeholder="5" value="<%= serverinfo.attributes.limits.disk/1024 %>">
                       </div>
-                      <div class="form-group mt-2 mb-3">
+                      <div class="mt-2 mb-3 form-group">
                         <label class="text-white" for="InputEgg">Egg:</label>
                         <br>
                         <select class="btn btn-secondary dropdown-toggle" style="background-color: #2a3038; border: 1px solid #2c2e33; color: #e4eaec; border-radius: 15px; padding: 8px;" disabled>
@@ -112,7 +112,7 @@
                           <% } %>
                         </select>
                       </div>
-                      <a href="javascript: submitChanges()" class=" mt-3 transition hover:scale-95 block w-full text-center bg-orange-600 text-sm hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-full">
+                      <a href="javascript: submitChanges()" class="block w-full px-4 py-2 mt-3 text-sm font-medium text-center text-white transition bg-<%= settings.primarycolor %>-600 rounded-full hover:scale-95 hover:bg-<%= settings.primarycolor %>-700">
                         Apply Changes
                     </a>
                     </form>

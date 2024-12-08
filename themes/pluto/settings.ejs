@@ -115,7 +115,7 @@
                     </button>
                 </div>
                 <div class="flex justify-between mb-6">
-                    <a href="<%= settings.pterodactyl.domain %>" target="_blank" type="button" class="bg-orange-600 text-sm font-medium text-white px-4 py-2 rounded-full hover:bg-orange-700 transition">Open Panel</a>
+                    <a href="<%= settings.pterodactyl.domain %>" target="_blank" type="button" class="bg-<%= settings.primarycolor %>-600 text-sm font-medium text-white px-4 py-2 rounded-full hover:bg-<%= settings.primarycolor %>-700 transition">Open Panel</a>
                     <button type="button" onclick="copyPassword()" class="text-sm font-medium bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition hover:bg-gray-300">Copy</button>
                 </div>
             </form>
@@ -147,10 +147,10 @@
             const tabs = document.querySelectorAll('#tabs a');
             tabs.forEach(tab => {
                 if (tab.getAttribute('href') === currentPath) {
-                    tab.classList.add('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.add('border-<%= settings.primarycolor %>-500', 'text-<%= settings.primarycolor %>-500', 'font-medium');
                     tab.classList.remove('border-transparent', 'hover:border-gray-300', 'hover:text-white');
                 } else {
-                    tab.classList.remove('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.remove('border-<%= settings.primarycolor %>-500', 'text-<%= settings.primarycolor %>-500', 'font-medium');
                     tab.classList.add('border-transparent', 'hover:border-gray-300', 'hover:text-white');
                 }
             });

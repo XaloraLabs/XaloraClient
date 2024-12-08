@@ -87,7 +87,7 @@
                 <p class="text-2xl font-bold text-white"><%= settings.linkvertise.dailyLimit %> Linkvertise Links Per Day</p>
                 <p class="mt-2 text-sm text-gray-300">For every Linkvertise link you complete, you will get <%= settings.linkvertise.coins %> <%= settings.coinname %>.</p>
                 <div class="mt-4 flex justify-center">
-                    <a href="/lv/gen" class="cursor-pointer transition ease-in-out group relative flex justify-center rounded-full border border-transparent py-2 px-6 text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none">
+                    <a href="/lv/gen" class="cursor-pointer transition ease-in-out group relative flex justify-center rounded-full border border-transparent py-2 px-6 text-sm font-medium text-white bg-<%= settings.primarycolor %>-600 hover:bg-<%= settings.primarycolor %>-700 focus:outline-none">
                         Generate Link
                     </a>
                 </div>
@@ -108,10 +108,10 @@
             const tabs = document.querySelectorAll('#tabs a');
             tabs.forEach(tab => {
                 if (tab.getAttribute('href') === currentPath) {
-                    tab.classList.add('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.add('border-<%= settings.primarycolor %>-500', 'text-<%= settings.primarycolor %>-500', 'font-medium');
                     tab.classList.remove('border-transparent', 'hover:border-gray-300', 'hover:text-white');
                 } else {
-                    tab.classList.remove('border-orange-500', 'text-orange-500', 'font-medium');
+                    tab.classList.remove('border-<%= settings.primarycolor %>-500', 'text-<%= settings.primarycolor %>-500', 'font-medium');
                     tab.classList.add('border-transparent', 'hover:border-gray-300', 'hover:text-white');
                 }
             });
