@@ -97,39 +97,67 @@ module.exports.load = async function (app, db) {
     
 
     new CronJob(`* * * * *`, () => {
-        if (settings.renewals.status) {
-            console.log(chalk.cyan("[Xalora]") + chalk.white(" Checking renewal servers... "));
-            getAllServers().then(async servers => {
-                for (const server of servers) {
-                    const id = server.attributes.id
-                    const lastRenew = await db.get(`lastrenewal-${id}`)
-                    if (!lastRenew) continue
+    if (settings.renewals.status) {
+        console.log(chalk.cyan("[Xalora]") + chalk.white(" Checking renewal servers... "));
+        getAllServers().then(async servers => {
+            for (const server of servers) {
+                const id = server.attributes.id;
+                const lastRenew = await db.get(`lastrenewal-${id}`);
+                if (!lastRenew) continue;
 
-                    if (lastRenew > Date.now()) continue
-                    if ((Date.now() - lastRenew) > (settings.renewals.delay * 86400000)) {
-                        // Server hasn't paid for renewal and gets suspended
-                        let deletionresults = await fetch(
-                            settings.pterodactyl.domain + "/api/application/servers/" + id + "/suspend",
+                if (lastRenew > Date.now()) continue;
+                if ((Date.now() - lastRenew) > (settings.renewals.delay * 86400000)) {
+                    // Check if the server is already suspended
+                    try {
+                        const serverDetails = await fetch(
+                            `${settings.pterodactyl.domain}/api/application/servers/${id}`,
                             {
-                                method: "post",
+                                method: "GET",
                                 headers: {
                                     'Content-Type': 'application/json',
                                     "Authorization": `Bearer ${settings.pterodactyl.key}`
                                 }
                             }
                         );
-                        let ok = await deletionresults.ok;
-                        if (ok !== true) continue;
-                        console.log(`Server with ID ${id} failed renewal and was suspended.`)
-                        
-                        
+
+                        if (!serverDetails.ok) {
+                            console.error(`Failed to fetch server details for ID ${id}. Skipping.`);
+                            continue;
+                        }
+
+                        const serverData = await serverDetails.json();
+                        if (serverData.attributes.suspended) {
+                            continue;
+                        }
+
+                        // Suspend the server
+                        const suspensionResponse = await fetch(
+                            `${settings.pterodactyl.domain}/api/application/servers/${id}/suspend`,
+                            {
+                                method: "POST",
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    "Authorization": `Bearer ${settings.pterodactyl.key}`
+                                }
+                            }
+                        );
+
+                        if (suspensionResponse.ok) {
+                            console.log(`Server with ID ${id} failed renewal and was suspended.`);
+                        } else {
+                            console.error(`Failed to suspend server with ID ${id}.`);
+                        }
+                    } catch (error) {
+                        console.error(`Error checking or suspending server with ID ${id}:`, error);
                     }
                 }
-            })
-            console.log(chalk.cyan("[Xalora]") + chalk.white("The renewal check-over is now complete."));
-        }
-    }, null, true, settings.timezone)
-        .start()
+            }
+        }).catch(error => {
+            console.error("Error during server renewal check:", error);
+        });
+        console.log(chalk.cyan("[Xalora]") + chalk.white("The renewal check-over is now complete."));
+    }
+}, null, true, settings.timezone).start();
 
 };
 
