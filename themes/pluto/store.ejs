@@ -8,11 +8,11 @@
   <%- include('./components/sidebar') %>
 
             <main class="flex-1 overflow-x-hidden overflow-y-auto">
-                <div class="container mx-auto px-8 py-2">
+                <div class="container px-8 py-2 mx-auto">
                     <!-- Content -->
 <!-- Main Content -->
-<main class="flex-grow container mx-auto px-4 py-8" x-data="store()">
-    <div class="flex justify-between items-center w-full mx-auto pb-4">
+<main class="container flex-grow px-4 py-8 mx-auto" x-data="store()">
+    <div class="flex items-center justify-between w-full pb-4 mx-auto">
         <!-- Welcome text and subtext on the left -->
         <div class="flex flex-col">
             <h1 class="text-xl font-semibold mb-0.5" style="font-family: 'Cabin';">Store</h1>
@@ -20,10 +20,10 @@
         </div>
 
         <!-- Breadcrumbs on the right -->
-        <nav aria-label="Breadcrumb" class="inline-flex py-2 px-4 rounded-xl bg-white/5 transition-colors duration-200">
+        <nav aria-label="Breadcrumb" class="inline-flex px-4 py-2 transition-colors duration-200 rounded-xl bg-white/5">
             <ol role="list" class="flex items-center space-x-2">
                 <li>
-                    <a href="/dashboard" class="text-sm flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition-colors duration-200" aria-current="false">
+                    <a href="/dashboard" class="flex items-center gap-2 text-sm transition-colors duration-200 text-zinc-400 hover:text-zinc-200" aria-current="false">
                         <svg
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +59,7 @@
                     </svg>
                 </li>
                 <li>
-                    <a href="#_" class="text-sm flex items-center gap-2 font-medium text-white/80 hover:text-white transition-colors duration-200" aria-current="page">
+                    <a href="#_" class="flex items-center gap-2 text-sm font-medium transition-colors duration-200 text-white/80 hover:text-white" aria-current="page">
                         Store
                     </a>
                 </li>
@@ -70,7 +70,7 @@
     <% if (req.query.err) { %>
         <% if (req.query.err !== "none") { %>
             <% if (req.query.err == "CANNOTAFFORD") { %>
-                <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                <div class="flex items-center justify-between p-4 mt-4 mb-4 text-red-400 border bg-red-500/10 border-red-500/20 rounded-xl">
                     <span>Insufficient funds.</span>
                     <button @click="showError = false" class="text-red-400 hover:text-red-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -80,7 +80,7 @@
                 </div>
 
                 <% } else if (req.query.err == "MAXCPUEXCEETED") { %>
-                    <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                    <div class="flex items-center justify-between p-4 mt-4 mb-4 text-red-400 border bg-red-500/10 border-red-500/20 rounded-xl">
                         <span>You have reached the cpu limit!</span>
                         <button @click="showError = false" class="text-red-400 hover:text-red-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -89,7 +89,7 @@
                         </button>
                     </div>
                   <% } else if (req.query.err == "MAXRAMEXCEETED") { %>
-                    <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                    <div class="flex items-center justify-between p-4 mt-4 mb-4 text-red-400 border bg-red-500/10 border-red-500/20 rounded-xl">
                         <span>You have reached the RAM limit!</span>
                         <button @click="showError = false" class="text-red-400 hover:text-red-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -98,7 +98,7 @@
                         </button>
                     </div>
                   <% } else if (req.query.err == "MAXDISKEXCEETED") { %>
-                    <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                    <div class="flex items-center justify-between p-4 mt-4 mb-4 text-red-400 border bg-red-500/10 border-red-500/20 rounded-xl">
                         <span>You have reached the disk limit!</span>
                         <button @click="showError = false" class="text-red-400 hover:text-red-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -107,7 +107,7 @@
                         </button>
                     </div>
                   <% } else if (req.query.err == "MAXSERVERSEXCEETED") { %>
-                    <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+                    <div class="flex items-center justify-between p-4 mt-4 mb-4 text-red-400 border bg-red-500/10 border-red-500/20 rounded-xl">
                         <span>You have reached the servers limit!</span>
                         <button @click="showError = false" class="text-red-400 hover:text-red-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -117,7 +117,7 @@
                     </div>
                   <% } %>
                   <% } else if (req.query.err == "none") { %>
-                    <div class="mb-4 mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 flex items-center justify-between">
+                    <div class="flex items-center justify-between p-4 mt-4 mb-4 text-green-400 border bg-green-500/10 border-green-500/20 rounded-xl">
                         <span>Success!</b></span>
                         <button @click="showError = false" class="text-green-400 hover:text-green-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -130,17 +130,17 @@
 
     <!-- Store Content -->
     <div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
+        <div class="grid grid-cols-1 gap-8 mt-4 md:grid-cols-3">
             <!-- RAM Card -->
-            <div class="bg-white/5 rounded-2xl p-8">
-                <h3 class="text-xl font-semibold mb-4">RAM</h3>
-                <p class="text-gray-400 mb-4">Upgrade your server's memory</p>
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-lg font-medium"><%= settings.api.client.coins.store.ram.cost %> <%= settings.coinname %> / GB</span>
+            <div class="p-8 bg-white/5 rounded-2xl">
+                <h3 class="mb-4 text-xl font-semibold">RAM</h3>
+                <p class="mb-4 text-gray-400">Upgrade your server's memory</p>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-lg font-medium"><%= settings.api.client.coins.store.ram.cost %> <%= settings.coinname %> / <%= settings.api.client.coins.store.ram.per / 1024 %> GB</span>
                     <div class="flex items-center">
-                        <button @click="decrementRAM()" class="bg-white/5 text-white px-2 py-1 rounded-l">-</button>
+                        <button @click="decrementRAM()" class="px-2 py-1 text-white rounded-l bg-white/5">-</button>
                         <input x-model.number="ram" type="number" min="1" class="bg-[#1a1f2a]/50 text-white w-16 text-center px-2 py-1 border-t border-b border-white/5">
-                        <button @click="incrementRAM()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
+                        <button @click="incrementRAM()" class="px-2 py-1 text-white rounded-r bg-white/5">+</button>
                     </div>
                 </div>
                 <button @click="buyRAM()" class="w-full bg-<%= settings.primarycolor %>-600 font-medium text-white py-2 rounded-full hover:bg-<%= settings.primarycolor %>-700 transition">
@@ -149,15 +149,15 @@
             </div>
 
             <!-- Disk Card -->
-            <div class="bg-white/5 rounded-2xl p-8">
-                <h3 class="text-xl font-semibold mb-4">Disk</h3>
-                <p class="text-gray-400 mb-4">Expand your storage capacity</p>
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-lg font-medium"><%= settings.api.client.coins.store.cpu.cost %> <%= settings.coinname %> / 5GB</span>
+            <div class="p-8 bg-white/5 rounded-2xl">
+                <h3 class="mb-4 text-xl font-semibold">Disk</h3>
+                <p class="mb-4 text-gray-400">Expand your storage capacity</p>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-lg font-medium"><%= settings.api.client.coins.store.cpu.cost %> <%= settings.coinname %> / <%= settings.api.client.coins.store.disk.per / 1024 %> GB</span>
                     <div class="flex items-center">
-                        <button @click="decrementDisk()" class="bg-white/5 text-white px-2 py-1 rounded-l">-</button>
+                        <button @click="decrementDisk()" class="px-2 py-1 text-white rounded-l bg-white/5">-</button>
                         <input x-model.number="disk" type="number" min="1" class="bg-[#1a1f2a]/50 text-white w-16 text-center px-2 py-1 border-t border-b border-white/5">
-                        <button @click="incrementDisk()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
+                        <button @click="incrementDisk()" class="px-2 py-1 text-white rounded-r bg-white/5">+</button>
                     </div>
                 </div>
                 <button @click="buyDisk()" class="w-full bg-<%= settings.primarycolor %>-600 font-medium text-white py-2 rounded-full hover:bg-<%= settings.primarycolor %>-700 transition">
@@ -166,15 +166,15 @@
             </div>
 
             <!-- CPU Card -->
-            <div class="bg-white/5 rounded-2xl p-8">
-                <h3 class="text-xl font-semibold mb-4">CPU</h3>
-                <p class="text-gray-400 mb-4">Boost your processing power</p>
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-lg font-medium"><%= settings.api.client.coins.store.cpu.cost %> <%= settings.coinname %> / Core</span>
+            <div class="p-8 bg-white/5 rounded-2xl">
+                <h3 class="mb-4 text-xl font-semibold">CPU</h3>
+                <p class="mb-4 text-gray-400">Boost your processing power</p>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-lg font-medium"><%= settings.api.client.coins.store.cpu.cost %> <%= settings.coinname %> / <%= settings.api.client.coins.store.cpu.per %>% Core(s)</span>
                     <div class="flex items-center">
-                        <button @click="decrementCPU()" class="bg-white/5 text-white px-2 py-1 rounded-l">-</button>
+                        <button @click="decrementCPU()" class="px-2 py-1 text-white rounded-l bg-white/5">-</button>
                         <input x-model.number="cpu" type="number" min="1" class="bg-[#1a1f2a]/50 text-white w-16 text-center px-2 py-1 border-t border-b border-white/5">
-                        <button @click="incrementCPU()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
+                        <button @click="incrementCPU()" class="px-2 py-1 text-white rounded-r bg-white/5">+</button>
                     </div>
                 </div>
                 <button @click="buyCPU()" class="w-full bg-<%= settings.primarycolor %>-600 font-medium text-white py-2 rounded-full hover:bg-<%= settings.primarycolor %>-700 transition">
@@ -183,15 +183,14 @@
             </div>
 
             <!-- Slot Card -->
-            <div class="bg-white/5 rounded-2xl p-8">
-                <h3 class="text-xl font-semibold mb-4">Slots</h3>
-                <p class="text-gray-400 mb-4">Buy server slots</p>
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-lg font-medium"><%= settings.api.client.coins.store.servers.cost %> <%= settings.coinname %> / Slot</span>
+            <div class="p-8 bg-white/5 rounded-2xl">
+                <h3 class="mb-4 text-xl font-semibold">Slots</h3> 
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-lg font-medium"><%= settings.api.client.coins.store.servers.cost %> <%= settings.coinname %> / <%= settings.api.client.coins.store.servers.per %> Slot(s)</span>
                     <div class="flex items-center">
-                        <button @click="decrementServer()" class="bg-white/5 text-white px-2 py-1 rounded-l">-</button>
+                        <button @click="decrementServer()" class="px-2 py-1 text-white rounded-l bg-white/5">-</button>
                         <input x-model.number="server" type="number" min="1" class="bg-[#1a1f2a]/50 text-white w-16 text-center px-2 py-1 border-t border-b border-white/5">
-                        <button @click="incrementServer()" class="bg-white/5 text-white px-2 py-1 rounded-r">+</button>
+                        <button @click="incrementServer()" class="px-2 py-1 text-white rounded-r bg-white/5">+</button>
                     </div>
                 </div>
                 <button @click="buyServer()" class="w-full bg-<%= settings.primarycolor %>-600 font-medium text-white py-2 rounded-full hover:bg-<%= settings.primarycolor %>-700 transition">
@@ -221,22 +220,22 @@ function store() {
         decrementCPU() { if (this.cpu > 1) this.cpu-- },
         buyRAM() {
             if (this.ram > 0) {
-                window.location.href = `/buyram?amount=${this.ram}`;
+                window.location.href = `/buyram?amount=${this.ram * settings.api.client.coins.store.ram.per}`;
             }
         },
         buyDisk() {
             if (this.disk > 0) {
-                window.location.href = `/buydisk?amount=${this.disk * 5}`;
+                window.location.href = `/buydisk?amount=${this.disk * settings.api.client.coins.store.disk.per}`;
             }
         },
         buyServer() {
             if (this.server > 0) {
-                window.location.href = `/buyservers?amount=${this.server}`;
+                window.location.href = `/buyservers?amount=${this.server * settings.api.client.coins.store.server.per}`;
             }
         },
         buyCPU() {
             if (this.cpu > 0) {
-                window.location.href = `/buycpu?amount=${this.cpu}`;
+                window.location.href = `/buycpu?amount=${this.cpu * settings.api.client.coins.store.cpu.per}`;
             }
         }
     }

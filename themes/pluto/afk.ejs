@@ -9,12 +9,12 @@
   <%- include('./components/sidebar') %>
 
             <main class="flex-1 overflow-x-hidden overflow-y-auto">
-                <div class="container mx-auto px-8 py-2">
+                <div class="container px-8 py-2 mx-auto">
                     <!-- Content -->
 <!-- Main Content -->
-<main class="flex-grow container mx-auto px-4 py-8">
+<main class="container flex-grow px-4 py-8 mx-auto">
   
-    <div class="flex justify-between items-center w-full mx-auto pb-4">
+    <div class="flex items-center justify-between w-full pb-4 mx-auto">
         <!-- Welcome text and subtext on the left -->
         <div class="flex flex-col">
             <h1 class="text-xl font-semibold mb-0.5" style="font-family: 'Cabin';">AFK Page</h1>
@@ -22,10 +22,10 @@
         </div>
 
         <!-- Breadcrumbs on the right -->
-        <nav aria-label="Breadcrumb" class="inline-flex py-2 px-4 rounded-xl bg-white/5 transition-colors duration-200">
+        <nav aria-label="Breadcrumb" class="inline-flex px-4 py-2 transition-colors duration-200 rounded-xl bg-white/5">
             <ol role="list" class="flex items-center space-x-2">
                 <li>
-                    <a href="/dashboard" class="text-sm flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition-colors duration-200" aria-current="false">
+                    <a href="/dashboard" class="flex items-center gap-2 text-sm transition-colors duration-200 text-zinc-400 hover:text-zinc-200" aria-current="false">
                         <svg
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,7 @@
                     </svg>
                 </li>
                 <li>
-                    <a href="#_" class="text-sm flex items-center gap-2 font-medium text-white/80 hover:text-white transition-colors duration-200" aria-current="page">
+                    <a href="#_" class="flex items-center gap-2 text-sm font-medium transition-colors duration-200 text-white/80 hover:text-white" aria-current="page">
                         AFK Page
                     </a>
                 </li>
@@ -70,62 +70,63 @@
     </div>
 
     <!-- AFK Page Content -->
-    <div class="mt-24 flex justify-center">
+    <div class="flex justify-center mt-24">
         <div class="text-center">
             <div class="mb-6">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-16 w-16 bg-white/5 p-1.5 rounded-xl border border-white/10 mx-auto text-gray-200">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5" />
                 </svg>                  
             </div>
-            <h2 class="text-2xl font-bold mb-4">AFK Page</h2>
-            <p class="text-gray-400 mb-6">Earn <%= settings.coinname %> for free, by leaving this page open. <span class="hidden" id="sessionDuration">-</span></p>
+            <h2 class="mb-4 text-2xl font-bold">AFK Page</h2>
+            <p class="mb-6 text-gray-400">Earn <%= settings.coinname %> for free, by leaving this page open. <span class="hidden" id="sessionDuration">-</span></p>
             
             <script>
-              const coinsPerMinute = '<%= settings.api.afk.coins %>';          
-                let totalCoins = 0;
-
-                function connect() {
-                  const socket = new WebSocket(`${window.location.href.startsWith("https://") ? "wss" : "ws"}://${window.location.host}/afk/ws`);
-
-                  socket.onopen = () => {
-                    console.log("WebSocket connection opened");
-                  };
-
-                  socket.onmessage = (event) => {
-                    let data = JSON.parse(event.data);
-                    if (data.type === "coin") {
-                      totalCoins += coinsPerMinute;
-                      document.getElementById("sessionEarn").innerText = `${totalCoins}`;
-                    }
-                  };
-
-                  socket.onclose = (event) => {
-                    document.getElementById("sessionEarn").innerText = `Connection closed`;
-                    if (event.wasClean) {
-                      console.error(`WebSocket connection closed cleanly, code=${event.code}`);
-                    } else {
-                      console.error('WebSocket connection closed abruptly');
-                    }
-                    setTimeout(connect, 5000);
-                  };
-                }
-
-                connect();
-              </script>
+              const coinsPerMinute = '<%= settings.api.afk.coins %>'; // Assuming this is 5
+              let totalCoins = 0;
+            
+              function connect() {
+                const socket = new WebSocket(`${window.location.href.startsWith("https://") ? "wss" : "ws"}://${window.location.host}/afk/ws`);
+            
+                socket.onopen = () => {
+                  console.log("WebSocket connection opened");
+                };
+            
+                socket.onmessage = (event) => {
+                  let data = JSON.parse(event.data);
+                  if (data.type === "coin") {
+                    // Increment totalCoins by coinsPerMinute
+                    totalCoins += parseInt(coinsPerMinute, 10); // Ensure it's treated as an integer
+                    document.getElementById("sessionEarn").innerText = `${totalCoins}`;
+                  }
+                };
+            
+                socket.onclose = (event) => {
+                  document.getElementById("sessionEarn").innerText = `Connection closed`;
+                  if (event.wasClean) {
+                    console.error(`WebSocket connection closed cleanly, code=${event.code}`);
+                  } else {
+                    console.error('WebSocket connection closed abruptly');
+                  }
+                  setTimeout(connect, 5000);
+                };
+              }
+            
+              connect();
+            </script>
             
             <form>
                 <div class="flex justify-between mb-6">
                     <button type="button" class="bg-<%= settings.primarycolor %>-600 text-sm font-medium text-white px-4 py-2 rounded-full hover:bg-<%= settings.primarycolor %>-700 transition"><span id="afk-time"><script>
                       
                   </script></span> seconds</button>
-                    <button type="button" class="text-sm font-medium bg-gray-200 text-gray-700 px-4 py-2 rounded-full transition hover:bg-gray-300"><span id="sessionEarn">0</span> <%= settings.coinname %></button>
+                    <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 transition bg-gray-200 rounded-full hover:bg-gray-300"><span id="sessionEarn">0</span> <%= settings.coinname %></button>
                 </div>
             </form>
             <div class="border-t border-white/5">
-            <p class="text-sm tracking-widest text-gray-500 uppercase mb-3 mt-16">WHY NOT COMPLETE LINKVERTISE LINKS WHILE YOU AFK?</p>
+            <p class="mt-16 mb-3 text-sm tracking-widest text-gray-500 uppercase">WHY NOT COMPLETE LINKVERTISE LINKS WHILE YOU AFK?</p>
                 <p class="text-2xl font-bold text-white"><span id="usedToday"></span>Linkvertise</p>
                 <p class="mt-2 text-sm text-gray-300">For every Linkvertise link you complete, you will get <%= settings.linkvertise.coins %> <%= settings.coinname %>.</p>
-                <div class="mt-4 flex justify-center">
+                <div class="flex justify-center mt-4">
                     <a href="./lv" target="_blank" class="cursor-pointer transition ease-in-out group relative flex justify-center rounded-full border border-transparent py-2 px-6 text-sm font-medium text-white bg-<%= settings.primarycolor %>-600 hover:bg-<%= settings.primarycolor %>-700 focus:outline-none">
                         Go to Linkvertise
                     </a>
@@ -133,6 +134,8 @@
             </div>
         </div>
     </div>
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
+<div class="elfsight-app-0b59ecf3-d549-43ee-bd08-cd5ffb2ac295" data-elfsight-app-lazy></div>
 </main>
 
 

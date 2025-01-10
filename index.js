@@ -116,8 +116,7 @@ const listener = app.listen(settings.website.port, async function() {
 
   try {
     let newsettings = JSON.parse(require("fs").readFileSync("./settings.json"));;
-    // Fetch the latest release version from GitHub
-    const response = await axios.get(`https://api.github.com/repos/XaloraLabs/XaloraClient/releases/latest`);
+    const response = await axios.get(`https://api.github.com/repos/OvernodeProjets/Heliactyl-fixed/releases/latest`);
     const latestVersion = response.data.tag_name;
 
     if (latestVersion !== newsettings.version) {

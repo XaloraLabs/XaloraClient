@@ -1,4 +1,5 @@
 const fetch = require("node-fetch");
+const settings = require("../settings.json");
 
 module.exports.load = async function (app, db) {
   app.post("/api/purge", async (req, res) => {

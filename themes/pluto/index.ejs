@@ -85,26 +85,26 @@
 </head>
 <body class="bg-[#0b0d10] min-h-screen flex flex-col">
   <!-- Logo in top left -->
-  <header class="absolute top-4 left-4 z-10" onclick="window.location.href='#'">
-      <img src="/assets/Xalorawhite.png" alt="PlutoNodes Logo" class="h-12 hover:scale-90 transition cursor-pointer">
+  <header class="absolute z-10 top-4 left-4" onclick="window.location.href='#'">
+      <img src="<%= settings.logo %>" alt="Logo" class="h-12 transition cursor-pointer hover:scale-90">
   </header>
 
-  <main class="flex-grow flex flex-col md:flex-row">
+  <main class="flex flex-col flex-grow md:flex-row">
       <!-- Left side with image, text, and review -->
       <div class="w-full md:w-1/2 relative min-h-[300px] md:min-h-screen">
-          <video src="/assets/video.mp4" muted autoplay loop class="absolute inset-0 w-full h-full object-cover"></video>
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-white p-8 md:p-12">
-              <h1 class="text-3xl md:text-4xl font-semibold text-white/30 tracking-widest mb-4 text-center">WELCOME TO <%= settings.name %></h1>
+          <video src="/assets/video.mp4" muted autoplay loop class="absolute inset-0 object-cover w-full h-full"></video>
+          <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-white bg-black bg-opacity-50 md:p-12">
+              <h1 class="mb-4 text-3xl font-semibold tracking-widest text-center md:text-4xl text-white/30">WELCOME TO <%= settings.name %></h1>
           </div>
       </div>
       
       
 
       <!-- Right side with login form -->
-      <div class="w-full md:w-1/2 flex items-center justify-center p-8">
-          <div class="border border-white/5 rounded-lg backdrop-blur shadow-sm py-8 px-6 md:py-12 md:px-8 max-w-md w-full relative z-10">
-              <h2 class="text-center text-2xl mt-4 font-semibold text-white" style="font-family: 'Cabin', sans-serif;">Login to Continue</h2>
-              <p class="text-zinc-400 text-center mt-1 font-normal text-sm">Sign in to your account.</p>
+      <div class="flex items-center justify-center w-full p-8 md:w-1/2">
+          <div class="relative z-10 w-full max-w-md px-6 py-8 border rounded-lg shadow-sm border-white/5 backdrop-blur md:py-12 md:px-8">
+              <h2 class="mt-4 text-2xl font-semibold text-center text-white" style="font-family: 'Cabin', sans-serif;">Login to Continue</h2>
+              <p class="mt-1 text-sm font-normal text-center text-zinc-400">Sign in to your account.</p>
               
               <!-- User/Password Login Form -->
               <div class="mt-6 space-y-4">
@@ -120,7 +120,7 @@
   </main>
 
   <!-- Toast Notification -->
-  <div id="toast" class="fixed z-50 bottom-5 right-5 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg transition-opacity duration-300 opacity-0 pointer-events-none">
+  <div id="toast" class="fixed z-50 px-4 py-2 text-white transition-opacity duration-300 bg-red-500 rounded-lg shadow-lg opacity-0 pointer-events-none bottom-5 right-5">
       Error message goes here
   </div>
 </body></html>

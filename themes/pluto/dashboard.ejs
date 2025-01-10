@@ -8,10 +8,10 @@
   <%- include('./components/sidebar') %>
 <!-- Main Content -->
 <main class="flex-1 overflow-x-hidden overflow-y-auto">
-  <div class="container mx-auto px-8 py-2">
+  <div class="container px-8 py-2 mx-auto">
   </div>
-<main class="flex-grow container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center w-full mx-auto pb-4">
+<main class="container flex-grow px-4 py-8 mx-auto">
+    <div class="flex items-center justify-between w-full pb-4 mx-auto">
         <!-- Welcome text and subtext on the left -->
         <div class="flex flex-col">
             <h1 class="text-xl font-semibold mb-0.5" style="font-family: 'Cabin';">Dashboard</h1>
@@ -19,10 +19,10 @@
         </div>
 
         <!-- Breadcrumbs on the right -->
-        <nav aria-label="Breadcrumb" class="inline-flex py-2 px-4 rounded-xl bg-white/5 transition-colors duration-200">
+        <nav aria-label="Breadcrumb" class="inline-flex px-4 py-2 transition-colors duration-200 rounded-xl bg-white/5">
             <ol role="list" class="flex items-center space-x-2">
                 <li>
-                    <a href="#_" class="text-sm flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition-colors duration-200" aria-current="false">
+                    <a href="#_" class="flex items-center gap-2 text-sm transition-colors duration-200 text-zinc-400 hover:text-zinc-200" aria-current="false">
                         <svg
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@
                     </svg>
                 </li>
                 <li>
-                    <a href="#_" class="text-sm flex items-center gap-2 font-medium text-white/80 hover:text-white transition-colors duration-200" aria-current="page">
+                    <a href="#_" class="flex items-center gap-2 text-sm font-medium transition-colors duration-200 text-white/80 hover:text-white" aria-current="page">
                         Dashboard
                     </a>
                 </li>
@@ -67,7 +67,7 @@
     </div>
 
     <% if (req.query.err === "CANNOTAFFORDRENEWAL") { %>
-      <div class="mb-4 mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-between">
+      <div class="flex items-center justify-between p-4 mt-4 mb-4 text-red-400 border bg-red-500/10 border-red-500/20 rounded-xl">
           <span>You need at least <%= settings.renewals.cost %> coins to purchase a server renewal!</span>
           <button @click="showError = false" class="text-red-400 hover:text-red-300">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -76,7 +76,7 @@
           </button>
       </div>
   <% }if (req.query.success === 'RENEWED') { %>
-      <div class="mb-4 mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 flex items-center justify-between">
+      <div class="flex items-center justify-between p-4 mt-4 mb-4 text-green-400 border bg-green-500/10 border-green-500/20 rounded-xl">
       <span>Succesfully purchased renewal for server!</span>
       <button @click="showError = false" class="text-green-400 hover:text-green-300">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -91,11 +91,11 @@
     
 
 
-<div id="dailyCoinsBanner" class="hidden w-full border-l-4 mt-2 mb-8 bg-white/5 border-white/10 rounded-r-2xl">
+<div id="dailyCoinsBanner" class="hidden w-full mt-2 mb-8 border-l-4 bg-white/5 border-white/10 rounded-r-2xl">
   <div class="p-6">
-    <h2 class="text-white/90 text-lg font-semibold">Your daily reward is available.</h2>
+    <h2 class="text-lg font-semibold text-white/90">Your daily reward is available.</h2>
     <div class="space-y-5">
-      <p class="text-white/60 text-sm leading-5">
+      <p class="text-sm leading-5 text-white/60">
         As a thank you for being a Pluto user, each day you can claim a reward of PlutoCoins (XPL)
       </p>
       <a class="transition hover:scale-95 cursor-pointer font-semibold gap-2 grow-0 items-center justify-center rounded-xl shrink-0 disabled:cursor-not-allowed inline-flex border focus:outline-none px-4 py-[9px] bg-emerald-700 border-emerald-700 text-white hover:bg-emerald-600 hover:border-emerald-600 focus:ring-4 focus:ring-emerald-900 disabled:bg-emerald-900 disabled:border-emerald-900 disabled:text-emerald-400 text-sm" href="/daily-coins">
@@ -107,18 +107,18 @@
 
 <!-- Advent -->
 <% if ( settings.advent) { %>
-<div class="bg-gradient-to-r from-indigo-500/10 to-indigo-600/15 border border-indigo-500/10 rounded-3xl p-1 pl-12 mb-8 container mx-auto mt-8">
+<div class="container p-1 pl-12 mx-auto mt-8 mb-8 border bg-gradient-to-r from-indigo-500/10 to-indigo-600/15 border-indigo-500/10 rounded-3xl">
   <div class="flex items-center justify-between">
       <div class="space-y-4">
           <div class="flex items-center gap-2">
-              <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-300">
-                  <span class="size-2 rounded-full bg-indigo-400 mr-2"></span>
+              <div class="inline-flex items-center px-3 py-1 text-xs font-medium text-indigo-300 rounded-full bg-indigo-500/20">
+                  <span class="mr-2 bg-indigo-400 rounded-full size-2"></span>
                   Advent Calendar 2024
               </div>
           </div>
-          <h2 class="text-2xl heavy font-semibold text-white">BECAUSE 25 DAYS ISN'T LONG ENOUGH</h2>
+          <h2 class="text-2xl font-semibold text-white heavy">BECAUSE 25 DAYS ISN'T LONG ENOUGH</h2>
           <p class="text-white/60">Our advent calendar has started on November 11 and will end on December 25!</p>
-          <a href="/advent" class="inline-flex items-center justify-center h-11 gap-2 px-6 text-sm font-medium text-white transition-all duration-200 rounded-full shadow bg-indigo-500 hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2 ring-offset-gray-200 hover:shadow-none">
+          <a href="/advent" class="inline-flex items-center justify-center gap-2 px-6 text-sm font-medium text-white transition-all duration-200 bg-indigo-500 rounded-full shadow h-11 hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2 ring-offset-gray-200 hover:shadow-none">
               Advent Calendar
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="size-4">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
@@ -136,9 +136,9 @@
     <% if (!settings.advent) { %>
     <div class="w-full border-l-4 mt-2 mb-8 bg-<%= settings.primarycolor %>-600/15 border-<%= settings.primarycolor %>-600 rounded-r-2xl">
       <div class="p-6">
-        <h2 class="text-white/90 text-lg font-semibold">Welcome back!</h2>
+        <h2 class="text-lg font-semibold text-white/90">Welcome back!</h2>
         <div class="space-y-5">
-          <p class="text-white/60 text-sm leading-5">
+          <p class="text-sm leading-5 text-white/60">
             From the <%= settings.name %> dashboard, you can manage your <%= settings.coinname %> wallet, deploy resources (ex. a server) and upgrade your deployments.
           </p>
           <a class="transition hover:scale-95 cursor-pointer font-semibold gap-2 grow-0 items-center justify-center rounded-xl shrink-0 disabled:cursor-not-allowed inline-flex border focus:outline-none px-4 py-[9px] bg-<%= settings.primarycolor %>-600 border-<%= settings.primarycolor %>-600 text-white hover:bg-<%= settings.primarycolor %>-600 hover:border-<%= settings.primarycolor %>-600 focus:ring-4 focus:ring-<%= settings.primarycolor %>-900 disabled:bg-<%= settings.primarycolor %>-900 disabled:border-<%= settings.primarycolor %>-900 disabled:text-<%= settings.primarycolor %>-400 text-sm" href="/servers/new">
@@ -146,12 +146,12 @@
           </a>
           <div class="flex flex-col xs:flex-row gap-3 items-start p-4 rounded-xl bg-white/5 text-<%= settings.primarycolor %>-100" dismissable="false">
             <div class="shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block shrink-0 h-5 w-5">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block w-5 h-5 shrink-0">
       <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
     </svg>
     
             </div>
-            <div class="flex flex-col flex-auto gap-3 items-start md:flex-row md:items-center">
+            <div class="flex flex-col items-start flex-auto gap-3 md:flex-row md:items-center">
               <div class="flex-auto space-y-3">
                 <div class="space-y-1">
                   <h2 class="text-sm leading-5 font-semibold text-<%= settings.primarycolor %>-100">Has someone asked you to join their server on <%= settings.name %> as a subuser?</h2>
@@ -206,10 +206,10 @@
             %>
     
     <div>
-      <dl class="mt-4 grid grid-cols-1 divide-y divide-white/5 overflow-hidden rounded-2xl bg-white/5 shadow md:grid-cols-4 md:divide-y-0 md:divide-x">
+      <dl class="grid grid-cols-1 mt-4 overflow-hidden divide-y shadow divide-white/5 rounded-2xl bg-white/5 md:grid-cols-4 md:divide-y-0 md:divide-x">
         <div class="px-4 py-5 sm:p-6">
           <dt class="text-base font-medium text-white">Available RAM</dt>
-          <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <dd class="flex items-baseline justify-between mt-1 md:block lg:flex">
             <div class="flex items-baseline text-2xl font-semibold text-<%= settings.primarycolor %>-600">
             <%= packages.ram/1024 + extraresources.ram/1024 - ram/1024 %> GiB
             </div>
@@ -218,7 +218,7 @@
     
         <div class="px-4 py-5 sm:p-6">
           <dt class="text-base font-medium text-white">Available CPU</dt>
-          <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <dd class="flex items-baseline justify-between mt-1 md:block lg:flex">
             <div class="flex items-baseline text-2xl font-semibold text-<%= settings.primarycolor %>-600">
             <%= packages.cpu/100 + extraresources.cpu/100 - cpu/100 %> CPU core(s)
             </div>
@@ -227,7 +227,7 @@
 
         <div class="px-4 py-5 sm:p-6">
           <dt class="text-base font-medium text-white">Available Disk</dt>
-          <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <dd class="flex items-baseline justify-between mt-1 md:block lg:flex">
             <div class="flex items-baseline text-2xl font-semibold text-<%= settings.primarycolor %>-600">
             <%= packages.disk/1024 + extraresources.disk/1024 - disk/1024 %> GiB
             </div>
@@ -236,7 +236,7 @@
     
         <div class="px-4 py-5 sm:p-6">
           <dt class="text-base font-medium text-white">Available Server Slots</dt>
-          <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <dd class="flex items-baseline justify-between mt-1 md:block lg:flex">
             <div class="flex items-baseline text-2xl font-semibold text-<%= settings.primarycolor %>-600">
             <%= packages.servers + extraresources.servers - servers %> Slots
             </div>
