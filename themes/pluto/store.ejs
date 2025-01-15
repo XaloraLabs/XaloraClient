@@ -220,22 +220,22 @@ function store() {
         decrementCPU() { if (this.cpu > 1) this.cpu-- },
         buyRAM() {
             if (this.ram > 0) {
-                window.location.href = `/buyram?amount=${this.ram * settings.api.client.coins.store.ram.per}`;
+                window.location.href = `/buyram?amount=${this.ram}`;
             }
         },
         buyDisk() {
             if (this.disk > 0) {
-                window.location.href = `/buydisk?amount=${this.disk * settings.api.client.coins.store.disk.per}`;
+                window.location.href = `/buydisk?amount=${this.disk}`;
             }
         },
         buyServer() {
             if (this.server > 0) {
-                window.location.href = `/buyservers?amount=${this.server * settings.api.client.coins.store.server.per}`;
+                window.location.href = `/buyservers?amount=${this.server}`;
             }
         },
         buyCPU() {
             if (this.cpu > 0) {
-                window.location.href = `/buycpu?amount=${this.cpu * settings.api.client.coins.store.cpu.per}`;
+                window.location.href = `/buycpu?amount=${this.cpu}`;
             }
         }
     }
